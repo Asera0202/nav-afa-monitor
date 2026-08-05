@@ -1,0 +1,21 @@
+{
+  "name": "nav-afa-monitor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NAV Online Számla API kliens az ÁFA-monitor projekthez — bejövő számlák automatikus lekérdezése",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "fast-xml-parser": "^4.4.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "tsx": "^4.16.2",
+    "@types/node": "^20.14.10"
+  }
+}
