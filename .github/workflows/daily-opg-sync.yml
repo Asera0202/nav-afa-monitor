@@ -1,4 +1,4 @@
-name: Napi pénztárgép-szinkron
+name: Napi NAV-szinkron (számlák + pénztárgép)
 
 on:
   schedule:
@@ -23,8 +23,22 @@ jobs:
       - name: Függőségek telepítése
         run: npm ci
 
-      - name: Napi OPG-szinkron futtatása
+      - name: Napi OPG (pénztárgép) szinkron futtatása
         run: npx tsx src/daily-opg-sync.ts
+        env:
+          NAV_ENV: production
+          NAV_LOGIN: ${{ secrets.NAV_LOGIN }}
+          NAV_PASSWORD: ${{ secrets.NAV_PASSWORD }}
+          NAV_SIGNING_KEY: ${{ secrets.NAV_SIGNING_KEY }}
+          NAV_EXCHANGE_KEY: ${{ secrets.NAV_EXCHANGE_KEY }}
+          NAV_TAX_NUMBER: ${{ secrets.NAV_TAX_NUMBER }}
+          SOFTWARE_ID: ${{ secrets.SOFTWARE_ID }}
+          SOFTWARE_NAME: AFA-Monitor
+          SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
+          SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+
+      - name: Napi számla (bejövő + kimenő) szinkron futtatása
+        run: npx tsx src/daily-invoice-sync.ts
         env:
           NAV_ENV: production
           NAV_LOGIN: ${{ secrets.NAV_LOGIN }}
@@ -42,5 +56,5 @@ jobs:
           git config user.name "afa-monitor-bot"
           git config user.email "afa-monitor-bot@users.noreply.github.com"
           git add out/history
-          git diff --cached --quiet || git commit -m "Napi OPG-szinkron: $(date -u +%Y-%m-%d)"
+          git diff --cached --quiet || git commit -m "Napi NAV-szinkron: $(date -u +%Y-%m-%d)"
           git push
