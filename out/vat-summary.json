@@ -1,0 +1,2248 @@
+{
+  "aggregate": {
+    "0": {
+      "netAmount": 343008.56,
+      "vatAmount": 0,
+      "grossAmount": 288558.56,
+      "count": 34
+    },
+    "0.27": {
+      "netAmount": 5264139.47,
+      "vatAmount": 1421308.5999999996,
+      "grossAmount": 6195365.790000001,
+      "count": 117
+    },
+    "0.18": {
+      "netAmount": 1115020.9699999997,
+      "vatAmount": 200692.14,
+      "grossAmount": 1057788,
+      "count": 49
+    },
+    "0.05": {
+      "netAmount": 167178.43,
+      "vatAmount": 8353.57,
+      "grossAmount": 175532,
+      "count": 17
+    }
+  },
+  "perInvoice": [
+    {
+      "invoiceNumber": "SBP126-06688",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 50151,
+          "vatAmount": 13542,
+          "grossAmount": 63693
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 6430,
+          "vatAmount": 1159,
+          "grossAmount": 7589
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 218494069692740,
+      "supplierName": "Mobil Adat Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 9000,
+          "vatAmount": 2430,
+          "grossAmount": 11430
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 236.12,
+          "vatAmount": 0,
+          "grossAmount": 236.12
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S014122",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 75299,
+          "vatAmount": 20331,
+          "grossAmount": 95630
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26086804,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 22100,
+          "vatAmount": 0,
+          "grossAmount": 22100
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 194125.94,
+          "vatAmount": 52414,
+          "grossAmount": 246539.94
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGSA2227567",
+      "supplierName": "SZÉKELY ERZSÉBET",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 38000,
+          "vatAmount": 0,
+          "grossAmount": 38000
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "RKZPL-2026-317",
+      "supplierName": "Erkazo-Plusz Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 78750,
+          "vatAmount": 21263,
+          "grossAmount": 100013
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005457",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 195594.1,
+          "vatAmount": 52810.3,
+          "grossAmount": 248404.4
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-06935",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 81076,
+          "vatAmount": 21890,
+          "grossAmount": 102966
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 846003117693,
+      "supplierName": "MVM Next Energiakereskedelmi Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 50184,
+          "vatAmount": 13550,
+          "grossAmount": 63734
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 1499,
+          "vatAmount": 0,
+          "grossAmount": 1499
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S014891",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 75717,
+          "vatAmount": 20443,
+          "grossAmount": 96160
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00035019",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 27854.66,
+          "vatAmount": 5013.84,
+          "grossAmount": 32869
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 9967.4,
+          "vatAmount": 2691.2,
+          "grossAmount": 12659
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/00720",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 28520,
+          "vatAmount": 5132,
+          "grossAmount": 33652
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "A/A30500213/0894/00003",
+      "supplierName": "OMV HUNGÁRIA ÁSVÁNYOLAJ KFT",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "2501337/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 5248,
+          "vatAmount": 262,
+          "grossAmount": 5510
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 14736,
+          "vatAmount": 2653,
+          "grossAmount": 17389
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005466",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 59519.6,
+          "vatAmount": 16070.3,
+          "grossAmount": 75589.9
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00035238",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 1200,
+          "vatAmount": 0,
+          "grossAmount": 1200
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 45066.85,
+          "vatAmount": 12168.05,
+          "grossAmount": 57235
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/101755",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 32285.77,
+          "vatAmount": 5811.44,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 31966.4,
+          "vatAmount": 8630.94,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-07217",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 34532,
+          "vatAmount": 9324,
+          "grossAmount": 43856
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGEA1880270",
+      "supplierName": "DIÓSGYŐRI VITÉZ MEZŐGAZDASÁGI ÉS SZOLGÁLTATÓ KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁG",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 22047.28,
+          "vatAmount": 5952.76,
+          "grossAmount": 28000.04
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "E-TOJAS-2026-601",
+      "supplierName": "Szati-Zep Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 29143,
+          "vatAmount": 1457,
+          "grossAmount": 30600
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 7023083881,
+      "supplierName": "ÉRV. Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 5625,
+          "vatAmount": 1518,
+          "grossAmount": 7143
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-07519",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 61746,
+          "vatAmount": 16670,
+          "grossAmount": 78416
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 261314218,
+      "supplierName": "Észak-Kelet N.S. Energy Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 38110,
+          "vatAmount": 10290,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 12300,
+          "vatAmount": 0,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26087769,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 8800,
+          "vatAmount": 0,
+          "grossAmount": 8800
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 22549.61,
+          "vatAmount": 6088,
+          "grossAmount": 28637.61
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00035680",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 2361.86,
+          "vatAmount": 425.13,
+          "grossAmount": 2787
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 28539.92,
+          "vatAmount": 7705.78,
+          "grossAmount": 36246
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "A/A30500213/0900/00013",
+      "supplierName": "OMV HUNGÁRIA ÁSVÁNYOLAJ KFT",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "2026/00771",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 28520,
+          "vatAmount": 5132,
+          "grossAmount": 33652
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2501432/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 5248,
+          "vatAmount": 262,
+          "grossAmount": 5510
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 21451,
+          "vatAmount": 3861,
+          "grossAmount": 25312
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 218,
+          "vatAmount": 59,
+          "grossAmount": 277
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005482",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 67429,
+          "vatAmount": 18205.8,
+          "grossAmount": 85634.8
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-07759",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 49299,
+          "vatAmount": 13310,
+          "grossAmount": 62609
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S016435",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 59334,
+          "vatAmount": 16021,
+          "grossAmount": 75355
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 329471011,
+      "supplierName": "MOHU MOL Hulladékgazdálkodási Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 6058,
+          "vatAmount": 1636,
+          "grossAmount": 7694
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 329471012,
+      "supplierName": "MOHU MOL Hulladékgazdálkodási Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 12129,
+          "vatAmount": 3275,
+          "grossAmount": 15404
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 329471013,
+      "supplierName": "MOHU MOL Hulladékgazdálkodási Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 6058,
+          "vatAmount": 1636,
+          "grossAmount": 7694
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 6930264681,
+      "supplierName": "MVM Émász Áramhálózati Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 31753,
+          "vatAmount": 8573,
+          "grossAmount": 40326
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-08080",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 71733,
+          "vatAmount": 19367,
+          "grossAmount": 91100
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2501502/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 5248,
+          "vatAmount": 262,
+          "grossAmount": 5510
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 15652,
+          "vatAmount": 2819,
+          "grossAmount": 18471
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 470,
+          "vatAmount": 127,
+          "grossAmount": 597
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 261315552,
+      "supplierName": "Észak-Kelet N.S. Energy Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 42561,
+          "vatAmount": 11491,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 11400,
+          "vatAmount": 0,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26001890,
+      "supplierName": "Fine Sweet Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 23249.15,
+          "vatAmount": 4184.85,
+          "grossAmount": 27434
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 2874.02,
+          "vatAmount": 775.98,
+          "grossAmount": 3650
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/00827",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 31240,
+          "vatAmount": 5624,
+          "grossAmount": 36864
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGSA3499370",
+      "supplierName": "LU-KO KARTEL KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁ",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 17250,
+          "vatAmount": 3105,
+          "grossAmount": 20355
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KS-726016S-2026/348",
+      "supplierName": "MÁLYI KÖZSÉG ÖNKORMÁNYZATA",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 4724,
+          "vatAmount": 1276,
+          "grossAmount": 6000
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "s2026/000699",
+      "supplierName": "Bukó László",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 27835,
+          "vatAmount": 7515,
+          "grossAmount": 35350
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 250,
+          "vatAmount": 0,
+          "grossAmount": 250
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-08285",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 47115,
+          "vatAmount": 12720,
+          "grossAmount": 59835
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "CRAZY-2026-439",
+      "supplierName": "JANTA-BAU Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 27241,
+          "vatAmount": 7355,
+          "grossAmount": 34596
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 2400,
+          "vatAmount": 0,
+          "grossAmount": 2400
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2700168/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 7872,
+          "vatAmount": 393,
+          "grossAmount": 8265
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 20094,
+          "vatAmount": 3617,
+          "grossAmount": 23711
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00036667",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 50,
+          "vatAmount": 0,
+          "grossAmount": 50
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 20858.93,
+          "vatAmount": 3754.61,
+          "grossAmount": 24614
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 42305.61,
+          "vatAmount": 11422.51,
+          "grossAmount": 53728
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/102534",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 46221.42,
+          "vatAmount": 8319.85,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 30409.63,
+          "vatAmount": 8210.57,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-08520",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 55024,
+          "vatAmount": 14855,
+          "grossAmount": 69879
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 272,
+          "vatAmount": 49,
+          "grossAmount": 321
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S018057",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 37461,
+          "vatAmount": 10114,
+          "grossAmount": 47575
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S018075",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 37459,
+          "vatAmount": 10114,
+          "grossAmount": 47573
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S018083",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": -37461,
+          "vatAmount": -10114,
+          "grossAmount": -47575
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/00882",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 25400,
+          "vatAmount": 4572,
+          "grossAmount": 29972
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/102635",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 31681.92,
+          "vatAmount": 5702.75,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 7913.39,
+          "vatAmount": 2136.61,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26001994,
+      "supplierName": "Fine Sweet Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 44457.63,
+          "vatAmount": 8002.37,
+          "grossAmount": 52460
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "RKZPL-2026-369",
+      "supplierName": "Erkazo-Plusz Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 78750,
+          "vatAmount": 21263,
+          "grossAmount": 100013
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGEA1880280",
+      "supplierName": "DIÓSGYŐRI VITÉZ MEZŐGAZDASÁGI ÉS SZOLGÁLTATÓ KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁG",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 30866.19,
+          "vatAmount": 8333.87,
+          "grossAmount": 39200.06
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00037363",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 62269.54,
+          "vatAmount": 16812.77,
+          "grossAmount": 79082
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "E-TOJAS-2026-707",
+      "supplierName": "Szati-Zep Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 29143,
+          "vatAmount": 1457,
+          "grossAmount": 30600
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-09068",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 65479,
+          "vatAmount": 17679,
+          "grossAmount": 83158
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S019192",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 78417,
+          "vatAmount": 21173,
+          "grossAmount": 99590
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "GEMIX-2026-414",
+      "supplierName": "Gemix Plusz Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 22000,
+          "vatAmount": 5940,
+          "grossAmount": 27940
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "Rhaeb 8834766",
+      "supplierName": "MARCZIS ATTILA",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "A/A30500214/0927/00028",
+      "supplierName": "OMV HUNGÁRIA ÁSVÁNYOLAJ KFT",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "2026/00934",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 28520,
+          "vatAmount": 5132,
+          "grossAmount": 33652
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 30114514440,
+      "supplierName": "One Magyarország Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 44000,
+          "vatAmount": 0,
+          "grossAmount": 44000
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGEA2797195",
+      "supplierName": "SZEPY-1 KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁG",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "2501736/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": -2,
+          "vatAmount": 0,
+          "grossAmount": -2
+        },
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 7872,
+          "vatAmount": 393,
+          "grossAmount": 8265
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 20076,
+          "vatAmount": 3614,
+          "grossAmount": 23690
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 1096,
+          "vatAmount": 296,
+          "grossAmount": 1392
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-09279",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 46995,
+          "vatAmount": 12688,
+          "grossAmount": 59683
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "GELEJ-2026-56",
+      "supplierName": "Gelej 2015. Mezőgazdasági és Kereskedelmi Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 88936,
+          "vatAmount": 24013,
+          "grossAmount": 112949
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26089667,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 20550,
+          "vatAmount": 0,
+          "grossAmount": 20550
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 111538.02,
+          "vatAmount": 30115,
+          "grossAmount": 141653.02
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026-0/0(16)0068/000576",
+      "supplierName": "METRO KERESKEDELMI KFT.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 10577.16,
+          "vatAmount": 2855.83,
+          "grossAmount": 13432.99
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/103124",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 3773.23,
+          "vatAmount": 1018.77,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26089770,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 2650,
+          "vatAmount": 0,
+          "grossAmount": 2650
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 87103.94,
+          "vatAmount": 23518,
+          "grossAmount": 110621.94
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00037983",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 50,
+          "vatAmount": 0,
+          "grossAmount": 50
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 11542.04,
+          "vatAmount": 2077.57,
+          "grossAmount": 13620
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 32038.47,
+          "vatAmount": 8650.39,
+          "grossAmount": 40689
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "WHS202603327",
+      "supplierName": "WONDEX Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 729.92,
+          "vatAmount": 197.08,
+          "grossAmount": 927
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005531",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 99614,
+          "vatAmount": 26895.9,
+          "grossAmount": 126509.9
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-09580",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 39214,
+          "vatAmount": 10587,
+          "grossAmount": 49801
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/00982",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 28520,
+          "vatAmount": 5132,
+          "grossAmount": 33652
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2501816/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 1,
+          "vatAmount": 0,
+          "grossAmount": 1
+        },
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 5248,
+          "vatAmount": 262,
+          "grossAmount": 5510
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 30692,
+          "vatAmount": 5523,
+          "grossAmount": 36215
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 3120,
+          "vatAmount": 844,
+          "grossAmount": 3964
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005540",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 108841.5,
+          "vatAmount": 29387.1,
+          "grossAmount": 138228.6
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-09765",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 43343,
+          "vatAmount": 11702,
+          "grossAmount": 55045
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S020966",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 50559,
+          "vatAmount": 13651,
+          "grossAmount": 64210
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26002265,
+      "supplierName": "Fine Sweet Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 59872.88,
+          "vatAmount": 10777.12,
+          "grossAmount": 70650
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 6488.19,
+          "vatAmount": 1751.81,
+          "grossAmount": 8240
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/103499",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 33792.16,
+          "vatAmount": 6082.59,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 20161.5,
+          "vatAmount": 5443.6,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 7023264207,
+      "supplierName": "ÉRV. Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 5624,
+          "vatAmount": 1520,
+          "grossAmount": 7144
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-10077",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 73815,
+          "vatAmount": 19929,
+          "grossAmount": 93744
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00038792",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 50,
+          "vatAmount": 0,
+          "grossAmount": 50
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 3204.21,
+          "vatAmount": 576.76,
+          "grossAmount": 3781
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 34964.45,
+          "vatAmount": 9440.4,
+          "grossAmount": 44405
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 80003754606,
+      "supplierName": "One Magyarország Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 93088.44,
+          "vatAmount": 0,
+          "grossAmount": 93088.44
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 261319920,
+      "supplierName": "Észak-Kelet N.S. Energy Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 40061,
+          "vatAmount": 10816,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 13200,
+          "vatAmount": 0,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/01040",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 27340,
+          "vatAmount": 4920,
+          "grossAmount": 32260
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005555",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 188074.3,
+          "vatAmount": 50780.2,
+          "grossAmount": 238854.5
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2501977/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": -2,
+          "vatAmount": 0,
+          "grossAmount": -2
+        },
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 6822,
+          "vatAmount": 341,
+          "grossAmount": 7163
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 18010,
+          "vatAmount": 3239,
+          "grossAmount": 21249
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00039220",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 50,
+          "vatAmount": 0,
+          "grossAmount": 50
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 1032.22,
+          "vatAmount": 185.8,
+          "grossAmount": 1218
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 55609.97,
+          "vatAmount": 15014.69,
+          "grossAmount": 70625
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/103713",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 6849.12,
+          "vatAmount": 1232.84,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 33978,
+          "vatAmount": 9174.08,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 600,
+          "vatAmount": 0,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "H040_1Sz096340",
+      "supplierName": "Diego Szőnyegüzletek M. Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 20935,
+          "vatAmount": 5652,
+          "grossAmount": 26587
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26090843,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 23600,
+          "vatAmount": 0,
+          "grossAmount": 23600
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 180846.85,
+          "vatAmount": 48829,
+          "grossAmount": 229675.85
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 74816761,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": -150,
+          "vatAmount": 0,
+          "grossAmount": -150
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": -21353.54,
+          "vatAmount": -5765,
+          "grossAmount": -27118.54
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-10562",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 90911,
+          "vatAmount": 24545,
+          "grossAmount": 115456
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S022409",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 61288,
+          "vatAmount": 16547,
+          "grossAmount": 77835
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGEA1880295",
+      "supplierName": "DIÓSGYŐRI VITÉZ MEZŐGAZDASÁGI ÉS SZOLGÁLTATÓ KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁG",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 17362.23,
+          "vatAmount": 4687.8,
+          "grossAmount": 22050.03
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/01090",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 24040,
+          "vatAmount": 4327,
+          "grossAmount": 28367
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "A23402881/2887/00002",
+      "supplierName": "ORLEN HUNGARY Korlátolt Felelősségű Társaság",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "s2026/000926",
+      "supplierName": "Bukó László",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 17295,
+          "vatAmount": 4669,
+          "grossAmount": 21964
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 150,
+          "vatAmount": 0,
+          "grossAmount": 150
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-10767",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 15326,
+          "vatAmount": 4138,
+          "grossAmount": 19464
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "CRAZY-2026-564",
+      "supplierName": "JANTA-BAU Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 24432,
+          "vatAmount": 6596,
+          "grossAmount": 31028
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 900,
+          "vatAmount": 0,
+          "grossAmount": 900
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "RKZPL-2026-463",
+      "supplierName": "Erkazo-Plusz Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 78750,
+          "vatAmount": 21263,
+          "grossAmount": 100013
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2502090/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 2624,
+          "vatAmount": 131,
+          "grossAmount": 2755
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 14420,
+          "vatAmount": 2595,
+          "grossAmount": 17015
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 2919,
+          "vatAmount": 790,
+          "grossAmount": 3709
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KS-726016S-2026/446",
+      "supplierName": "MÁLYI KÖZSÉG ÖNKORMÁNYZATA",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 11811,
+          "vatAmount": 3189,
+          "grossAmount": 15000
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00039975",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 8364.33,
+          "vatAmount": 1505.58,
+          "grossAmount": 9870
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 67218.29,
+          "vatAmount": 18148.94,
+          "grossAmount": 85367
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00039976",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 4368.2,
+          "vatAmount": 1179.41,
+          "grossAmount": 5548
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005574",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 82141.5,
+          "vatAmount": 22178.2,
+          "grossAmount": 104319.7
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-11063",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 80579,
+          "vatAmount": 21756,
+          "grossAmount": 102335
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/01143",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 29240,
+          "vatAmount": 5264,
+          "grossAmount": 34504
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 845303337653,
+      "supplierName": "MVM Next Energiakereskedelmi Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 33177,
+          "vatAmount": 8958,
+          "grossAmount": 42135
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 986,
+          "vatAmount": 0,
+          "grossAmount": 986
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGEA 2839847",
+      "supplierName": "LIMEX-STAR KERESKEDELMI ÉS SZOLGÁLTATÓ KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁG",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "2502173/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 5248,
+          "vatAmount": 262,
+          "grossAmount": 5510
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 18659,
+          "vatAmount": 3358,
+          "grossAmount": 22017
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGSA3499442",
+      "supplierName": "LU-KO KARTEL KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁ",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 20700,
+          "vatAmount": 3726,
+          "grossAmount": 24426
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S024174",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 80720,
+          "vatAmount": 21795,
+          "grossAmount": 102515
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "A/A30500226/0940/00021",
+      "supplierName": "OMV HUNGÁRIA ÁSVÁNYOLAJ KFT",
+      "vatRates": []
+    },
+    {
+      "invoiceNumber": "JE-2026-197",
+      "supplierName": "J & E KFT.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 22285.71,
+          "vatAmount": 1114.29,
+          "grossAmount": 23400
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "DO / 2026-003726",
+      "supplierName": "Domdom Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 1980,
+          "vatAmount": 534.6,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "FUGEA3375302",
+      "supplierName": "DIÓSGYŐRI VITÉZ MEZŐGAZDASÁGI ÉS SZOLGÁLTATÓ KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁG",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 16811.05,
+          "vatAmount": 4538.98,
+          "grossAmount": 21350.03
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26002589,
+      "supplierName": "Fine Sweet Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 48177.97,
+          "vatAmount": 8672.03,
+          "grossAmount": 56850
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/104416",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 32321.88,
+          "vatAmount": 5817.95,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 6157.48,
+          "vatAmount": 1662.52,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005593",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 134736.8,
+          "vatAmount": 36378.9,
+          "grossAmount": 171115.7
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "CQFEA0193611",
+      "supplierName": "FÜRELI-TRADE KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁG",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 3011.81,
+          "vatAmount": 813.19,
+          "grossAmount": 3825
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-11611",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 37513,
+          "vatAmount": 10127,
+          "grossAmount": 47640
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 261323322,
+      "supplierName": "Észak-Kelet N.S. Energy Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 57106,
+          "vatAmount": 15419,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 16800,
+          "vatAmount": 0,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/01197",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 30995,
+          "vatAmount": 5580,
+          "grossAmount": 36575
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2502271/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 2,
+          "vatAmount": 0,
+          "grossAmount": 2
+        },
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 5248,
+          "vatAmount": 262,
+          "grossAmount": 5510
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 11882,
+          "vatAmount": 2136,
+          "grossAmount": 14018
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00040912",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 50,
+          "vatAmount": 0,
+          "grossAmount": 50
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 17866.22,
+          "vatAmount": 3215.92,
+          "grossAmount": 21082
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 36858.95,
+          "vatAmount": 9951.92,
+          "grossAmount": 46811
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/104531",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 17799.09,
+          "vatAmount": 3203.84,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 63801.74,
+          "vatAmount": 17226.48,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0,
+          "netAmount": 150,
+          "vatAmount": 0,
+          "grossAmount": 0
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-11816",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 55828,
+          "vatAmount": 15072,
+          "grossAmount": 70900
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26092493,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 19450,
+          "vatAmount": 0,
+          "grossAmount": 19450
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 138567.72,
+          "vatAmount": 37413,
+          "grossAmount": 175980.72
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S025250",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 59418,
+          "vatAmount": 16042,
+          "grossAmount": 75460
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 7041536271,
+      "supplierName": "ÉRV. Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 5625,
+          "vatAmount": 1518,
+          "grossAmount": 7143
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-12072",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 47224,
+          "vatAmount": 12750,
+          "grossAmount": 59974
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2502335/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 5113,
+          "vatAmount": 255,
+          "grossAmount": 5368
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 9516,
+          "vatAmount": 1711,
+          "grossAmount": 11227
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 632,
+          "vatAmount": 170,
+          "grossAmount": 802
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2026/01254",
+      "supplierName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 32420,
+          "vatAmount": 5836,
+          "grossAmount": 38256
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005618",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 77434.4,
+          "vatAmount": 20907.4,
+          "grossAmount": 98341.8
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-12268",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 55729,
+          "vatAmount": 15046,
+          "grossAmount": 70775
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "JE-2026-213",
+      "supplierName": "J & E KFT.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 11142.86,
+          "vatAmount": 557.14,
+          "grossAmount": 11700
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SZAM-0002/00041683",
+      "supplierName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 15098.19,
+          "vatAmount": 2717.67,
+          "grossAmount": 17816
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 31934.67,
+          "vatAmount": 8622.36,
+          "grossAmount": 40557
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26093162,
+      "supplierName": "Italkereskedő-Ház ZRt. Miskolc",
+      "vatRates": [
+        {
+          "vatPercentage": 0,
+          "netAmount": 8600,
+          "vatAmount": 0,
+          "grossAmount": 8600
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 34181.1,
+          "vatAmount": 9229,
+          "grossAmount": 43410.1
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "2502405/2026",
+      "supplierName": "ABAÚJTEJ Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 2530,
+          "vatAmount": 126,
+          "grossAmount": 2656
+        },
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 14853,
+          "vatAmount": 2673,
+          "grossAmount": 17526
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 1169,
+          "vatAmount": 316,
+          "grossAmount": 1485
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-12555",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 37681,
+          "vatAmount": 10174,
+          "grossAmount": 47855
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "26/S026790",
+      "supplierName": "Hús Depó",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 40488,
+          "vatAmount": 10932,
+          "grossAmount": 51420
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KS-726016S-2026/527",
+      "supplierName": "MÁLYI KÖZSÉG ÖNKORMÁNYZATA",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 7087,
+          "vatAmount": 1913,
+          "grossAmount": 9000
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KP005637",
+      "supplierName": "Hangony Hús Kft.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 91129.7,
+          "vatAmount": 24605,
+          "grossAmount": 115734.7
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "SBP126-12704",
+      "supplierName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 41847,
+          "vatAmount": 11299,
+          "grossAmount": 53146
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "JE-2026-226",
+      "supplierName": "J & E KFT.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.05,
+          "netAmount": 11142.86,
+          "vatAmount": 557.14,
+          "grossAmount": 11700
+        }
+      ]
+    },
+    {
+      "invoiceNumber": 26002818,
+      "supplierName": "Fine Sweet Kft",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 43050.85,
+          "vatAmount": 7749.15,
+          "grossAmount": 50800
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "MISK/105166",
+      "supplierName": "Kevaimpex Zrt.",
+      "vatRates": [
+        {
+          "vatPercentage": 0.18,
+          "netAmount": 17630.47,
+          "vatAmount": 3173.48,
+          "grossAmount": 0
+        },
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 7913.39,
+          "vatAmount": 2136.61,
+          "grossAmount": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "aggregate": {
+    "0.27": {
+      "netAmount": 38508.68,
+      "vatAmount": 10397.34,
+      "grossAmount": 48906.020000000004,
+      "count": 3
+    }
+  },
+  "perInvoice": [
+    {
+      "invoiceNumber": "KG-2023-83",
+      "supplierName": "KORCSMÁRSZKI GERGŐ",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 23384.25,
+          "vatAmount": 6313.75,
+          "grossAmount": 29698
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KG-2023-84",
+      "supplierName": "KORCSMÁRSZKI GERGŐ",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 15124.43,
+          "vatAmount": 4083.59,
+          "grossAmount": 19208.02
+        }
+      ]
+    },
+    {
+      "invoiceNumber": "KG-2023-85",
+      "supplierName": "KORCSMÁRSZKI GERGŐ",
+      "vatRates": [
+        {
+          "vatPercentage": 0.27,
+          "netAmount": 0,
+          "vatAmount": 0,
+          "grossAmount": 0
+        }
+      ]
+    }
+  ]
+}

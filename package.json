@@ -6,6 +6,8 @@
   "description": "NAV Online Számla API kliens az ÁFA-monitor projekthez — bejövő számlák automatikus lekérdezése",
   "scripts": {
     "dev": "tsx src/index.ts",
+    "sample": "tsx src/fetch-sample-invoice.ts",
+    "vat-summary": "tsx src/vat-summary.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },

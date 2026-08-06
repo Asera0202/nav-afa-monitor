@@ -17,6 +17,11 @@ export const config = {
       ? "https://api.onlineszamla.nav.gov.hu/invoiceService/v3"
       : "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3",
 
+  cashRegisterBaseUrl:
+    (process.env.NAV_ENV ?? "test") === "production"
+      ? "https://api.onlineszamla.nav.gov.hu/invoiceService/v3"
+      : "https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3",
+
   login: required("NAV_LOGIN"),
   password: required("NAV_PASSWORD"),
   signingKey: required("NAV_SIGNING_KEY"),

@@ -1,0 +1,6778 @@
+{
+  "aggregate": {
+    "C": {
+      "count": 832,
+      "gross": 1002439,
+      "net": 789322.047244094,
+      "vat": 213116.95275590543
+    },
+    "A": {
+      "count": 131,
+      "gross": 148023,
+      "net": 140974.28571428577,
+      "vat": 7048.71428571429
+    },
+    "B": {
+      "count": 51,
+      "gross": 90264,
+      "net": 76494.91525423729,
+      "vat": 13769.084745762706
+    },
+    "E": {
+      "count": 110,
+      "gross": 12050,
+      "net": 12050,
+      "vat": 0
+    }
+  },
+  "items": [
+    {
+      "gross": 4340,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T07:58:36+02:00",
+      "receiptNumber": "3979/00001"
+    },
+    {
+      "gross": 2735,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T08:21:56+02:00",
+      "receiptNumber": "3979/00002"
+    },
+    {
+      "gross": 2900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T08:21:56+02:00",
+      "receiptNumber": "3979/00002"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T08:21:56+02:00",
+      "receiptNumber": "3979/00002"
+    },
+    {
+      "gross": 469,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T09:05:52+02:00",
+      "receiptNumber": "3979/00003"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T09:05:52+02:00",
+      "receiptNumber": "3979/00003"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T09:05:52+02:00",
+      "receiptNumber": "3979/00003"
+    },
+    {
+      "gross": 670,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T09:21:49+02:00",
+      "receiptNumber": "3979/00004"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T09:21:49+02:00",
+      "receiptNumber": "3979/00004"
+    },
+    {
+      "gross": 1150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T09:39:13+02:00",
+      "receiptNumber": "3979/00005"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T09:39:13+02:00",
+      "receiptNumber": "3979/00005"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:02:56+02:00",
+      "receiptNumber": "3979/00006"
+    },
+    {
+      "gross": 1255,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:02:56+02:00",
+      "receiptNumber": "3979/00006"
+    },
+    {
+      "gross": 2223,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:02:56+02:00",
+      "receiptNumber": "3979/00006"
+    },
+    {
+      "gross": 960,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:02:56+02:00",
+      "receiptNumber": "3979/00006"
+    },
+    {
+      "gross": 1150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:02:56+02:00",
+      "receiptNumber": "3979/00006"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:05:13+02:00",
+      "receiptNumber": "3979/00007"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T10:05:13+02:00",
+      "receiptNumber": "3979/00007"
+    },
+    {
+      "gross": 990,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:10:25+02:00",
+      "receiptNumber": "3979/00008"
+    },
+    {
+      "gross": 2030,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:10:25+02:00",
+      "receiptNumber": "3979/00008"
+    },
+    {
+      "gross": 950,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:10:25+02:00",
+      "receiptNumber": "3979/00008"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "B",
+      "timestamp": "2026-07-23T10:13:36+02:00",
+      "receiptNumber": "3979/00009"
+    },
+    {
+      "gross": 495,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:36:23+02:00",
+      "receiptNumber": "3979/00010"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 1910,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 1410,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 3809,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 3433,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 1430,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 2497,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T10:55:13+02:00",
+      "receiptNumber": "3979/00011"
+    },
+    {
+      "gross": 533,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:06:23+02:00",
+      "receiptNumber": "3979/00012"
+    },
+    {
+      "gross": 518,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:06:23+02:00",
+      "receiptNumber": "3979/00012"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:08:49+02:00",
+      "receiptNumber": "3979/00013"
+    },
+    {
+      "gross": 1980,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:08:49+02:00",
+      "receiptNumber": "3979/00013"
+    },
+    {
+      "gross": 179,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T11:08:49+02:00",
+      "receiptNumber": "3979/00013"
+    },
+    {
+      "gross": 975,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:08:49+02:00",
+      "receiptNumber": "3979/00013"
+    },
+    {
+      "gross": 1710,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:08:49+02:00",
+      "receiptNumber": "3979/00013"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:08:49+02:00",
+      "receiptNumber": "3979/00013"
+    },
+    {
+      "gross": 3392,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:19:26+02:00",
+      "receiptNumber": "3979/00014"
+    },
+    {
+      "gross": 675,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:28:07+02:00",
+      "receiptNumber": "3979/00015"
+    },
+    {
+      "gross": 900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:49:00+02:00",
+      "receiptNumber": "3979/00016"
+    },
+    {
+      "gross": 1095,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:49:00+02:00",
+      "receiptNumber": "3979/00016"
+    },
+    {
+      "gross": 1055,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T11:49:00+02:00",
+      "receiptNumber": "3979/00016"
+    },
+    {
+      "gross": 1360,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T13:21:23+02:00",
+      "receiptNumber": "3979/00017"
+    },
+    {
+      "gross": 1060,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T13:21:23+02:00",
+      "receiptNumber": "3979/00017"
+    },
+    {
+      "gross": 980,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T13:29:40+02:00",
+      "receiptNumber": "3979/00018"
+    },
+    {
+      "gross": 1155,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T13:34:31+02:00",
+      "receiptNumber": "3979/00019"
+    },
+    {
+      "gross": 745,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T13:34:31+02:00",
+      "receiptNumber": "3979/00019"
+    },
+    {
+      "gross": 1166,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T13:34:31+02:00",
+      "receiptNumber": "3979/00019"
+    },
+    {
+      "gross": 880,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T13:34:31+02:00",
+      "receiptNumber": "3979/00019"
+    },
+    {
+      "gross": 490,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T13:34:31+02:00",
+      "receiptNumber": "3979/00019"
+    },
+    {
+      "gross": 1700,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:05:40+02:00",
+      "receiptNumber": "3979/00020"
+    },
+    {
+      "gross": 2148,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:05:40+02:00",
+      "receiptNumber": "3979/00020"
+    },
+    {
+      "gross": 850,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:05:40+02:00",
+      "receiptNumber": "3979/00020"
+    },
+    {
+      "gross": 810,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:43:57+02:00",
+      "receiptNumber": "3979/00021"
+    },
+    {
+      "gross": 1905,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:43:57+02:00",
+      "receiptNumber": "3979/00021"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 5890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 8799,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 3080,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 5430,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 1100,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 1413,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T14:55:41+02:00",
+      "receiptNumber": "3979/00022"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:08:45+02:00",
+      "receiptNumber": "3979/00023"
+    },
+    {
+      "gross": 999,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:10:03+02:00",
+      "receiptNumber": "3979/00024"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T15:10:03+02:00",
+      "receiptNumber": "3979/00024"
+    },
+    {
+      "gross": 1088,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:10:03+02:00",
+      "receiptNumber": "3979/00024"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T15:10:03+02:00",
+      "receiptNumber": "3979/00024"
+    },
+    {
+      "gross": 270,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:10:03+02:00",
+      "receiptNumber": "3979/00024"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:11:56+02:00",
+      "receiptNumber": "3979/00025"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T15:11:56+02:00",
+      "receiptNumber": "3979/00025"
+    },
+    {
+      "gross": 1150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:13:56+02:00",
+      "receiptNumber": "3979/00026"
+    },
+    {
+      "gross": 690,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:13:56+02:00",
+      "receiptNumber": "3979/00026"
+    },
+    {
+      "gross": 880,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:13:56+02:00",
+      "receiptNumber": "3979/00026"
+    },
+    {
+      "gross": 2035,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:19:31+02:00",
+      "receiptNumber": "3979/00027"
+    },
+    {
+      "gross": 1435,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:19:31+02:00",
+      "receiptNumber": "3979/00027"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:19:31+02:00",
+      "receiptNumber": "3979/00027"
+    },
+    {
+      "gross": 1525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:19:31+02:00",
+      "receiptNumber": "3979/00027"
+    },
+    {
+      "gross": 1060,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T15:19:31+02:00",
+      "receiptNumber": "3979/00027"
+    },
+    {
+      "gross": 975,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:19:31+02:00",
+      "receiptNumber": "3979/00027"
+    },
+    {
+      "gross": 1080,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:33:47+02:00",
+      "receiptNumber": "3979/00028"
+    },
+    {
+      "gross": 1060,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:33:47+02:00",
+      "receiptNumber": "3979/00028"
+    },
+    {
+      "gross": 900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:33:47+02:00",
+      "receiptNumber": "3979/00028"
+    },
+    {
+      "gross": 1150,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T15:33:47+02:00",
+      "receiptNumber": "3979/00028"
+    },
+    {
+      "gross": 1120,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T15:36:45+02:00",
+      "receiptNumber": "3979/00029"
+    },
+    {
+      "gross": 550,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:31:52+02:00",
+      "receiptNumber": "3979/00030"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:31:52+02:00",
+      "receiptNumber": "3979/00030"
+    },
+    {
+      "gross": 420,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:31:52+02:00",
+      "receiptNumber": "3979/00030"
+    },
+    {
+      "gross": 795,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "A",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 1650,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 670,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 670,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:56:26+02:00",
+      "receiptNumber": "3979/00031"
+    },
+    {
+      "gross": 1110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T16:59:27+02:00",
+      "receiptNumber": "3979/00032"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T16:59:27+02:00",
+      "receiptNumber": "3979/00032"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:02:01+02:00",
+      "receiptNumber": "3979/00033"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:02:01+02:00",
+      "receiptNumber": "3979/00033"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:02:01+02:00",
+      "receiptNumber": "3979/00033"
+    },
+    {
+      "gross": 313,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:04:54+02:00",
+      "receiptNumber": "3979/00034"
+    },
+    {
+      "gross": 900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:04:54+02:00",
+      "receiptNumber": "3979/00034"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-23T17:04:54+02:00",
+      "receiptNumber": "3979/00034"
+    },
+    {
+      "gross": 630,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:20:29+02:00",
+      "receiptNumber": "3979/00035"
+    },
+    {
+      "gross": 530,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:20:29+02:00",
+      "receiptNumber": "3979/00035"
+    },
+    {
+      "gross": 2900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:29:43+02:00",
+      "receiptNumber": "3979/00036"
+    },
+    {
+      "gross": 670,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:29:43+02:00",
+      "receiptNumber": "3979/00036"
+    },
+    {
+      "gross": 670,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:29:43+02:00",
+      "receiptNumber": "3979/00036"
+    },
+    {
+      "gross": 1715,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:39:19+02:00",
+      "receiptNumber": "3979/00037"
+    },
+    {
+      "gross": 1955,
+      "vatLetter": "C",
+      "timestamp": "2026-07-23T17:39:19+02:00",
+      "receiptNumber": "3979/00037"
+    },
+    {
+      "gross": 2765,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T08:42:40+02:00",
+      "receiptNumber": "3980/00001"
+    },
+    {
+      "gross": 1760,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T08:42:40+02:00",
+      "receiptNumber": "3980/00001"
+    },
+    {
+      "gross": 930,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T08:53:29+02:00",
+      "receiptNumber": "3980/00002"
+    },
+    {
+      "gross": 4070,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T08:53:29+02:00",
+      "receiptNumber": "3980/00002"
+    },
+    {
+      "gross": 1095,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T09:05:29+02:00",
+      "receiptNumber": "3980/00003"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "A",
+      "timestamp": "2026-07-24T09:05:29+02:00",
+      "receiptNumber": "3980/00003"
+    },
+    {
+      "gross": 1235,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T09:05:29+02:00",
+      "receiptNumber": "3980/00003"
+    },
+    {
+      "gross": 1800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T09:38:57+02:00",
+      "receiptNumber": "3980/00004"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T09:38:57+02:00",
+      "receiptNumber": "3980/00004"
+    },
+    {
+      "gross": 1560,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T09:38:57+02:00",
+      "receiptNumber": "3980/00004"
+    },
+    {
+      "gross": 650,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T09:38:57+02:00",
+      "receiptNumber": "3980/00004"
+    },
+    {
+      "gross": 990,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T09:38:57+02:00",
+      "receiptNumber": "3980/00004"
+    },
+    {
+      "gross": 1185,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:00:20+02:00",
+      "receiptNumber": "3980/00005"
+    },
+    {
+      "gross": 1240,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:02:13+02:00",
+      "receiptNumber": "3980/00006"
+    },
+    {
+      "gross": 1120,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:14:10+02:00",
+      "receiptNumber": "3980/00007"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-07-24T10:14:10+02:00",
+      "receiptNumber": "3980/00007"
+    },
+    {
+      "gross": 815,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:23:50+02:00",
+      "receiptNumber": "3980/00008"
+    },
+    {
+      "gross": 835,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:23:50+02:00",
+      "receiptNumber": "3980/00008"
+    },
+    {
+      "gross": 1015,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:26:25+02:00",
+      "receiptNumber": "3980/00009"
+    },
+    {
+      "gross": 2669,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:29:52+02:00",
+      "receiptNumber": "3980/00010"
+    },
+    {
+      "gross": 3500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:29:52+02:00",
+      "receiptNumber": "3980/00010"
+    },
+    {
+      "gross": 957,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:29:52+02:00",
+      "receiptNumber": "3980/00010"
+    },
+    {
+      "gross": 2535,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:29:52+02:00",
+      "receiptNumber": "3980/00010"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:29:52+02:00",
+      "receiptNumber": "3980/00010"
+    },
+    {
+      "gross": 4500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:33:17+02:00",
+      "receiptNumber": "3980/00011"
+    },
+    {
+      "gross": 3655,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:34:19+02:00",
+      "receiptNumber": "3980/00012"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:34:58+02:00",
+      "receiptNumber": "3980/00013"
+    },
+    {
+      "gross": 1144,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T10:34:58+02:00",
+      "receiptNumber": "3980/00013"
+    },
+    {
+      "gross": 2300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:12:33+02:00",
+      "receiptNumber": "3980/00014"
+    },
+    {
+      "gross": 760,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:14:18+02:00",
+      "receiptNumber": "3980/00015"
+    },
+    {
+      "gross": 2918,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:14:18+02:00",
+      "receiptNumber": "3980/00015"
+    },
+    {
+      "gross": 2340,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:14:18+02:00",
+      "receiptNumber": "3980/00015"
+    },
+    {
+      "gross": 1320,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:14:18+02:00",
+      "receiptNumber": "3980/00015"
+    },
+    {
+      "gross": 1561,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:28:55+02:00",
+      "receiptNumber": "3980/00016"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:28:55+02:00",
+      "receiptNumber": "3980/00016"
+    },
+    {
+      "gross": 1860,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:28:55+02:00",
+      "receiptNumber": "3980/00016"
+    },
+    {
+      "gross": 530,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:35:38+02:00",
+      "receiptNumber": "3980/00017"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:35:38+02:00",
+      "receiptNumber": "3980/00017"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:35:38+02:00",
+      "receiptNumber": "3980/00017"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T11:35:38+02:00",
+      "receiptNumber": "3980/00017"
+    },
+    {
+      "gross": 973,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:35:38+02:00",
+      "receiptNumber": "3980/00017"
+    },
+    {
+      "gross": 930,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:49:01+02:00",
+      "receiptNumber": "3980/00018"
+    },
+    {
+      "gross": 685,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T11:49:01+02:00",
+      "receiptNumber": "3980/00018"
+    },
+    {
+      "gross": 625,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:14:56+02:00",
+      "receiptNumber": "3980/00019"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:31:11+02:00",
+      "receiptNumber": "3980/00020"
+    },
+    {
+      "gross": 705,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:31:11+02:00",
+      "receiptNumber": "3980/00020"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:31:11+02:00",
+      "receiptNumber": "3980/00020"
+    },
+    {
+      "gross": 1005,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:43:37+02:00",
+      "receiptNumber": "3980/00021"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:43:37+02:00",
+      "receiptNumber": "3980/00021"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:43:37+02:00",
+      "receiptNumber": "3980/00021"
+    },
+    {
+      "gross": 1355,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:43:37+02:00",
+      "receiptNumber": "3980/00021"
+    },
+    {
+      "gross": 225,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:43:37+02:00",
+      "receiptNumber": "3980/00021"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:43:37+02:00",
+      "receiptNumber": "3980/00021"
+    },
+    {
+      "gross": 870,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T12:43:37+02:00",
+      "receiptNumber": "3980/00021"
+    },
+    {
+      "gross": 1090,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:05:32+02:00",
+      "receiptNumber": "3980/00022"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:05:32+02:00",
+      "receiptNumber": "3980/00022"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T13:05:32+02:00",
+      "receiptNumber": "3980/00022"
+    },
+    {
+      "gross": 1260,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:05:32+02:00",
+      "receiptNumber": "3980/00022"
+    },
+    {
+      "gross": 2105,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:05:32+02:00",
+      "receiptNumber": "3980/00022"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:05:32+02:00",
+      "receiptNumber": "3980/00022"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "A",
+      "timestamp": "2026-07-24T13:05:32+02:00",
+      "receiptNumber": "3980/00022"
+    },
+    {
+      "gross": 1890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:10:25+02:00",
+      "receiptNumber": "3980/00023"
+    },
+    {
+      "gross": 1130,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:10:25+02:00",
+      "receiptNumber": "3980/00023"
+    },
+    {
+      "gross": 1455,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:10:25+02:00",
+      "receiptNumber": "3980/00023"
+    },
+    {
+      "gross": 1060,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:10:25+02:00",
+      "receiptNumber": "3980/00023"
+    },
+    {
+      "gross": 640,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:10:25+02:00",
+      "receiptNumber": "3980/00023"
+    },
+    {
+      "gross": 810,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:42:32+02:00",
+      "receiptNumber": "3980/00024"
+    },
+    {
+      "gross": 1000,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:42:32+02:00",
+      "receiptNumber": "3980/00024"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:42:32+02:00",
+      "receiptNumber": "3980/00024"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:42:32+02:00",
+      "receiptNumber": "3980/00024"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T13:42:32+02:00",
+      "receiptNumber": "3980/00024"
+    },
+    {
+      "gross": 360,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:42:32+02:00",
+      "receiptNumber": "3980/00024"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:48:54+02:00",
+      "receiptNumber": "3980/00025"
+    },
+    {
+      "gross": 185,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:48:54+02:00",
+      "receiptNumber": "3980/00025"
+    },
+    {
+      "gross": 185,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:48:54+02:00",
+      "receiptNumber": "3980/00025"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:48:54+02:00",
+      "receiptNumber": "3980/00025"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T13:48:54+02:00",
+      "receiptNumber": "3980/00025"
+    },
+    {
+      "gross": 1840,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:56:59+02:00",
+      "receiptNumber": "3980/00026"
+    },
+    {
+      "gross": 3135,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:56:59+02:00",
+      "receiptNumber": "3980/00026"
+    },
+    {
+      "gross": 620,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:56:59+02:00",
+      "receiptNumber": "3980/00026"
+    },
+    {
+      "gross": 2380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:56:59+02:00",
+      "receiptNumber": "3980/00026"
+    },
+    {
+      "gross": 1140,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T13:59:25+02:00",
+      "receiptNumber": "3980/00027"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:00:01+02:00",
+      "receiptNumber": "3980/00028"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:00:01+02:00",
+      "receiptNumber": "3980/00028"
+    },
+    {
+      "gross": 190,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:00:01+02:00",
+      "receiptNumber": "3980/00028"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T14:00:01+02:00",
+      "receiptNumber": "3980/00028"
+    },
+    {
+      "gross": 999,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:09:25+02:00",
+      "receiptNumber": "3980/00029"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:09:25+02:00",
+      "receiptNumber": "3980/00029"
+    },
+    {
+      "gross": 280,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:09:25+02:00",
+      "receiptNumber": "3980/00029"
+    },
+    {
+      "gross": 280,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:09:25+02:00",
+      "receiptNumber": "3980/00029"
+    },
+    {
+      "gross": 410,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:09:25+02:00",
+      "receiptNumber": "3980/00029"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:20:04+02:00",
+      "receiptNumber": "3980/00030"
+    },
+    {
+      "gross": 1683,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T14:20:04+02:00",
+      "receiptNumber": "3980/00030"
+    },
+    {
+      "gross": 2820,
+      "vatLetter": "A",
+      "timestamp": "2026-07-24T14:20:04+02:00",
+      "receiptNumber": "3980/00030"
+    },
+    {
+      "gross": 270,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:00:48+02:00",
+      "receiptNumber": "3980/00031"
+    },
+    {
+      "gross": 530,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:00:48+02:00",
+      "receiptNumber": "3980/00031"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:00:48+02:00",
+      "receiptNumber": "3980/00031"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:00:48+02:00",
+      "receiptNumber": "3980/00031"
+    },
+    {
+      "gross": 3450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:07:52+02:00",
+      "receiptNumber": "3980/00032"
+    },
+    {
+      "gross": 550,
+      "vatLetter": "A",
+      "timestamp": "2026-07-24T15:07:52+02:00",
+      "receiptNumber": "3980/00032"
+    },
+    {
+      "gross": 2710,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:44:37+02:00",
+      "receiptNumber": "3980/00033"
+    },
+    {
+      "gross": 2500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:44:37+02:00",
+      "receiptNumber": "3980/00033"
+    },
+    {
+      "gross": 765,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:44:37+02:00",
+      "receiptNumber": "3980/00033"
+    },
+    {
+      "gross": 1620,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:44:37+02:00",
+      "receiptNumber": "3980/00033"
+    },
+    {
+      "gross": 1240,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:49:52+02:00",
+      "receiptNumber": "3980/00034"
+    },
+    {
+      "gross": 905,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:49:52+02:00",
+      "receiptNumber": "3980/00034"
+    },
+    {
+      "gross": 1315,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T15:49:52+02:00",
+      "receiptNumber": "3980/00034"
+    },
+    {
+      "gross": 1280,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T16:35:28+02:00",
+      "receiptNumber": "3980/00035"
+    },
+    {
+      "gross": 8970,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 2600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 1261,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 3275,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 470,
+      "vatLetter": "A",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 470,
+      "vatLetter": "A",
+      "timestamp": "2026-07-24T17:01:14+02:00",
+      "receiptNumber": "3980/00036"
+    },
+    {
+      "gross": 1120,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:06:35+02:00",
+      "receiptNumber": "3980/00037"
+    },
+    {
+      "gross": 390,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:06:35+02:00",
+      "receiptNumber": "3980/00037"
+    },
+    {
+      "gross": 1455,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:10:40+02:00",
+      "receiptNumber": "3980/00038"
+    },
+    {
+      "gross": 550,
+      "vatLetter": "C",
+      "timestamp": "2026-07-24T17:16:04+02:00",
+      "receiptNumber": "3980/00039"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-24T17:16:04+02:00",
+      "receiptNumber": "3980/00039"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "A",
+      "timestamp": "2026-07-25T07:42:14+02:00",
+      "receiptNumber": "3981/00001"
+    },
+    {
+      "gross": 832,
+      "vatLetter": "B",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 245,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 210,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 245,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 510,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T07:48:35+02:00",
+      "receiptNumber": "3981/00002"
+    },
+    {
+      "gross": 1845,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:06:07+02:00",
+      "receiptNumber": "3981/00003"
+    },
+    {
+      "gross": 250,
+      "vatLetter": "A",
+      "timestamp": "2026-07-25T08:06:07+02:00",
+      "receiptNumber": "3981/00003"
+    },
+    {
+      "gross": 3555,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:23:55+02:00",
+      "receiptNumber": "3981/00004"
+    },
+    {
+      "gross": 1620,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:23:55+02:00",
+      "receiptNumber": "3981/00004"
+    },
+    {
+      "gross": 3072,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:23:55+02:00",
+      "receiptNumber": "3981/00004"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:23:55+02:00",
+      "receiptNumber": "3981/00004"
+    },
+    {
+      "gross": 1110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:23:55+02:00",
+      "receiptNumber": "3981/00004"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:23:55+02:00",
+      "receiptNumber": "3981/00004"
+    },
+    {
+      "gross": 810,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:29:14+02:00",
+      "receiptNumber": "3981/00005"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "A",
+      "timestamp": "2026-07-25T08:29:14+02:00",
+      "receiptNumber": "3981/00005"
+    },
+    {
+      "gross": 1510,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:38:08+02:00",
+      "receiptNumber": "3981/00006"
+    },
+    {
+      "gross": 1090,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:38:08+02:00",
+      "receiptNumber": "3981/00006"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:38:08+02:00",
+      "receiptNumber": "3981/00006"
+    },
+    {
+      "gross": 1300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T08:38:08+02:00",
+      "receiptNumber": "3981/00006"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-25T08:38:08+02:00",
+      "receiptNumber": "3981/00006"
+    },
+    {
+      "gross": 850,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T09:15:25+02:00",
+      "receiptNumber": "3981/00007"
+    },
+    {
+      "gross": 3960,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:05:14+02:00",
+      "receiptNumber": "3981/00008"
+    },
+    {
+      "gross": 1485,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:17:42+02:00",
+      "receiptNumber": "3981/00009"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:17:42+02:00",
+      "receiptNumber": "3981/00009"
+    },
+    {
+      "gross": 1260,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:17:42+02:00",
+      "receiptNumber": "3981/00009"
+    },
+    {
+      "gross": 1505,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:17:42+02:00",
+      "receiptNumber": "3981/00009"
+    },
+    {
+      "gross": 1290,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:23:25+02:00",
+      "receiptNumber": "3981/00010"
+    },
+    {
+      "gross": 2450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:23:25+02:00",
+      "receiptNumber": "3981/00010"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:23:25+02:00",
+      "receiptNumber": "3981/00010"
+    },
+    {
+      "gross": 1910,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:23:25+02:00",
+      "receiptNumber": "3981/00010"
+    },
+    {
+      "gross": 520,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:26:21+02:00",
+      "receiptNumber": "3981/00011"
+    },
+    {
+      "gross": 4110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:28:33+02:00",
+      "receiptNumber": "3981/00012"
+    },
+    {
+      "gross": 2753,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:28:33+02:00",
+      "receiptNumber": "3981/00012"
+    },
+    {
+      "gross": 1200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:28:33+02:00",
+      "receiptNumber": "3981/00012"
+    },
+    {
+      "gross": 1000,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:33:42+02:00",
+      "receiptNumber": "3981/00013"
+    },
+    {
+      "gross": 470,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 595,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 930,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 918,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 700,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "E",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 8899,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-25T10:43:44+02:00",
+      "receiptNumber": "3981/00014"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:56:26+02:00",
+      "receiptNumber": "3981/00015"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-25T10:56:26+02:00",
+      "receiptNumber": "3981/00015"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:56:26+02:00",
+      "receiptNumber": "3981/00015"
+    },
+    {
+      "gross": 180,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:56:26+02:00",
+      "receiptNumber": "3981/00015"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T10:56:26+02:00",
+      "receiptNumber": "3981/00015"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-25T10:56:26+02:00",
+      "receiptNumber": "3981/00015"
+    },
+    {
+      "gross": 825,
+      "vatLetter": "C",
+      "timestamp": "2026-07-25T11:55:57+02:00",
+      "receiptNumber": "3981/00016"
+    },
+    {
+      "gross": 2808,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:35:21+02:00",
+      "receiptNumber": "3982/00001"
+    },
+    {
+      "gross": 2360,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:35:21+02:00",
+      "receiptNumber": "3982/00001"
+    },
+    {
+      "gross": 4295,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:35:21+02:00",
+      "receiptNumber": "3982/00001"
+    },
+    {
+      "gross": 2295,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:35:21+02:00",
+      "receiptNumber": "3982/00001"
+    },
+    {
+      "gross": 1732,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:35:21+02:00",
+      "receiptNumber": "3982/00001"
+    },
+    {
+      "gross": 1815,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:35:21+02:00",
+      "receiptNumber": "3982/00001"
+    },
+    {
+      "gross": 2145,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:35:21+02:00",
+      "receiptNumber": "3982/00001"
+    },
+    {
+      "gross": 1550,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:39:43+02:00",
+      "receiptNumber": "3982/00002"
+    },
+    {
+      "gross": 705,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:39:43+02:00",
+      "receiptNumber": "3982/00002"
+    },
+    {
+      "gross": 1100,
+      "vatLetter": "B",
+      "timestamp": "2026-07-27T08:39:43+02:00",
+      "receiptNumber": "3982/00002"
+    },
+    {
+      "gross": 705,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:41:38+02:00",
+      "receiptNumber": "3982/00003"
+    },
+    {
+      "gross": 570,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T08:41:38+02:00",
+      "receiptNumber": "3982/00003"
+    },
+    {
+      "gross": 3204,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "B",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 2365,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 3970,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 3025,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 3350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T09:01:44+02:00",
+      "receiptNumber": "3982/00004"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 490,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 567,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T09:55:09+02:00",
+      "receiptNumber": "3982/00005"
+    },
+    {
+      "gross": 780,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 680,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 899,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 680,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 580,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 1650,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T10:00:36+02:00",
+      "receiptNumber": "3982/00006"
+    },
+    {
+      "gross": 1188,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:54:42+02:00",
+      "receiptNumber": "3982/00007"
+    },
+    {
+      "gross": 1470,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:54:42+02:00",
+      "receiptNumber": "3982/00007"
+    },
+    {
+      "gross": 745,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:54:42+02:00",
+      "receiptNumber": "3982/00007"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:54:42+02:00",
+      "receiptNumber": "3982/00007"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T10:54:42+02:00",
+      "receiptNumber": "3982/00007"
+    },
+    {
+      "gross": 2277,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T10:54:42+02:00",
+      "receiptNumber": "3982/00007"
+    },
+    {
+      "gross": 455,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:06:49+02:00",
+      "receiptNumber": "3982/00008"
+    },
+    {
+      "gross": 555,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:06:49+02:00",
+      "receiptNumber": "3982/00008"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T11:06:49+02:00",
+      "receiptNumber": "3982/00008"
+    },
+    {
+      "gross": 3450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:07:59+02:00",
+      "receiptNumber": "3982/00009"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:07:59+02:00",
+      "receiptNumber": "3982/00009"
+    },
+    {
+      "gross": 590,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:07:59+02:00",
+      "receiptNumber": "3982/00009"
+    },
+    {
+      "gross": 840,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 820,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 1988,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 1599,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 3699,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:50:46+02:00",
+      "receiptNumber": "3982/00010"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T11:53:41+02:00",
+      "receiptNumber": "3982/00011"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "B",
+      "timestamp": "2026-07-27T11:54:55+02:00",
+      "receiptNumber": "3982/00012"
+    },
+    {
+      "gross": 4350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T12:16:53+02:00",
+      "receiptNumber": "3982/00013"
+    },
+    {
+      "gross": 2325,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T12:43:22+02:00",
+      "receiptNumber": "3982/00014"
+    },
+    {
+      "gross": 3775,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T12:46:21+02:00",
+      "receiptNumber": "3982/00015"
+    },
+    {
+      "gross": 1875,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:01:42+02:00",
+      "receiptNumber": "3982/00016"
+    },
+    {
+      "gross": 1300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:22:44+02:00",
+      "receiptNumber": "3982/00017"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T13:22:44+02:00",
+      "receiptNumber": "3982/00017"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:42:13+02:00",
+      "receiptNumber": "3982/00018"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:42:13+02:00",
+      "receiptNumber": "3982/00018"
+    },
+    {
+      "gross": 355,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:42:13+02:00",
+      "receiptNumber": "3982/00018"
+    },
+    {
+      "gross": 1315,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:42:13+02:00",
+      "receiptNumber": "3982/00018"
+    },
+    {
+      "gross": 1220,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:42:13+02:00",
+      "receiptNumber": "3982/00018"
+    },
+    {
+      "gross": 1255,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:42:13+02:00",
+      "receiptNumber": "3982/00018"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T13:42:13+02:00",
+      "receiptNumber": "3982/00018"
+    },
+    {
+      "gross": 1060,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:48:00+02:00",
+      "receiptNumber": "3982/00019"
+    },
+    {
+      "gross": 1470,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T13:48:00+02:00",
+      "receiptNumber": "3982/00019"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T13:48:00+02:00",
+      "receiptNumber": "3982/00019"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T13:48:00+02:00",
+      "receiptNumber": "3982/00019"
+    },
+    {
+      "gross": 5555,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:42:49+02:00",
+      "receiptNumber": "3982/00020"
+    },
+    {
+      "gross": 565,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:45:13+02:00",
+      "receiptNumber": "3982/00021"
+    },
+    {
+      "gross": 512,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:45:13+02:00",
+      "receiptNumber": "3982/00021"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:45:13+02:00",
+      "receiptNumber": "3982/00021"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:45:13+02:00",
+      "receiptNumber": "3982/00021"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T14:45:13+02:00",
+      "receiptNumber": "3982/00021"
+    },
+    {
+      "gross": 225,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:45:13+02:00",
+      "receiptNumber": "3982/00021"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:45:13+02:00",
+      "receiptNumber": "3982/00021"
+    },
+    {
+      "gross": 3025,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T14:46:15+02:00",
+      "receiptNumber": "3982/00022"
+    },
+    {
+      "gross": 855,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:27:29+02:00",
+      "receiptNumber": "3982/00023"
+    },
+    {
+      "gross": 440,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:27:29+02:00",
+      "receiptNumber": "3982/00023"
+    },
+    {
+      "gross": 225,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:27:29+02:00",
+      "receiptNumber": "3982/00023"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T15:27:29+02:00",
+      "receiptNumber": "3982/00023"
+    },
+    {
+      "gross": 3080,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:27:29+02:00",
+      "receiptNumber": "3982/00023"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:27:29+02:00",
+      "receiptNumber": "3982/00023"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:40:10+02:00",
+      "receiptNumber": "3982/00024"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:40:10+02:00",
+      "receiptNumber": "3982/00024"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T15:40:10+02:00",
+      "receiptNumber": "3982/00024"
+    },
+    {
+      "gross": 945,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:40:10+02:00",
+      "receiptNumber": "3982/00024"
+    },
+    {
+      "gross": 1600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T15:41:56+02:00",
+      "receiptNumber": "3982/00025"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-27T15:41:56+02:00",
+      "receiptNumber": "3982/00025"
+    },
+    {
+      "gross": 580,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T16:03:40+02:00",
+      "receiptNumber": "3982/00026"
+    },
+    {
+      "gross": 850,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T16:03:40+02:00",
+      "receiptNumber": "3982/00026"
+    },
+    {
+      "gross": 1070,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T16:03:40+02:00",
+      "receiptNumber": "3982/00026"
+    },
+    {
+      "gross": 590,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T16:03:40+02:00",
+      "receiptNumber": "3982/00026"
+    },
+    {
+      "gross": 870,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T16:18:56+02:00",
+      "receiptNumber": "3982/00027"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T16:37:42+02:00",
+      "receiptNumber": "3982/00028"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T16:37:42+02:00",
+      "receiptNumber": "3982/00028"
+    },
+    {
+      "gross": 780,
+      "vatLetter": "B",
+      "timestamp": "2026-07-27T17:27:44+02:00",
+      "receiptNumber": "3982/00029"
+    },
+    {
+      "gross": 784,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T17:27:44+02:00",
+      "receiptNumber": "3982/00029"
+    },
+    {
+      "gross": 2152,
+      "vatLetter": "C",
+      "timestamp": "2026-07-27T17:27:44+02:00",
+      "receiptNumber": "3982/00029"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T17:27:44+02:00",
+      "receiptNumber": "3982/00029"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-07-27T17:27:44+02:00",
+      "receiptNumber": "3982/00029"
+    },
+    {
+      "gross": 650,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:32:56+02:00",
+      "receiptNumber": "3983/00001"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T09:32:56+02:00",
+      "receiptNumber": "3983/00001"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T09:32:56+02:00",
+      "receiptNumber": "3983/00001"
+    },
+    {
+      "gross": 869,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:32:56+02:00",
+      "receiptNumber": "3983/00001"
+    },
+    {
+      "gross": 1166,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:32:56+02:00",
+      "receiptNumber": "3983/00001"
+    },
+    {
+      "gross": 490,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:32:56+02:00",
+      "receiptNumber": "3983/00001"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:32:56+02:00",
+      "receiptNumber": "3983/00001"
+    },
+    {
+      "gross": 1455,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:40:20+02:00",
+      "receiptNumber": "3983/00002"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:40:20+02:00",
+      "receiptNumber": "3983/00002"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T09:40:20+02:00",
+      "receiptNumber": "3983/00002"
+    },
+    {
+      "gross": 1520,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T09:40:20+02:00",
+      "receiptNumber": "3983/00002"
+    },
+    {
+      "gross": 615,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:21:09+02:00",
+      "receiptNumber": "3983/00003"
+    },
+    {
+      "gross": 655,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:21:09+02:00",
+      "receiptNumber": "3983/00003"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:45:22+02:00",
+      "receiptNumber": "3983/00004"
+    },
+    {
+      "gross": 1020,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:45:22+02:00",
+      "receiptNumber": "3983/00004"
+    },
+    {
+      "gross": 480,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:47:16+02:00",
+      "receiptNumber": "3983/00005"
+    },
+    {
+      "gross": 695,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:47:16+02:00",
+      "receiptNumber": "3983/00005"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:47:16+02:00",
+      "receiptNumber": "3983/00005"
+    },
+    {
+      "gross": 1210,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T10:47:16+02:00",
+      "receiptNumber": "3983/00005"
+    },
+    {
+      "gross": 3405,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T11:11:57+02:00",
+      "receiptNumber": "3983/00006"
+    },
+    {
+      "gross": 1950,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T11:38:45+02:00",
+      "receiptNumber": "3983/00007"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T11:52:04+02:00",
+      "receiptNumber": "3983/00008"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T11:52:04+02:00",
+      "receiptNumber": "3983/00008"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T11:52:04+02:00",
+      "receiptNumber": "3983/00008"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 920,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 745,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 565,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 1263,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 1663,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 3395,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 8220,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 1855,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 950,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 3000,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 699,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 699,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 679,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 679,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 1680,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 560,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T12:55:32+02:00",
+      "receiptNumber": "3983/00009"
+    },
+    {
+      "gross": 1200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T13:17:09+02:00",
+      "receiptNumber": "3983/00010"
+    },
+    {
+      "gross": 2380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T13:17:09+02:00",
+      "receiptNumber": "3983/00010"
+    },
+    {
+      "gross": 1200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T13:17:09+02:00",
+      "receiptNumber": "3983/00010"
+    },
+    {
+      "gross": 1025,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:09:18+02:00",
+      "receiptNumber": "3983/00011"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:16:26+02:00",
+      "receiptNumber": "3983/00012"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:16:26+02:00",
+      "receiptNumber": "3983/00012"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T14:16:26+02:00",
+      "receiptNumber": "3983/00012"
+    },
+    {
+      "gross": 365,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:16:26+02:00",
+      "receiptNumber": "3983/00012"
+    },
+    {
+      "gross": 2324,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:16:26+02:00",
+      "receiptNumber": "3983/00012"
+    },
+    {
+      "gross": 2300,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T14:16:26+02:00",
+      "receiptNumber": "3983/00012"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:16:26+02:00",
+      "receiptNumber": "3983/00012"
+    },
+    {
+      "gross": 1150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:46:06+02:00",
+      "receiptNumber": "3983/00013"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "B",
+      "timestamp": "2026-07-28T14:46:06+02:00",
+      "receiptNumber": "3983/00013"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:46:06+02:00",
+      "receiptNumber": "3983/00013"
+    },
+    {
+      "gross": 1260,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T14:46:06+02:00",
+      "receiptNumber": "3983/00013"
+    },
+    {
+      "gross": 2995,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:19:35+02:00",
+      "receiptNumber": "3983/00014"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:19:35+02:00",
+      "receiptNumber": "3983/00014"
+    },
+    {
+      "gross": 1295,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:19:35+02:00",
+      "receiptNumber": "3983/00014"
+    },
+    {
+      "gross": 1100,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:19:35+02:00",
+      "receiptNumber": "3983/00014"
+    },
+    {
+      "gross": 1600,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T15:19:35+02:00",
+      "receiptNumber": "3983/00014"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:37:55+02:00",
+      "receiptNumber": "3983/00015"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T15:37:55+02:00",
+      "receiptNumber": "3983/00015"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:37:55+02:00",
+      "receiptNumber": "3983/00015"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T15:37:55+02:00",
+      "receiptNumber": "3983/00015"
+    },
+    {
+      "gross": 2294,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:37:55+02:00",
+      "receiptNumber": "3983/00015"
+    },
+    {
+      "gross": 1585,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:37:55+02:00",
+      "receiptNumber": "3983/00015"
+    },
+    {
+      "gross": 950,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:40:25+02:00",
+      "receiptNumber": "3983/00016"
+    },
+    {
+      "gross": 1215,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:40:25+02:00",
+      "receiptNumber": "3983/00016"
+    },
+    {
+      "gross": 900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:40:25+02:00",
+      "receiptNumber": "3983/00016"
+    },
+    {
+      "gross": 1110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:41:07+02:00",
+      "receiptNumber": "3983/00017"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T15:41:07+02:00",
+      "receiptNumber": "3983/00017"
+    },
+    {
+      "gross": 920,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:41:07+02:00",
+      "receiptNumber": "3983/00017"
+    },
+    {
+      "gross": 470,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:41:07+02:00",
+      "receiptNumber": "3983/00017"
+    },
+    {
+      "gross": 2429,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:45:55+02:00",
+      "receiptNumber": "3983/00018"
+    },
+    {
+      "gross": 940,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T15:45:55+02:00",
+      "receiptNumber": "3983/00018"
+    },
+    {
+      "gross": 650,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:10:12+02:00",
+      "receiptNumber": "3983/00019"
+    },
+    {
+      "gross": 2494,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:31:55+02:00",
+      "receiptNumber": "3983/00020"
+    },
+    {
+      "gross": 1475,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:31:55+02:00",
+      "receiptNumber": "3983/00020"
+    },
+    {
+      "gross": 1160,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:31:55+02:00",
+      "receiptNumber": "3983/00020"
+    },
+    {
+      "gross": 430,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:36:25+02:00",
+      "receiptNumber": "3983/00021"
+    },
+    {
+      "gross": 900,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T16:36:25+02:00",
+      "receiptNumber": "3983/00021"
+    },
+    {
+      "gross": 480,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:36:25+02:00",
+      "receiptNumber": "3983/00021"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:36:25+02:00",
+      "receiptNumber": "3983/00021"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T16:36:25+02:00",
+      "receiptNumber": "3983/00021"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T16:36:25+02:00",
+      "receiptNumber": "3983/00021"
+    },
+    {
+      "gross": 920,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:41:11+02:00",
+      "receiptNumber": "3983/00022"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T16:42:12+02:00",
+      "receiptNumber": "3983/00023"
+    },
+    {
+      "gross": 325,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T16:42:12+02:00",
+      "receiptNumber": "3983/00023"
+    },
+    {
+      "gross": 1215,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:42:12+02:00",
+      "receiptNumber": "3983/00023"
+    },
+    {
+      "gross": 440,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:42:12+02:00",
+      "receiptNumber": "3983/00023"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T16:42:12+02:00",
+      "receiptNumber": "3983/00023"
+    },
+    {
+      "gross": 2625,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:50:17+02:00",
+      "receiptNumber": "3983/00024"
+    },
+    {
+      "gross": 2100,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:50:17+02:00",
+      "receiptNumber": "3983/00024"
+    },
+    {
+      "gross": 1134,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:59:13+02:00",
+      "receiptNumber": "3983/00025"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T16:59:13+02:00",
+      "receiptNumber": "3983/00025"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:59:13+02:00",
+      "receiptNumber": "3983/00025"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "B",
+      "timestamp": "2026-07-28T16:59:13+02:00",
+      "receiptNumber": "3983/00025"
+    },
+    {
+      "gross": 580,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T16:59:13+02:00",
+      "receiptNumber": "3983/00025"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-28T16:59:13+02:00",
+      "receiptNumber": "3983/00025"
+    },
+    {
+      "gross": 444,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T17:38:46+02:00",
+      "receiptNumber": "3983/00026"
+    },
+    {
+      "gross": 770,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T17:38:46+02:00",
+      "receiptNumber": "3983/00026"
+    },
+    {
+      "gross": 4425,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T17:38:46+02:00",
+      "receiptNumber": "3983/00026"
+    },
+    {
+      "gross": 2450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T17:38:46+02:00",
+      "receiptNumber": "3983/00026"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T17:38:46+02:00",
+      "receiptNumber": "3983/00026"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "A",
+      "timestamp": "2026-07-28T17:38:46+02:00",
+      "receiptNumber": "3983/00026"
+    },
+    {
+      "gross": 125,
+      "vatLetter": "C",
+      "timestamp": "2026-07-28T18:01:15+02:00",
+      "receiptNumber": "3983/00027"
+    },
+    {
+      "gross": 2775,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:06:17+02:00",
+      "receiptNumber": "3984/00001"
+    },
+    {
+      "gross": 2900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:06:17+02:00",
+      "receiptNumber": "3984/00001"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:47:17+02:00",
+      "receiptNumber": "3984/00002"
+    },
+    {
+      "gross": 850,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:47:17+02:00",
+      "receiptNumber": "3984/00002"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:47:17+02:00",
+      "receiptNumber": "3984/00002"
+    },
+    {
+      "gross": 790,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:47:17+02:00",
+      "receiptNumber": "3984/00002"
+    },
+    {
+      "gross": 1191,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:47:17+02:00",
+      "receiptNumber": "3984/00002"
+    },
+    {
+      "gross": 250,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T07:47:17+02:00",
+      "receiptNumber": "3984/00002"
+    },
+    {
+      "gross": 1765,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T08:35:39+02:00",
+      "receiptNumber": "3984/00003"
+    },
+    {
+      "gross": 465,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T08:39:26+02:00",
+      "receiptNumber": "3984/00004"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T08:39:26+02:00",
+      "receiptNumber": "3984/00004"
+    },
+    {
+      "gross": 608,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T08:59:18+02:00",
+      "receiptNumber": "3984/00005"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T08:59:18+02:00",
+      "receiptNumber": "3984/00005"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "B",
+      "timestamp": "2026-07-29T08:59:18+02:00",
+      "receiptNumber": "3984/00005"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "B",
+      "timestamp": "2026-07-29T08:59:18+02:00",
+      "receiptNumber": "3984/00005"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T08:59:18+02:00",
+      "receiptNumber": "3984/00005"
+    },
+    {
+      "gross": 1890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:32:26+02:00",
+      "receiptNumber": "3984/00006"
+    },
+    {
+      "gross": 1448,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:32:26+02:00",
+      "receiptNumber": "3984/00006"
+    },
+    {
+      "gross": 2030,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:32:26+02:00",
+      "receiptNumber": "3984/00006"
+    },
+    {
+      "gross": 1215,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:37:03+02:00",
+      "receiptNumber": "3984/00007"
+    },
+    {
+      "gross": 2350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:37:03+02:00",
+      "receiptNumber": "3984/00007"
+    },
+    {
+      "gross": 2840,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:37:03+02:00",
+      "receiptNumber": "3984/00007"
+    },
+    {
+      "gross": 1272,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:37:03+02:00",
+      "receiptNumber": "3984/00007"
+    },
+    {
+      "gross": 175,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 175,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 189,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 189,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T09:52:17+02:00",
+      "receiptNumber": "3984/00008"
+    },
+    {
+      "gross": 530,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:29:26+02:00",
+      "receiptNumber": "3984/00009"
+    },
+    {
+      "gross": 599,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:29:26+02:00",
+      "receiptNumber": "3984/00009"
+    },
+    {
+      "gross": 810,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:29:26+02:00",
+      "receiptNumber": "3984/00009"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T10:29:26+02:00",
+      "receiptNumber": "3984/00009"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:29:26+02:00",
+      "receiptNumber": "3984/00009"
+    },
+    {
+      "gross": 1465,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:33:55+02:00",
+      "receiptNumber": "3984/00010"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T10:33:55+02:00",
+      "receiptNumber": "3984/00010"
+    },
+    {
+      "gross": 780,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:37:58+02:00",
+      "receiptNumber": "3984/00011"
+    },
+    {
+      "gross": 880,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:37:58+02:00",
+      "receiptNumber": "3984/00011"
+    },
+    {
+      "gross": 705,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:42:02+02:00",
+      "receiptNumber": "3984/00012"
+    },
+    {
+      "gross": 1170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T10:42:02+02:00",
+      "receiptNumber": "3984/00012"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T11:10:18+02:00",
+      "receiptNumber": "3984/00013"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T11:10:18+02:00",
+      "receiptNumber": "3984/00013"
+    },
+    {
+      "gross": 990,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T11:47:50+02:00",
+      "receiptNumber": "3984/00014"
+    },
+    {
+      "gross": 1740,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T11:47:50+02:00",
+      "receiptNumber": "3984/00014"
+    },
+    {
+      "gross": 2175,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T11:47:50+02:00",
+      "receiptNumber": "3984/00014"
+    },
+    {
+      "gross": 649,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T11:47:50+02:00",
+      "receiptNumber": "3984/00014"
+    },
+    {
+      "gross": 810,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T12:01:09+02:00",
+      "receiptNumber": "3984/00015"
+    },
+    {
+      "gross": 850,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T12:01:09+02:00",
+      "receiptNumber": "3984/00015"
+    },
+    {
+      "gross": 1360,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T12:10:27+02:00",
+      "receiptNumber": "3984/00016"
+    },
+    {
+      "gross": 1260,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T12:10:27+02:00",
+      "receiptNumber": "3984/00016"
+    },
+    {
+      "gross": 1080,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:03:30+02:00",
+      "receiptNumber": "3984/00017"
+    },
+    {
+      "gross": 880,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:20:07+02:00",
+      "receiptNumber": "3984/00018"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:20:07+02:00",
+      "receiptNumber": "3984/00018"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:20:07+02:00",
+      "receiptNumber": "3984/00018"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T13:20:07+02:00",
+      "receiptNumber": "3984/00018"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T13:20:07+02:00",
+      "receiptNumber": "3984/00018"
+    },
+    {
+      "gross": 825,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:20:07+02:00",
+      "receiptNumber": "3984/00018"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:22:22+02:00",
+      "receiptNumber": "3984/00019"
+    },
+    {
+      "gross": 225,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": -225,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": -150,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": -575,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": -775,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": -1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": -1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T13:57:16+02:00",
+      "receiptNumber": "3984/00020"
+    },
+    {
+      "gross": 1135,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T14:10:34+02:00",
+      "receiptNumber": "3984/00021"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T14:10:34+02:00",
+      "receiptNumber": "3984/00021"
+    },
+    {
+      "gross": 812,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T14:10:34+02:00",
+      "receiptNumber": "3984/00021"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T14:17:56+02:00",
+      "receiptNumber": "3984/00022"
+    },
+    {
+      "gross": 1175,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T14:17:56+02:00",
+      "receiptNumber": "3984/00022"
+    },
+    {
+      "gross": 920,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:20:55+02:00",
+      "receiptNumber": "3984/00023"
+    },
+    {
+      "gross": 1390,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:20:55+02:00",
+      "receiptNumber": "3984/00023"
+    },
+    {
+      "gross": 1310,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:20:55+02:00",
+      "receiptNumber": "3984/00023"
+    },
+    {
+      "gross": 1400,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:20:55+02:00",
+      "receiptNumber": "3984/00023"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:20:55+02:00",
+      "receiptNumber": "3984/00023"
+    },
+    {
+      "gross": 985,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:32:53+02:00",
+      "receiptNumber": "3984/00024"
+    },
+    {
+      "gross": 2620,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:32:53+02:00",
+      "receiptNumber": "3984/00024"
+    },
+    {
+      "gross": 2855,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:36:39+02:00",
+      "receiptNumber": "3984/00025"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:47:20+02:00",
+      "receiptNumber": "3984/00026"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T15:47:20+02:00",
+      "receiptNumber": "3984/00026"
+    },
+    {
+      "gross": 269,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:47:20+02:00",
+      "receiptNumber": "3984/00026"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:48:01+02:00",
+      "receiptNumber": "3984/00027"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:48:01+02:00",
+      "receiptNumber": "3984/00027"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T15:48:01+02:00",
+      "receiptNumber": "3984/00027"
+    },
+    {
+      "gross": 269,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:48:01+02:00",
+      "receiptNumber": "3984/00027"
+    },
+    {
+      "gross": 570,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:48:01+02:00",
+      "receiptNumber": "3984/00027"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:48:01+02:00",
+      "receiptNumber": "3984/00027"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:54:15+02:00",
+      "receiptNumber": "3984/00028"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T15:54:15+02:00",
+      "receiptNumber": "3984/00028"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T15:54:15+02:00",
+      "receiptNumber": "3984/00028"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T15:54:15+02:00",
+      "receiptNumber": "3984/00028"
+    },
+    {
+      "gross": 1180,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:13:59+02:00",
+      "receiptNumber": "3984/00029"
+    },
+    {
+      "gross": 500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:13:59+02:00",
+      "receiptNumber": "3984/00029"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:13:59+02:00",
+      "receiptNumber": "3984/00029"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:13:59+02:00",
+      "receiptNumber": "3984/00029"
+    },
+    {
+      "gross": 2550,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:25:51+02:00",
+      "receiptNumber": "3984/00030"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T16:25:51+02:00",
+      "receiptNumber": "3984/00030"
+    },
+    {
+      "gross": 500,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T16:25:51+02:00",
+      "receiptNumber": "3984/00030"
+    },
+    {
+      "gross": 490,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:25:51+02:00",
+      "receiptNumber": "3984/00030"
+    },
+    {
+      "gross": 850,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T16:25:51+02:00",
+      "receiptNumber": "3984/00030"
+    },
+    {
+      "gross": 1330,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:30:23+02:00",
+      "receiptNumber": "3984/00031"
+    },
+    {
+      "gross": 1117,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:30:23+02:00",
+      "receiptNumber": "3984/00031"
+    },
+    {
+      "gross": 1024,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:30:23+02:00",
+      "receiptNumber": "3984/00031"
+    },
+    {
+      "gross": 1600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:43:54+02:00",
+      "receiptNumber": "3984/00032"
+    },
+    {
+      "gross": 1200,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T16:43:54+02:00",
+      "receiptNumber": "3984/00032"
+    },
+    {
+      "gross": 470,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T16:43:54+02:00",
+      "receiptNumber": "3984/00032"
+    },
+    {
+      "gross": 2427,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:43:54+02:00",
+      "receiptNumber": "3984/00032"
+    },
+    {
+      "gross": 1817,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T16:47:11+02:00",
+      "receiptNumber": "3984/00034"
+    },
+    {
+      "gross": 1010,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T16:52:25+02:00",
+      "receiptNumber": "3984/00035"
+    },
+    {
+      "gross": 365,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:03:23+02:00",
+      "receiptNumber": "3984/00036"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:03:23+02:00",
+      "receiptNumber": "3984/00036"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T17:03:23+02:00",
+      "receiptNumber": "3984/00036"
+    },
+    {
+      "gross": 269,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:03:23+02:00",
+      "receiptNumber": "3984/00036"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 1099,
+      "vatLetter": "B",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "A",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 1755,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 1985,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 3875,
+      "vatLetter": "C",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-29T17:04:27+02:00",
+      "receiptNumber": "3984/00037"
+    },
+    {
+      "gross": 580,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 580,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 1290,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 985,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:05:45+02:00",
+      "receiptNumber": "3985/00001"
+    },
+    {
+      "gross": 1205,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:17:32+02:00",
+      "receiptNumber": "3985/00002"
+    },
+    {
+      "gross": 580,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:29:30+02:00",
+      "receiptNumber": "3985/00003"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T09:29:30+02:00",
+      "receiptNumber": "3985/00003"
+    },
+    {
+      "gross": 670,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 699,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 355,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T09:49:52+02:00",
+      "receiptNumber": "3985/00004"
+    },
+    {
+      "gross": 4520,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:03:18+02:00",
+      "receiptNumber": "3985/00005"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T10:04:31+02:00",
+      "receiptNumber": "3985/00006"
+    },
+    {
+      "gross": 1110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:04:31+02:00",
+      "receiptNumber": "3985/00006"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T10:04:31+02:00",
+      "receiptNumber": "3985/00006"
+    },
+    {
+      "gross": 810,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:17:09+02:00",
+      "receiptNumber": "3985/00007"
+    },
+    {
+      "gross": 2310,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:17:09+02:00",
+      "receiptNumber": "3985/00007"
+    },
+    {
+      "gross": 1029,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:17:09+02:00",
+      "receiptNumber": "3985/00007"
+    },
+    {
+      "gross": 350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:18:02+02:00",
+      "receiptNumber": "3985/00008"
+    },
+    {
+      "gross": -350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:18:02+02:00",
+      "receiptNumber": "3985/00008"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T10:18:02+02:00",
+      "receiptNumber": "3985/00008"
+    },
+    {
+      "gross": -50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T10:18:02+02:00",
+      "receiptNumber": "3985/00008"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:57:59+02:00",
+      "receiptNumber": "3985/00009"
+    },
+    {
+      "gross": 280,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:57:59+02:00",
+      "receiptNumber": "3985/00009"
+    },
+    {
+      "gross": 426,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T10:57:59+02:00",
+      "receiptNumber": "3985/00009"
+    },
+    {
+      "gross": 1600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T11:02:34+02:00",
+      "receiptNumber": "3985/00010"
+    },
+    {
+      "gross": 1320,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T11:02:34+02:00",
+      "receiptNumber": "3985/00010"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T11:02:34+02:00",
+      "receiptNumber": "3985/00010"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T11:49:07+02:00",
+      "receiptNumber": "3985/00011"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T11:49:07+02:00",
+      "receiptNumber": "3985/00011"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T11:49:07+02:00",
+      "receiptNumber": "3985/00011"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T11:49:07+02:00",
+      "receiptNumber": "3985/00011"
+    },
+    {
+      "gross": 910,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T12:42:04+02:00",
+      "receiptNumber": "3985/00012"
+    },
+    {
+      "gross": 770,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T12:42:04+02:00",
+      "receiptNumber": "3985/00012"
+    },
+    {
+      "gross": 685,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T13:02:27+02:00",
+      "receiptNumber": "3985/00013"
+    },
+    {
+      "gross": 870,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T13:02:27+02:00",
+      "receiptNumber": "3985/00013"
+    },
+    {
+      "gross": 1900,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T13:02:27+02:00",
+      "receiptNumber": "3985/00013"
+    },
+    {
+      "gross": 1705,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T13:13:47+02:00",
+      "receiptNumber": "3985/00014"
+    },
+    {
+      "gross": 425,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T13:16:09+02:00",
+      "receiptNumber": "3985/00015"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T14:18:48+02:00",
+      "receiptNumber": "3985/00016"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T14:18:48+02:00",
+      "receiptNumber": "3985/00016"
+    },
+    {
+      "gross": 3885,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T15:53:23+02:00",
+      "receiptNumber": "3985/00017"
+    },
+    {
+      "gross": 1232,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T15:53:23+02:00",
+      "receiptNumber": "3985/00017"
+    },
+    {
+      "gross": 1185,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T15:53:23+02:00",
+      "receiptNumber": "3985/00017"
+    },
+    {
+      "gross": 1055,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T15:53:23+02:00",
+      "receiptNumber": "3985/00017"
+    },
+    {
+      "gross": 1545,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T15:53:23+02:00",
+      "receiptNumber": "3985/00017"
+    },
+    {
+      "gross": 490,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:06:58+02:00",
+      "receiptNumber": "3985/00018"
+    },
+    {
+      "gross": 335,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:06:58+02:00",
+      "receiptNumber": "3985/00018"
+    },
+    {
+      "gross": 215,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T16:06:58+02:00",
+      "receiptNumber": "3985/00018"
+    },
+    {
+      "gross": 180,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:08:00+02:00",
+      "receiptNumber": "3985/00019"
+    },
+    {
+      "gross": 259,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:08:00+02:00",
+      "receiptNumber": "3985/00019"
+    },
+    {
+      "gross": 259,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:08:00+02:00",
+      "receiptNumber": "3985/00019"
+    },
+    {
+      "gross": 1000,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 3010,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 1864,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 545,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 1272,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 970,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "A",
+      "timestamp": "2026-07-30T16:10:51+02:00",
+      "receiptNumber": "3985/00020"
+    },
+    {
+      "gross": 1485,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:49:53+02:00",
+      "receiptNumber": "3985/00021"
+    },
+    {
+      "gross": 1372,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:49:53+02:00",
+      "receiptNumber": "3985/00021"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:56:47+02:00",
+      "receiptNumber": "3985/00022"
+    },
+    {
+      "gross": 185,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T16:56:47+02:00",
+      "receiptNumber": "3985/00022"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-30T16:56:47+02:00",
+      "receiptNumber": "3985/00022"
+    },
+    {
+      "gross": 4925,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T17:33:22+02:00",
+      "receiptNumber": "3985/00023"
+    },
+    {
+      "gross": -4925,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T17:33:22+02:00",
+      "receiptNumber": "3985/00023"
+    },
+    {
+      "gross": 3515,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T17:33:22+02:00",
+      "receiptNumber": "3985/00023"
+    },
+    {
+      "gross": -3515,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T17:33:22+02:00",
+      "receiptNumber": "3985/00023"
+    },
+    {
+      "gross": 480,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T17:33:22+02:00",
+      "receiptNumber": "3985/00023"
+    },
+    {
+      "gross": -480,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T17:33:22+02:00",
+      "receiptNumber": "3985/00023"
+    },
+    {
+      "gross": 8000,
+      "vatLetter": "C",
+      "timestamp": "2026-07-30T17:33:22+02:00",
+      "receiptNumber": "3985/00023"
+    },
+    {
+      "gross": 1245,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T07:19:09+02:00",
+      "receiptNumber": "3986/00001"
+    },
+    {
+      "gross": 6815,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:25:22+02:00",
+      "receiptNumber": "3986/00002"
+    },
+    {
+      "gross": 1585,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:30:16+02:00",
+      "receiptNumber": "3986/00003"
+    },
+    {
+      "gross": 2275,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:30:16+02:00",
+      "receiptNumber": "3986/00003"
+    },
+    {
+      "gross": 1680,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:35:35+02:00",
+      "receiptNumber": "3986/00004"
+    },
+    {
+      "gross": 3185,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:35:35+02:00",
+      "receiptNumber": "3986/00004"
+    },
+    {
+      "gross": 830,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:42:15+02:00",
+      "receiptNumber": "3986/00005"
+    },
+    {
+      "gross": 1020,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:42:15+02:00",
+      "receiptNumber": "3986/00005"
+    },
+    {
+      "gross": 1110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:43:17+02:00",
+      "receiptNumber": "3986/00006"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T08:43:17+02:00",
+      "receiptNumber": "3986/00006"
+    },
+    {
+      "gross": 1110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:43:17+02:00",
+      "receiptNumber": "3986/00006"
+    },
+    {
+      "gross": 350,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T08:43:17+02:00",
+      "receiptNumber": "3986/00006"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:43:17+02:00",
+      "receiptNumber": "3986/00006"
+    },
+    {
+      "gross": 1985,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:43:17+02:00",
+      "receiptNumber": "3986/00006"
+    },
+    {
+      "gross": 2185,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:57:05+02:00",
+      "receiptNumber": "3986/00007"
+    },
+    {
+      "gross": 1040,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:57:05+02:00",
+      "receiptNumber": "3986/00007"
+    },
+    {
+      "gross": 1580,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T08:57:05+02:00",
+      "receiptNumber": "3986/00007"
+    },
+    {
+      "gross": 2779,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T09:08:08+02:00",
+      "receiptNumber": "3986/00008"
+    },
+    {
+      "gross": 1285,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T09:08:08+02:00",
+      "receiptNumber": "3986/00008"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T09:30:23+02:00",
+      "receiptNumber": "3986/00009"
+    },
+    {
+      "gross": 790,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T09:58:18+02:00",
+      "receiptNumber": "3986/00010"
+    },
+    {
+      "gross": 330,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T09:58:18+02:00",
+      "receiptNumber": "3986/00010"
+    },
+    {
+      "gross": 1140,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:00:29+02:00",
+      "receiptNumber": "3986/00011"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:00:29+02:00",
+      "receiptNumber": "3986/00011"
+    },
+    {
+      "gross": 1325,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:00:29+02:00",
+      "receiptNumber": "3986/00011"
+    },
+    {
+      "gross": 1800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 4185,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 365,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 365,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 250,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 895,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 365,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 365,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 1110,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:39:40+02:00",
+      "receiptNumber": "3986/00012"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:45:25+02:00",
+      "receiptNumber": "3986/00013"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:45:25+02:00",
+      "receiptNumber": "3986/00013"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:45:25+02:00",
+      "receiptNumber": "3986/00013"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:45:25+02:00",
+      "receiptNumber": "3986/00013"
+    },
+    {
+      "gross": 560,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:45:25+02:00",
+      "receiptNumber": "3986/00013"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:45:25+02:00",
+      "receiptNumber": "3986/00013"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 999,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 410,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 420,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 1625,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 1270,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 770,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 500,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 1415,
+      "vatLetter": "B",
+      "timestamp": "2026-07-31T10:53:47+02:00",
+      "receiptNumber": "3986/00014"
+    },
+    {
+      "gross": 3190,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T11:41:27+02:00",
+      "receiptNumber": "3986/00015"
+    },
+    {
+      "gross": 1125,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T11:41:27+02:00",
+      "receiptNumber": "3986/00015"
+    },
+    {
+      "gross": 800,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:05:01+02:00",
+      "receiptNumber": "3986/00016"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T12:05:01+02:00",
+      "receiptNumber": "3986/00016"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:14:54+02:00",
+      "receiptNumber": "3986/00017"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T12:14:54+02:00",
+      "receiptNumber": "3986/00017"
+    },
+    {
+      "gross": 375,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:14:54+02:00",
+      "receiptNumber": "3986/00017"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:14:54+02:00",
+      "receiptNumber": "3986/00017"
+    },
+    {
+      "gross": 1116,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T12:14:54+02:00",
+      "receiptNumber": "3986/00017"
+    },
+    {
+      "gross": 170,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:14:54+02:00",
+      "receiptNumber": "3986/00017"
+    },
+    {
+      "gross": 455,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:27:31+02:00",
+      "receiptNumber": "3986/00018"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:27:31+02:00",
+      "receiptNumber": "3986/00018"
+    },
+    {
+      "gross": 245,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:27:31+02:00",
+      "receiptNumber": "3986/00018"
+    },
+    {
+      "gross": 710,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:30:41+02:00",
+      "receiptNumber": "3986/00019"
+    },
+    {
+      "gross": 663,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:30:41+02:00",
+      "receiptNumber": "3986/00019"
+    },
+    {
+      "gross": 445,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:30:41+02:00",
+      "receiptNumber": "3986/00019"
+    },
+    {
+      "gross": 2175,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:33:22+02:00",
+      "receiptNumber": "3986/00020"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:40:32+02:00",
+      "receiptNumber": "3986/00021"
+    },
+    {
+      "gross": 650,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T12:40:32+02:00",
+      "receiptNumber": "3986/00021"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:40:32+02:00",
+      "receiptNumber": "3986/00021"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T12:40:32+02:00",
+      "receiptNumber": "3986/00021"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T12:40:32+02:00",
+      "receiptNumber": "3986/00021"
+    },
+    {
+      "gross": 4500,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:13:34+02:00",
+      "receiptNumber": "3986/00022"
+    },
+    {
+      "gross": 885,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:13:34+02:00",
+      "receiptNumber": "3986/00022"
+    },
+    {
+      "gross": 7295,
+      "vatLetter": "A",
+      "timestamp": "2026-07-31T13:13:34+02:00",
+      "receiptNumber": "3986/00022"
+    },
+    {
+      "gross": 2510,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:13:34+02:00",
+      "receiptNumber": "3986/00022"
+    },
+    {
+      "gross": 930,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:13:34+02:00",
+      "receiptNumber": "3986/00022"
+    },
+    {
+      "gross": 2175,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:47:53+02:00",
+      "receiptNumber": "3986/00023"
+    },
+    {
+      "gross": 528,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:47:53+02:00",
+      "receiptNumber": "3986/00023"
+    },
+    {
+      "gross": 880,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:47:53+02:00",
+      "receiptNumber": "3986/00023"
+    },
+    {
+      "gross": 1300,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:47:53+02:00",
+      "receiptNumber": "3986/00023"
+    },
+    {
+      "gross": 525,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:51:15+02:00",
+      "receiptNumber": "3986/00024"
+    },
+    {
+      "gross": 499,
+      "vatLetter": "B",
+      "timestamp": "2026-07-31T13:51:15+02:00",
+      "receiptNumber": "3986/00024"
+    },
+    {
+      "gross": 499,
+      "vatLetter": "B",
+      "timestamp": "2026-07-31T13:51:15+02:00",
+      "receiptNumber": "3986/00024"
+    },
+    {
+      "gross": 385,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:51:15+02:00",
+      "receiptNumber": "3986/00024"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T13:51:15+02:00",
+      "receiptNumber": "3986/00024"
+    },
+    {
+      "gross": 750,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T13:51:15+02:00",
+      "receiptNumber": "3986/00024"
+    },
+    {
+      "gross": 1880,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T14:06:07+02:00",
+      "receiptNumber": "3986/00025"
+    },
+    {
+      "gross": 2250,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T14:06:07+02:00",
+      "receiptNumber": "3986/00025"
+    },
+    {
+      "gross": 399,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T15:25:52+02:00",
+      "receiptNumber": "3986/00026"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T15:25:52+02:00",
+      "receiptNumber": "3986/00026"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T15:25:52+02:00",
+      "receiptNumber": "3986/00026"
+    },
+    {
+      "gross": 235,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T15:55:07+02:00",
+      "receiptNumber": "3986/00027"
+    },
+    {
+      "gross": 235,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T15:55:07+02:00",
+      "receiptNumber": "3986/00027"
+    },
+    {
+      "gross": 350,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T15:55:07+02:00",
+      "receiptNumber": "3986/00027"
+    },
+    {
+      "gross": 150,
+      "vatLetter": "E",
+      "timestamp": "2026-07-31T15:55:07+02:00",
+      "receiptNumber": "3986/00027"
+    },
+    {
+      "gross": 2550,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T15:55:07+02:00",
+      "receiptNumber": "3986/00027"
+    },
+    {
+      "gross": 320,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T16:20:13+02:00",
+      "receiptNumber": "3986/00028"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T16:20:13+02:00",
+      "receiptNumber": "3986/00028"
+    },
+    {
+      "gross": 909,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T16:20:13+02:00",
+      "receiptNumber": "3986/00028"
+    },
+    {
+      "gross": 1640,
+      "vatLetter": "C",
+      "timestamp": "2026-07-31T17:01:31+02:00",
+      "receiptNumber": "3986/00029"
+    },
+    {
+      "gross": 5866,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:24:32+02:00",
+      "receiptNumber": "3987/00001"
+    },
+    {
+      "gross": 1000,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:24:38+02:00",
+      "receiptNumber": "3987/00002"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T07:24:38+02:00",
+      "receiptNumber": "3987/00002"
+    },
+    {
+      "gross": 1650,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:24:38+02:00",
+      "receiptNumber": "3987/00002"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T07:24:38+02:00",
+      "receiptNumber": "3987/00002"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 320,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 552,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 1750,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 850,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 999,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 1170,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 1210,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 390,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 940,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 2280,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T07:38:05+02:00",
+      "receiptNumber": "3987/00003"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:21:29+02:00",
+      "receiptNumber": "3987/00004"
+    },
+    {
+      "gross": 662,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:21:29+02:00",
+      "receiptNumber": "3987/00004"
+    },
+    {
+      "gross": 620,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:23:49+02:00",
+      "receiptNumber": "3987/00005"
+    },
+    {
+      "gross": 870,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T08:42:19+02:00",
+      "receiptNumber": "3987/00006"
+    },
+    {
+      "gross": 2250,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 3570,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 1264,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 699,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 950,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 1040,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 990,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 1210,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 1535,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:43:58+02:00",
+      "receiptNumber": "3987/00007"
+    },
+    {
+      "gross": 1225,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:50:36+02:00",
+      "receiptNumber": "3987/00008"
+    },
+    {
+      "gross": 2535,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:50:36+02:00",
+      "receiptNumber": "3987/00008"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:50:36+02:00",
+      "receiptNumber": "3987/00008"
+    },
+    {
+      "gross": 1370,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:50:36+02:00",
+      "receiptNumber": "3987/00008"
+    },
+    {
+      "gross": 820,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:53:37+02:00",
+      "receiptNumber": "3987/00009"
+    },
+    {
+      "gross": 1020,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T08:53:37+02:00",
+      "receiptNumber": "3987/00009"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T09:07:36+02:00",
+      "receiptNumber": "3987/00010"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T09:07:36+02:00",
+      "receiptNumber": "3987/00010"
+    },
+    {
+      "gross": 1310,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T09:57:22+02:00",
+      "receiptNumber": "3987/00011"
+    },
+    {
+      "gross": 820,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T10:00:01+02:00",
+      "receiptNumber": "3987/00012"
+    },
+    {
+      "gross": 1230,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T10:12:29+02:00",
+      "receiptNumber": "3987/00013"
+    },
+    {
+      "gross": 1200,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T10:12:29+02:00",
+      "receiptNumber": "3987/00013"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T10:12:29+02:00",
+      "receiptNumber": "3987/00013"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T10:12:29+02:00",
+      "receiptNumber": "3987/00013"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T10:22:22+02:00",
+      "receiptNumber": "3987/00014"
+    },
+    {
+      "gross": 185,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T10:22:22+02:00",
+      "receiptNumber": "3987/00014"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T10:22:22+02:00",
+      "receiptNumber": "3987/00014"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-01T10:22:22+02:00",
+      "receiptNumber": "3987/00014"
+    },
+    {
+      "gross": 1195,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T11:09:30+02:00",
+      "receiptNumber": "3987/00015"
+    },
+    {
+      "gross": 699,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T11:28:10+02:00",
+      "receiptNumber": "3987/00016"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T11:28:10+02:00",
+      "receiptNumber": "3987/00016"
+    },
+    {
+      "gross": 655,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T11:28:10+02:00",
+      "receiptNumber": "3987/00016"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T11:28:10+02:00",
+      "receiptNumber": "3987/00016"
+    },
+    {
+      "gross": 310,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T11:28:10+02:00",
+      "receiptNumber": "3987/00016"
+    },
+    {
+      "gross": 1435,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T11:28:10+02:00",
+      "receiptNumber": "3987/00016"
+    },
+    {
+      "gross": 570,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T11:28:10+02:00",
+      "receiptNumber": "3987/00016"
+    },
+    {
+      "gross": 3645,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:04:38+02:00",
+      "receiptNumber": "3987/00017"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:06:40+02:00",
+      "receiptNumber": "3987/00018"
+    },
+    {
+      "gross": 588,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:34:15+02:00",
+      "receiptNumber": "3987/00019"
+    },
+    {
+      "gross": 767,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:34:15+02:00",
+      "receiptNumber": "3987/00019"
+    },
+    {
+      "gross": 985,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:34:15+02:00",
+      "receiptNumber": "3987/00019"
+    },
+    {
+      "gross": 560,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:42:35+02:00",
+      "receiptNumber": "3987/00020"
+    },
+    {
+      "gross": 2165,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:44:00+02:00",
+      "receiptNumber": "3987/00021"
+    },
+    {
+      "gross": 635,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:54:01+02:00",
+      "receiptNumber": "3987/00022"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T12:54:01+02:00",
+      "receiptNumber": "3987/00022"
+    },
+    {
+      "gross": 650,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:54:01+02:00",
+      "receiptNumber": "3987/00022"
+    },
+    {
+      "gross": 245,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T12:54:01+02:00",
+      "receiptNumber": "3987/00022"
+    },
+    {
+      "gross": 680,
+      "vatLetter": "C",
+      "timestamp": "2026-08-01T12:54:01+02:00",
+      "receiptNumber": "3987/00022"
+    },
+    {
+      "gross": 474,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T12:54:01+02:00",
+      "receiptNumber": "3987/00022"
+    },
+    {
+      "gross": 540,
+      "vatLetter": "A",
+      "timestamp": "2026-08-01T12:54:01+02:00",
+      "receiptNumber": "3987/00022"
+    },
+    {
+      "gross": 702,
+      "vatLetter": "A",
+      "timestamp": "2026-08-02T07:24:22+02:00",
+      "receiptNumber": "3988/00001"
+    },
+    {
+      "gross": 8643,
+      "vatLetter": "B",
+      "timestamp": "2026-08-02T07:32:07+02:00",
+      "receiptNumber": "3988/00002"
+    },
+    {
+      "gross": 2405,
+      "vatLetter": "B",
+      "timestamp": "2026-08-02T08:12:00+02:00",
+      "receiptNumber": "3988/00003"
+    },
+    {
+      "gross": 4279,
+      "vatLetter": "C",
+      "timestamp": "2026-08-02T08:13:43+02:00",
+      "receiptNumber": "3988/00004"
+    },
+    {
+      "gross": 3630,
+      "vatLetter": "B",
+      "timestamp": "2026-08-02T09:17:26+02:00",
+      "receiptNumber": "3988/00005"
+    },
+    {
+      "gross": 1835,
+      "vatLetter": "C",
+      "timestamp": "2026-08-02T09:44:22+02:00",
+      "receiptNumber": "3988/00006"
+    },
+    {
+      "gross": 2726,
+      "vatLetter": "A",
+      "timestamp": "2026-08-02T09:44:22+02:00",
+      "receiptNumber": "3988/00006"
+    },
+    {
+      "gross": 976,
+      "vatLetter": "C",
+      "timestamp": "2026-08-02T09:44:22+02:00",
+      "receiptNumber": "3988/00006"
+    },
+    {
+      "gross": 875,
+      "vatLetter": "C",
+      "timestamp": "2026-08-02T10:14:05+02:00",
+      "receiptNumber": "3988/00007"
+    },
+    {
+      "gross": 2080,
+      "vatLetter": "C",
+      "timestamp": "2026-08-02T10:37:51+02:00",
+      "receiptNumber": "3988/00008"
+    },
+    {
+      "gross": 825,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:29:09+02:00",
+      "receiptNumber": "3989/00001"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:29:09+02:00",
+      "receiptNumber": "3989/00001"
+    },
+    {
+      "gross": 1355,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:29:09+02:00",
+      "receiptNumber": "3989/00001"
+    },
+    {
+      "gross": 470,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 470,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 1500,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 899,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 1550,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 999,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 499,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 220,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:44:56+02:00",
+      "receiptNumber": "3989/00002"
+    },
+    {
+      "gross": 1200,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T08:55:35+02:00",
+      "receiptNumber": "3989/00003"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T08:55:35+02:00",
+      "receiptNumber": "3989/00003"
+    },
+    {
+      "gross": 1600,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T09:00:25+02:00",
+      "receiptNumber": "3989/00004"
+    },
+    {
+      "gross": 1205,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T09:53:36+02:00",
+      "receiptNumber": "3989/00005"
+    },
+    {
+      "gross": 3450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:08:38+02:00",
+      "receiptNumber": "3989/00006"
+    },
+    {
+      "gross": 4150,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:08:38+02:00",
+      "receiptNumber": "3989/00006"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:08:38+02:00",
+      "receiptNumber": "3989/00006"
+    },
+    {
+      "gross": 390,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:08:38+02:00",
+      "receiptNumber": "3989/00006"
+    },
+    {
+      "gross": 2150,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:08:38+02:00",
+      "receiptNumber": "3989/00006"
+    },
+    {
+      "gross": 1385,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:31:22+02:00",
+      "receiptNumber": "3989/00007"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:31:22+02:00",
+      "receiptNumber": "3989/00007"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T10:31:22+02:00",
+      "receiptNumber": "3989/00007"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:31:22+02:00",
+      "receiptNumber": "3989/00007"
+    },
+    {
+      "gross": 870,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:31:22+02:00",
+      "receiptNumber": "3989/00007"
+    },
+    {
+      "gross": 1270,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:31:22+02:00",
+      "receiptNumber": "3989/00007"
+    },
+    {
+      "gross": 590,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:31:22+02:00",
+      "receiptNumber": "3989/00007"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:42:44+02:00",
+      "receiptNumber": "3989/00008"
+    },
+    {
+      "gross": 335,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T10:42:44+02:00",
+      "receiptNumber": "3989/00008"
+    },
+    {
+      "gross": 785,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T10:42:44+02:00",
+      "receiptNumber": "3989/00008"
+    },
+    {
+      "gross": 1125,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:42:44+02:00",
+      "receiptNumber": "3989/00008"
+    },
+    {
+      "gross": 1155,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T10:42:44+02:00",
+      "receiptNumber": "3989/00008"
+    },
+    {
+      "gross": 259,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T11:58:18+02:00",
+      "receiptNumber": "3989/00009"
+    },
+    {
+      "gross": 500,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T12:00:09+02:00",
+      "receiptNumber": "3989/00010"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T12:00:09+02:00",
+      "receiptNumber": "3989/00010"
+    },
+    {
+      "gross": 630,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T12:31:54+02:00",
+      "receiptNumber": "3989/00011"
+    },
+    {
+      "gross": 2645,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T12:31:54+02:00",
+      "receiptNumber": "3989/00011"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T12:31:54+02:00",
+      "receiptNumber": "3989/00011"
+    },
+    {
+      "gross": 2015,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T12:58:28+02:00",
+      "receiptNumber": "3989/00012"
+    },
+    {
+      "gross": 600,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T12:58:28+02:00",
+      "receiptNumber": "3989/00012"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T12:58:28+02:00",
+      "receiptNumber": "3989/00012"
+    },
+    {
+      "gross": 1445,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T12:58:28+02:00",
+      "receiptNumber": "3989/00012"
+    },
+    {
+      "gross": 610,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:03:15+02:00",
+      "receiptNumber": "3989/00013"
+    },
+    {
+      "gross": 2825,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:03:21+02:00",
+      "receiptNumber": "3989/00014"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:19:06+02:00",
+      "receiptNumber": "3989/00015"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:19:06+02:00",
+      "receiptNumber": "3989/00015"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:19:06+02:00",
+      "receiptNumber": "3989/00015"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:19:06+02:00",
+      "receiptNumber": "3989/00015"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:19:06+02:00",
+      "receiptNumber": "3989/00015"
+    },
+    {
+      "gross": 350,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T13:19:06+02:00",
+      "receiptNumber": "3989/00015"
+    },
+    {
+      "gross": 890,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T13:45:07+02:00",
+      "receiptNumber": "3989/00016"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T13:45:07+02:00",
+      "receiptNumber": "3989/00016"
+    },
+    {
+      "gross": 632,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:24:37+02:00",
+      "receiptNumber": "3989/00017"
+    },
+    {
+      "gross": 982,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:24:37+02:00",
+      "receiptNumber": "3989/00017"
+    },
+    {
+      "gross": 1040,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:24:37+02:00",
+      "receiptNumber": "3989/00017"
+    },
+    {
+      "gross": 612,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:24:37+02:00",
+      "receiptNumber": "3989/00017"
+    },
+    {
+      "gross": 710,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:24:37+02:00",
+      "receiptNumber": "3989/00017"
+    },
+    {
+      "gross": 899,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:25:35+02:00",
+      "receiptNumber": "3989/00018"
+    },
+    {
+      "gross": 899,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:25:35+02:00",
+      "receiptNumber": "3989/00018"
+    },
+    {
+      "gross": 515,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T14:25:35+02:00",
+      "receiptNumber": "3989/00018"
+    },
+    {
+      "gross": 1595,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T14:25:35+02:00",
+      "receiptNumber": "3989/00018"
+    },
+    {
+      "gross": 1767,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T14:25:35+02:00",
+      "receiptNumber": "3989/00018"
+    },
+    {
+      "gross": 855,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:37:00+02:00",
+      "receiptNumber": "3989/00019"
+    },
+    {
+      "gross": 185,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:37:00+02:00",
+      "receiptNumber": "3989/00019"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T14:37:00+02:00",
+      "receiptNumber": "3989/00019"
+    },
+    {
+      "gross": 705,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:37:00+02:00",
+      "receiptNumber": "3989/00019"
+    },
+    {
+      "gross": 570,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:44:06+02:00",
+      "receiptNumber": "3989/00020"
+    },
+    {
+      "gross": 940,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:44:06+02:00",
+      "receiptNumber": "3989/00020"
+    },
+    {
+      "gross": 200,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T14:44:06+02:00",
+      "receiptNumber": "3989/00020"
+    },
+    {
+      "gross": 950,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T14:44:06+02:00",
+      "receiptNumber": "3989/00020"
+    },
+    {
+      "gross": 1230,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:50:09+02:00",
+      "receiptNumber": "3989/00021"
+    },
+    {
+      "gross": 1010,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:50:09+02:00",
+      "receiptNumber": "3989/00021"
+    },
+    {
+      "gross": 810,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T14:50:09+02:00",
+      "receiptNumber": "3989/00021"
+    },
+    {
+      "gross": 115,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:34:15+02:00",
+      "receiptNumber": "3989/00022"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:34:15+02:00",
+      "receiptNumber": "3989/00022"
+    },
+    {
+      "gross": 100,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T15:34:15+02:00",
+      "receiptNumber": "3989/00022"
+    },
+    {
+      "gross": 380,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:34:15+02:00",
+      "receiptNumber": "3989/00022"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T15:34:15+02:00",
+      "receiptNumber": "3989/00022"
+    },
+    {
+      "gross": 1455,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:51:16+02:00",
+      "receiptNumber": "3989/00023"
+    },
+    {
+      "gross": 775,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:51:16+02:00",
+      "receiptNumber": "3989/00023"
+    },
+    {
+      "gross": 777,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:51:16+02:00",
+      "receiptNumber": "3989/00023"
+    },
+    {
+      "gross": 880,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:51:16+02:00",
+      "receiptNumber": "3989/00023"
+    },
+    {
+      "gross": 866,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:51:16+02:00",
+      "receiptNumber": "3989/00023"
+    },
+    {
+      "gross": 895,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:56:13+02:00",
+      "receiptNumber": "3989/00024"
+    },
+    {
+      "gross": 185,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:56:13+02:00",
+      "receiptNumber": "3989/00024"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T15:56:13+02:00",
+      "receiptNumber": "3989/00024"
+    },
+    {
+      "gross": 1170,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:56:13+02:00",
+      "receiptNumber": "3989/00024"
+    },
+    {
+      "gross": 1045,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T15:56:13+02:00",
+      "receiptNumber": "3989/00024"
+    },
+    {
+      "gross": 1023,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T16:50:16+02:00",
+      "receiptNumber": "3989/00025"
+    },
+    {
+      "gross": 975,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T16:50:16+02:00",
+      "receiptNumber": "3989/00025"
+    },
+    {
+      "gross": 1250,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T16:50:16+02:00",
+      "receiptNumber": "3989/00025"
+    },
+    {
+      "gross": 935,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T17:01:06+02:00",
+      "receiptNumber": "3989/00026"
+    },
+    {
+      "gross": 1585,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T17:07:21+02:00",
+      "receiptNumber": "3989/00027"
+    },
+    {
+      "gross": 1100,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T17:07:21+02:00",
+      "receiptNumber": "3989/00027"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T17:07:21+02:00",
+      "receiptNumber": "3989/00027"
+    },
+    {
+      "gross": 690,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T17:07:21+02:00",
+      "receiptNumber": "3989/00027"
+    },
+    {
+      "gross": 699,
+      "vatLetter": "A",
+      "timestamp": "2026-08-03T17:07:21+02:00",
+      "receiptNumber": "3989/00027"
+    },
+    {
+      "gross": 860,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T17:55:06+02:00",
+      "receiptNumber": "3989/00028"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-03T17:55:06+02:00",
+      "receiptNumber": "3989/00028"
+    },
+    {
+      "gross": 590,
+      "vatLetter": "C",
+      "timestamp": "2026-08-03T17:55:06+02:00",
+      "receiptNumber": "3989/00028"
+    },
+    {
+      "gross": 580,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T08:05:03+02:00",
+      "receiptNumber": "3990/00001"
+    },
+    {
+      "gross": 280,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T08:05:03+02:00",
+      "receiptNumber": "3990/00001"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-04T08:05:03+02:00",
+      "receiptNumber": "3990/00001"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-04T08:05:03+02:00",
+      "receiptNumber": "3990/00001"
+    },
+    {
+      "gross": 1935,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T08:23:16+02:00",
+      "receiptNumber": "3990/00002"
+    },
+    {
+      "gross": 1750,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T08:46:39+02:00",
+      "receiptNumber": "3990/00003"
+    },
+    {
+      "gross": 1100,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T08:46:39+02:00",
+      "receiptNumber": "3990/00003"
+    },
+    {
+      "gross": 1838,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T08:46:39+02:00",
+      "receiptNumber": "3990/00003"
+    },
+    {
+      "gross": 4200,
+      "vatLetter": "A",
+      "timestamp": "2026-08-04T09:27:16+02:00",
+      "receiptNumber": "3990/00004"
+    },
+    {
+      "gross": 1260,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T09:28:32+02:00",
+      "receiptNumber": "3990/00005"
+    },
+    {
+      "gross": 2910,
+      "vatLetter": "A",
+      "timestamp": "2026-08-04T10:04:50+02:00",
+      "receiptNumber": "3990/00006"
+    },
+    {
+      "gross": 1090,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T10:47:38+02:00",
+      "receiptNumber": "3990/00007"
+    },
+    {
+      "gross": 2820,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T11:02:11+02:00",
+      "receiptNumber": "3990/00008"
+    },
+    {
+      "gross": 1175,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T11:03:18+02:00",
+      "receiptNumber": "3990/00009"
+    },
+    {
+      "gross": 655,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T11:44:30+02:00",
+      "receiptNumber": "3990/00010"
+    },
+    {
+      "gross": 2970,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T11:52:00+02:00",
+      "receiptNumber": "3990/00011"
+    },
+    {
+      "gross": 5177,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T11:56:23+02:00",
+      "receiptNumber": "3990/00012"
+    },
+    {
+      "gross": 1860,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T13:16:38+02:00",
+      "receiptNumber": "3990/00013"
+    },
+    {
+      "gross": 5496,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T14:20:28+02:00",
+      "receiptNumber": "3990/00014"
+    },
+    {
+      "gross": 1650,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T14:27:07+02:00",
+      "receiptNumber": "3990/00015"
+    },
+    {
+      "gross": 3530,
+      "vatLetter": "A",
+      "timestamp": "2026-08-04T15:20:56+02:00",
+      "receiptNumber": "3990/00016"
+    },
+    {
+      "gross": 590,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 590,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "A",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "A",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 1350,
+      "vatLetter": "A",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 1050,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 1785,
+      "vatLetter": "A",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 999,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:37:40+02:00",
+      "receiptNumber": "3990/00017"
+    },
+    {
+      "gross": 987,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T15:51:37+02:00",
+      "receiptNumber": "3990/00018"
+    },
+    {
+      "gross": 6155,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:54:50+02:00",
+      "receiptNumber": "3990/00019"
+    },
+    {
+      "gross": 575,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T15:56:46+02:00",
+      "receiptNumber": "3990/00020"
+    },
+    {
+      "gross": 650,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:56:46+02:00",
+      "receiptNumber": "3990/00020"
+    },
+    {
+      "gross": 290,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T15:56:46+02:00",
+      "receiptNumber": "3990/00020"
+    },
+    {
+      "gross": 4920,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T16:26:35+02:00",
+      "receiptNumber": "3990/00021"
+    },
+    {
+      "gross": 1390,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T16:42:28+02:00",
+      "receiptNumber": "3990/00022"
+    },
+    {
+      "gross": 5700,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T16:53:00+02:00",
+      "receiptNumber": "3990/00023"
+    },
+    {
+      "gross": 3210,
+      "vatLetter": "B",
+      "timestamp": "2026-08-04T17:21:10+02:00",
+      "receiptNumber": "3990/00024"
+    },
+    {
+      "gross": 1990,
+      "vatLetter": "C",
+      "timestamp": "2026-08-04T17:41:56+02:00",
+      "receiptNumber": "3990/00025"
+    },
+    {
+      "gross": 159,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T06:44:47+02:00",
+      "receiptNumber": "3991/00001"
+    },
+    {
+      "gross": 159,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T06:44:47+02:00",
+      "receiptNumber": "3991/00001"
+    },
+    {
+      "gross": 3999,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T06:44:47+02:00",
+      "receiptNumber": "3991/00001"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T06:44:47+02:00",
+      "receiptNumber": "3991/00001"
+    },
+    {
+      "gross": 4350,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T07:21:07+02:00",
+      "receiptNumber": "3991/00002"
+    },
+    {
+      "gross": 799,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T07:21:07+02:00",
+      "receiptNumber": "3991/00002"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T07:21:07+02:00",
+      "receiptNumber": "3991/00002"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-05T07:21:07+02:00",
+      "receiptNumber": "3991/00002"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-05T07:21:07+02:00",
+      "receiptNumber": "3991/00002"
+    },
+    {
+      "gross": 349,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T07:21:07+02:00",
+      "receiptNumber": "3991/00002"
+    },
+    {
+      "gross": 349,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T07:21:07+02:00",
+      "receiptNumber": "3991/00002"
+    },
+    {
+      "gross": 450,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T07:53:17+02:00",
+      "receiptNumber": "3991/00003"
+    },
+    {
+      "gross": 300,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T07:53:17+02:00",
+      "receiptNumber": "3991/00003"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-05T07:53:17+02:00",
+      "receiptNumber": "3991/00003"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-05T07:53:17+02:00",
+      "receiptNumber": "3991/00003"
+    },
+    {
+      "gross": 280,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T07:53:17+02:00",
+      "receiptNumber": "3991/00003"
+    },
+    {
+      "gross": 500,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T08:39:20+02:00",
+      "receiptNumber": "3991/00004"
+    },
+    {
+      "gross": 50,
+      "vatLetter": "E",
+      "timestamp": "2026-08-05T08:39:20+02:00",
+      "receiptNumber": "3991/00004"
+    },
+    {
+      "gross": 6650,
+      "vatLetter": "A",
+      "timestamp": "2026-08-05T08:50:27+02:00",
+      "receiptNumber": "3991/00005"
+    },
+    {
+      "gross": 2100,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T08:55:00+02:00",
+      "receiptNumber": "3991/00006"
+    },
+    {
+      "gross": 2630,
+      "vatLetter": "A",
+      "timestamp": "2026-08-05T09:05:37+02:00",
+      "receiptNumber": "3991/00007"
+    },
+    {
+      "gross": 3004,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T09:11:18+02:00",
+      "receiptNumber": "3991/00008"
+    },
+    {
+      "gross": 1975,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T09:13:45+02:00",
+      "receiptNumber": "3991/00009"
+    },
+    {
+      "gross": 7927,
+      "vatLetter": "A",
+      "timestamp": "2026-08-05T09:42:30+02:00",
+      "receiptNumber": "3991/00010"
+    },
+    {
+      "gross": 3480,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T09:44:23+02:00",
+      "receiptNumber": "3991/00011"
+    },
+    {
+      "gross": 815,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T09:59:39+02:00",
+      "receiptNumber": "3991/00012"
+    },
+    {
+      "gross": 1710,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T10:04:28+02:00",
+      "receiptNumber": "3991/00013"
+    },
+    {
+      "gross": 2240,
+      "vatLetter": "A",
+      "timestamp": "2026-08-05T11:03:47+02:00",
+      "receiptNumber": "3991/00014"
+    },
+    {
+      "gross": 400,
+      "vatLetter": "E",
+      "timestamp": "2026-08-05T11:06:09+02:00",
+      "receiptNumber": "3991/00015"
+    },
+    {
+      "gross": 499,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T11:45:25+02:00",
+      "receiptNumber": "3991/00016"
+    },
+    {
+      "gross": 820,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T11:45:25+02:00",
+      "receiptNumber": "3991/00016"
+    },
+    {
+      "gross": 1730,
+      "vatLetter": "A",
+      "timestamp": "2026-08-05T12:15:12+02:00",
+      "receiptNumber": "3991/00017"
+    },
+    {
+      "gross": 4075,
+      "vatLetter": "B",
+      "timestamp": "2026-08-05T12:23:14+02:00",
+      "receiptNumber": "3991/00018"
+    },
+    {
+      "gross": 5090,
+      "vatLetter": "A",
+      "timestamp": "2026-08-05T13:30:12+02:00",
+      "receiptNumber": "3991/00019"
+    },
+    {
+      "gross": 1125,
+      "vatLetter": "C",
+      "timestamp": "2026-08-05T17:46:44+02:00",
+      "receiptNumber": "3991/00020"
+    },
+    {
+      "gross": 1450,
+      "vatLetter": "A",
+      "timestamp": "2026-08-05T17:51:38+02:00",
+      "receiptNumber": "3991/00021"
+    },
+    {
+      "gross": 770,
+      "vatLetter": "C",
+      "timestamp": "2026-08-06T07:19:45+02:00",
+      "receiptNumber": "3992/00001"
+    }
+  ],
+  "coveredRange": {
+    "from": "2026-07-23T07:58:36+02:00",
+    "to": "2026-08-06T07:19:45+02:00"
+  }
+}

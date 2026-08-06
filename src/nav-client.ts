@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import { gunzipSync } from "node:zlib";
 import { config } from "./config.js";
 import {
   computePasswordHash,
@@ -8,9 +9,12 @@ import {
   generateRequestId,
 } from "./nav-auth.js";
 
-const xmlParser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: "@_",
+  removeNSPrefix: true,
+});
 
-/** Közös fejléc (header + user + software) XML-blokk minden nem-manageInvoice kéréshez. */
 function buildCommonHeaderXml(): { xml: string; requestId: string; timestamp: string } {
   const requestId = generateRequestId();
   const timestamp = currentTimestamp();
@@ -44,8 +48,8 @@ function buildCommonHeaderXml(): { xml: string; requestId: string; timestamp: st
 
 const XML_NS = `xmlns="http://schemas.nav.gov.hu/OSA/3.0/api" xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common"`;
 
-async function postXml(endpoint: string, bodyXml: string): Promise<string> {
-  const res = await fetch(`${config.baseUrl}/${endpoint}`, {
+async function postXml(endpoint: string, bodyXml: string, baseUrl: string = config.baseUrl): Promise<string> {
+  const res = await fetch(`${baseUrl}/${endpoint}`, {
     method: "POST",
     headers: { "Content-Type": "application/xml" },
     body: `<?xml version="1.0" encoding="UTF-8"?>\n${bodyXml}`,
@@ -69,14 +73,6 @@ async function postXml(endpoint: string, bodyXml: string): Promise<string> {
   return text;
 }
 
-/**
- * Token lekérése és visszafejtése.
- * MEGJEGYZÉS: ez csak a manageInvoice (számla-BEKÜLDÉS) operációhoz kellene —
- * a lekérdező hívások (queryInvoiceDigest, queryInvoiceData) a header/user
- * blokkal önmagukban hitelesítenek, tokenExchange nélkül. Itt elsősorban egy
- * egyszerű "működik-e a hitelesítés" ellenőrzésnek hagytuk meg — ez az egyik
- * legegyszerűbb hívás, jó első teszt az újonnan generált kulcsokra.
- */
 export async function tokenExchange(): Promise<string> {
   const { xml } = buildCommonHeaderXml();
   const requestXml = `<TokenExchangeRequest ${XML_NS}>${xml}\n</TokenExchangeRequest>`;
@@ -94,15 +90,12 @@ export async function tokenExchange(): Promise<string> {
 }
 
 export interface InvoiceDigestQuery {
-  /** Számla kiállításának dátumtartománya (YYYY-MM-DD, a napok inkluzívak). */
   dateFrom: string;
   dateTo: string;
-  /** INBOUND = a cégünk mint vevő kapta a számlát (ez kell a beszerzési/ÁFA-monitorhoz). */
   direction?: "INBOUND" | "OUTBOUND";
   page?: number;
 }
 
-/** Számlák listázása (nem a teljes XML, csak a fejadatok) egy dátumtartományra. */
 export async function queryInvoiceDigest(query: InvoiceDigestQuery) {
   const { xml } = buildCommonHeaderXml();
   const direction = query.direction ?? "INBOUND";
@@ -132,17 +125,11 @@ export async function queryInvoiceDigest(query: InvoiceDigestQuery) {
   };
 }
 
-/**
- * Egy adott számla teljes adatának lekérése (a queryInvoiceDigest csak a
- * fejadatokat adja vissza — ez kell a tételes ÁFA-bontáshoz).
- * A Base64-ben, tömörítve (gzip) érkező invoiceData mezőt itt még nem
- * dekódoljuk — ez a következő lépés, ha a lista-lekérdezés már megy.
- */
 export async function queryInvoiceData(
   invoiceNumber: string,
   direction: "INBOUND" | "OUTBOUND" = "INBOUND",
   batchIndex?: number
-) {
+): Promise<{ raw: unknown; invoiceXml: string | null }> {
   const { xml } = buildCommonHeaderXml();
 
   const requestXml = `<QueryInvoiceDataRequest ${XML_NS}>${xml}
@@ -155,5 +142,39 @@ export async function queryInvoiceData(
 
   const responseXml = await postXml("queryInvoiceData", requestXml);
   const parsed = xmlParser.parse(responseXml);
-  return parsed.QueryInvoiceDataResponse;
+  const root = parsed.QueryInvoiceDataResponse;
+  const result = root?.invoiceDataResult;
+
+  let invoiceXml: string | null = null;
+  const base64Data: string | undefined = result?.invoiceData;
+  if (base64Data) {
+    const isCompressed =
+      result?.compressedContentIndicator === true || result?.compressedContentIndicator === "true";
+    const buffer = Buffer.from(base64Data, "base64");
+    invoiceXml = (isCompressed ? gunzipSync(buffer) : buffer).toString("utf-8");
+  }
+
+  return { raw: root, invoiceXml };
+}
+
+export interface CashRegisterQuery {
+  apNumber: string;
+  fileNumberStart: string;
+  fileNumberEnd: string;
+}
+
+export async function queryCashRegister(query: CashRegisterQuery): Promise<{ raw: unknown; rawXml: string }> {
+  const { xml } = buildCommonHeaderXml();
+
+  const requestXml = `<QueryCashRegisterRequest ${XML_NS}>${xml}
+  <APNumber>${query.apNumber}</APNumber>
+  <FileNumberStart>${query.fileNumberStart}</FileNumberStart>
+  <FileNumberEnd>${query.fileNumberEnd}</FileNumberEnd>
+</QueryCashRegisterRequest>`;
+
+  const responseXml = await postXml("queryCashRegister", requestXml, config.cashRegisterBaseUrl);
+  const parsed = xmlParser.parse(responseXml);
+  const root = parsed.QueryCashRegisterResponse ?? parsed;
+
+  return { raw: root, rawXml: responseXml };
 }

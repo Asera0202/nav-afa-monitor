@@ -1,0 +1,46 @@
+name: Napi pénztárgép-szinkron
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Függőségek telepítése
+        run: npm ci
+
+      - name: Napi OPG-szinkron futtatása
+        run: npx tsx src/daily-opg-sync.ts
+        env:
+          NAV_ENV: production
+          NAV_LOGIN: ${{ secrets.NAV_LOGIN }}
+          NAV_PASSWORD: ${{ secrets.NAV_PASSWORD }}
+          NAV_SIGNING_KEY: ${{ secrets.NAV_SIGNING_KEY }}
+          NAV_EXCHANGE_KEY: ${{ secrets.NAV_EXCHANGE_KEY }}
+          NAV_TAX_NUMBER: ${{ secrets.NAV_TAX_NUMBER }}
+          SOFTWARE_ID: ${{ secrets.SOFTWARE_ID }}
+          SOFTWARE_NAME: AFA-Monitor
+          SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
+          SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+
+      - name: Eredmény commitolása
+        run: |
+          git config user.name "afa-monitor-bot"
+          git config user.email "afa-monitor-bot@users.noreply.github.com"
+          git add out/history
+          git diff --cached --quiet || git commit -m "Napi OPG-szinkron: $(date -u +%Y-%m-%d)"
+          git push
