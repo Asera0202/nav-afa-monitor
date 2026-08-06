@@ -1,7 +1,8 @@
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { queryCashRegisterStatus, queryCashRegisterFile } from "./opf-client.js";
 import { unzipSingleEntry } from "./zip-utils.js";
-import { extractXmlFromP7b, parseNynEntries, aggregateByVatRate, VAT_LABELS, type NynItem } from "./opg-parser.js";
+import { extractXmlFromP7b, parseNynEntries, aggregateByVatRate, VAT_LABELS, VAT_RATES, type NynItem } from "./opg-parser.js";
+import { supabase, COMPANY_ID } from "./supabase-client.js";
 
 async function main() {
   const apNumber = process.argv[2] ?? "A00813560";
@@ -112,6 +113,52 @@ async function main() {
   }
   await writeFile(logPath, existingLog + logLine, "utf-8");
   console.log(`Napló bővítve: ${logPath.pathname}`);
+
+  console.log("\nSupabase feltöltés...");
+  const rows = allItems.map((item) => {
+    const rate = VAT_RATES[item.vatLetter] ?? 0;
+    const net = item.gross / (1 + rate);
+    const vat = item.gross - net;
+    return {
+      company_id: COMPANY_ID,
+      ap_number: apNumber,
+      receipt_number: item.receiptNumber,
+      item_index: item.itemIndex,
+      transaction_at: item.timestamp,
+      vat_letter: item.vatLetter,
+      vat_percentage: rate,
+      net_amount: Math.round(net * 100) / 100,
+      vat_amount: Math.round(vat * 100) / 100,
+      gross_amount: item.gross,
+    };
+  });
+
+  const CHUNK_SIZE = 500;
+  let uploaded = 0;
+  let uploadFailed = 0;
+  for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
+    const chunk = rows.slice(i, i + CHUNK_SIZE);
+    const { error } = await supabase
+      .from("opg_receipt_items")
+      .upsert(chunk, { onConflict: "company_id,receipt_number,item_index" });
+    if (error) {
+      console.error(`Supabase feltöltési hiba (${i}-${i + chunk.length}):`, error.message);
+      uploadFailed += chunk.length;
+    } else {
+      uploaded += chunk.length;
+    }
+  }
+  console.log(`Supabase: ${uploaded} sor feltöltve, ${uploadFailed} hibás.`);
+
+  await supabase.from("sync_runs").insert({
+    company_id: COMPANY_ID,
+    source: "opg",
+    items_found: allItems.length,
+    items_failed: failedFiles,
+    covered_from: timestamps[0] ?? null,
+    covered_to: timestamps[timestamps.length - 1] ?? null,
+    error_message: uploadFailed > 0 ? `${uploadFailed} sor feltöltése sikertelen` : null,
+  });
 }
 
 main().catch((err) => {

@@ -1,0 +1,810 @@
+{
+  "fetchedAt": "2026-08-06T13:02:20.415Z",
+  "inbound": {
+    "from": "2026-07-03",
+    "to": "2026-08-06",
+    "digestCount": 55,
+    "processed": 55,
+    "failed": 0,
+    "rows": [
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "26/S027886",
+        "partnerName": "Hús Depó",
+        "issueDate": "2026-07-03",
+        "vatPercentage": 0.27,
+        "netAmount": 49243,
+        "vatAmount": 13296,
+        "grossAmount": 62539
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2026/01316",
+        "partnerName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+        "issueDate": "2026-06-30",
+        "vatPercentage": 0.18,
+        "netAmount": 42920,
+        "vatAmount": 7725,
+        "grossAmount": 50645
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2026/01362",
+        "partnerName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+        "issueDate": "2026-07-04",
+        "vatPercentage": 0.18,
+        "netAmount": 22280,
+        "vatAmount": 4011,
+        "grossAmount": 26291
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "FUGSA4005003",
+        "partnerName": "LU-KO KARTEL KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁ",
+        "issueDate": "2026-06-23",
+        "vatPercentage": 0.18,
+        "netAmount": 6900,
+        "vatAmount": 1242,
+        "grossAmount": 8142
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "FUGSA4005010",
+        "partnerName": "LU-KO KARTEL KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁ",
+        "issueDate": "2026-06-26",
+        "vatPercentage": 0.18,
+        "netAmount": 20700,
+        "vatAmount": 3726,
+        "grossAmount": 24426
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "FUGSA4005022",
+        "partnerName": "LU-KO KARTEL KORLÁTOLT FELELŐSSÉGŰ TÁRSASÁ",
+        "issueDate": "2026-07-06",
+        "vatPercentage": 0.18,
+        "netAmount": 20700,
+        "vatAmount": 3726,
+        "grossAmount": 24426
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "RKZPL-2026-587",
+        "partnerName": "Erkazo-Plusz Kft",
+        "issueDate": "2026-07-07",
+        "vatPercentage": 0.27,
+        "netAmount": 78750,
+        "vatAmount": 21263,
+        "grossAmount": 100013
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "JE-2026-235",
+        "partnerName": "J & E KFT.",
+        "issueDate": "2026-07-07",
+        "vatPercentage": 0.05,
+        "netAmount": 11142.86,
+        "vatAmount": 557.14,
+        "grossAmount": 11700
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "KP005659",
+        "partnerName": "Hangony Hús Kft.",
+        "issueDate": "2026-07-09",
+        "vatPercentage": 0.27,
+        "netAmount": 97098.3,
+        "vatAmount": 26216.6,
+        "grossAmount": 123314.9
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-13492",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-09",
+        "vatPercentage": 0.27,
+        "netAmount": 81273,
+        "vatAmount": 21943,
+        "grossAmount": 103216
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "26/S029078",
+        "partnerName": "Hús Depó",
+        "issueDate": "2026-07-10",
+        "vatPercentage": 0.27,
+        "netAmount": 22347,
+        "vatAmount": 6033,
+        "grossAmount": 28380
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 7000490810,
+        "partnerName": "ÉRV. Zrt.",
+        "issueDate": "2026-07-10",
+        "vatPercentage": 0.27,
+        "netAmount": 6123,
+        "vatAmount": 1654,
+        "grossAmount": 7777
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 26094520,
+        "partnerName": "Italkereskedő-Ház ZRt. Miskolc",
+        "issueDate": "2026-07-10",
+        "vatPercentage": 0,
+        "netAmount": 16400,
+        "vatAmount": 0,
+        "grossAmount": 16400
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 26094520,
+        "partnerName": "Italkereskedő-Ház ZRt. Miskolc",
+        "issueDate": "2026-07-10",
+        "vatPercentage": 0.27,
+        "netAmount": 139985.11,
+        "vatAmount": 37796,
+        "grossAmount": 177781.11
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2026/01415",
+        "partnerName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+        "issueDate": "2026-07-11",
+        "vatPercentage": 0.18,
+        "netAmount": 49070,
+        "vatAmount": 8833,
+        "grossAmount": 57903
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "KP005671",
+        "partnerName": "Hangony Hús Kft.",
+        "issueDate": "2026-07-13",
+        "vatPercentage": 0.27,
+        "netAmount": 124072.2,
+        "vatAmount": 33499.4,
+        "grossAmount": 157571.6
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-13701",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-13",
+        "vatPercentage": 0.27,
+        "netAmount": 44984,
+        "vatAmount": 12145,
+        "grossAmount": 57129
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502695/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-14",
+        "vatPercentage": 0,
+        "netAmount": 1,
+        "vatAmount": 0,
+        "grossAmount": 1
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502695/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-14",
+        "vatPercentage": 0.05,
+        "netAmount": 2530,
+        "vatAmount": 126,
+        "grossAmount": 2656
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502695/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-14",
+        "vatPercentage": 0.18,
+        "netAmount": 15187,
+        "vatAmount": 2731,
+        "grossAmount": 17918
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "JE-2026-245",
+        "partnerName": "J & E KFT.",
+        "issueDate": "2026-07-14",
+        "vatPercentage": 0.05,
+        "netAmount": 11142.86,
+        "vatAmount": 557.14,
+        "grossAmount": 11700
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 26003068,
+        "partnerName": "Fine Sweet Kft",
+        "issueDate": "2026-07-15",
+        "vatPercentage": 0.18,
+        "netAmount": 14855.93,
+        "vatAmount": 2674.07,
+        "grossAmount": 17530
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "MISK/105782",
+        "partnerName": "Kevaimpex Zrt.",
+        "issueDate": "2026-07-15",
+        "vatPercentage": 0.18,
+        "netAmount": 1523.71,
+        "vatAmount": 274.27,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "MISK/105782",
+        "partnerName": "Kevaimpex Zrt.",
+        "issueDate": "2026-07-15",
+        "vatPercentage": 0.27,
+        "netAmount": 22157.48,
+        "vatAmount": 5982.52,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SZAM-0002/00043472",
+        "partnerName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+        "issueDate": "2026-07-15",
+        "vatPercentage": 0,
+        "netAmount": 800,
+        "vatAmount": 0,
+        "grossAmount": 800
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SZAM-0002/00043472",
+        "partnerName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+        "issueDate": "2026-07-15",
+        "vatPercentage": 0.18,
+        "netAmount": 6729.81,
+        "vatAmount": 1211.37,
+        "grossAmount": 7941
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SZAM-0002/00043472",
+        "partnerName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+        "issueDate": "2026-07-15",
+        "vatPercentage": 0.27,
+        "netAmount": 15929.86,
+        "vatAmount": 4301.06,
+        "grossAmount": 20231
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-13980",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-16",
+        "vatPercentage": 0,
+        "netAmount": 2,
+        "vatAmount": 0,
+        "grossAmount": 2
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-13980",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-16",
+        "vatPercentage": 0.27,
+        "netAmount": 46901,
+        "vatAmount": 12662,
+        "grossAmount": 59563
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "26/S030173",
+        "partnerName": "Hús Depó",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0.27,
+        "netAmount": 46736,
+        "vatAmount": 12619,
+        "grossAmount": 59355
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502751/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0,
+        "netAmount": 1,
+        "vatAmount": 0,
+        "grossAmount": 1
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502751/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0.05,
+        "netAmount": 5060,
+        "vatAmount": 253,
+        "grossAmount": 5313
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502751/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0.18,
+        "netAmount": 15091,
+        "vatAmount": 2715,
+        "grossAmount": 17806
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "CRAZY-2026-718",
+        "partnerName": "JANTA-BAU Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0.27,
+        "netAmount": 8172,
+        "vatAmount": 2208,
+        "grossAmount": 10380
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "CRAZY-2026-718",
+        "partnerName": "JANTA-BAU Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0,
+        "netAmount": 600,
+        "vatAmount": 0,
+        "grossAmount": 600
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2026/01470",
+        "partnerName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+        "issueDate": "2026-07-18",
+        "vatPercentage": 0.18,
+        "netAmount": 50680,
+        "vatAmount": 9122,
+        "grossAmount": 59802
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 7023514148,
+        "partnerName": "ÉRV. Zrt.",
+        "issueDate": "2026-07-20",
+        "vatPercentage": 0.27,
+        "netAmount": 4289,
+        "vatAmount": 1159,
+        "grossAmount": 5448
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "KP005692",
+        "partnerName": "Hangony Hús Kft.",
+        "issueDate": "2026-07-20",
+        "vatPercentage": 0.27,
+        "netAmount": 82009.9,
+        "vatAmount": 22142.7,
+        "grossAmount": 104152.6
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "JE-2026-257",
+        "partnerName": "J & E KFT.",
+        "issueDate": "2026-07-21",
+        "vatPercentage": 0.05,
+        "netAmount": 11142.86,
+        "vatAmount": 557.14,
+        "grossAmount": 11700
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 333252408,
+        "partnerName": "MOHU MOL Hulladékgazdálkodási Zrt.",
+        "issueDate": "2026-07-21",
+        "vatPercentage": 0.27,
+        "netAmount": 6058,
+        "vatAmount": 1636,
+        "grossAmount": 7694
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 333252409,
+        "partnerName": "MOHU MOL Hulladékgazdálkodási Zrt.",
+        "issueDate": "2026-07-21",
+        "vatPercentage": 0.27,
+        "netAmount": 12129,
+        "vatAmount": 3275,
+        "grossAmount": 15404
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 333252410,
+        "partnerName": "MOHU MOL Hulladékgazdálkodási Zrt.",
+        "issueDate": "2026-07-21",
+        "vatPercentage": 0.27,
+        "netAmount": 6058,
+        "vatAmount": 1636,
+        "grossAmount": 7694
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 261329028,
+        "partnerName": "Észak-Kelet N.S. Energy Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0.18,
+        "netAmount": 15255,
+        "vatAmount": 2746,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 261329028,
+        "partnerName": "Észak-Kelet N.S. Energy Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0.27,
+        "netAmount": 29230,
+        "vatAmount": 7892,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 261329028,
+        "partnerName": "Észak-Kelet N.S. Energy Kft.",
+        "issueDate": "2026-07-17",
+        "vatPercentage": 0,
+        "netAmount": 9000,
+        "vatAmount": 0,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "MISK/106136",
+        "partnerName": "Kevaimpex Zrt.",
+        "issueDate": "2026-07-23",
+        "vatPercentage": 0.27,
+        "netAmount": 23740.16,
+        "vatAmount": 6409.84,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SZAM-0002/00044220",
+        "partnerName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+        "issueDate": "2026-07-23",
+        "vatPercentage": 0.27,
+        "netAmount": 43151.74,
+        "vatAmount": 11650.97,
+        "grossAmount": 54803
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-14530",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-23",
+        "vatPercentage": 0,
+        "netAmount": 1,
+        "vatAmount": 0,
+        "grossAmount": 1
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-14530",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-23",
+        "vatPercentage": 0.27,
+        "netAmount": 83305,
+        "vatAmount": 22494,
+        "grossAmount": 105799
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2026/01524",
+        "partnerName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+        "issueDate": "2026-07-25",
+        "vatPercentage": 0.18,
+        "netAmount": 46010,
+        "vatAmount": 8284,
+        "grossAmount": 54294
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502873/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-27",
+        "vatPercentage": 0.05,
+        "netAmount": 5060,
+        "vatAmount": 253,
+        "grossAmount": 5313
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502873/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-27",
+        "vatPercentage": 0.18,
+        "netAmount": 18286,
+        "vatAmount": 3289,
+        "grossAmount": 21575
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2502873/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-27",
+        "vatPercentage": 0.27,
+        "netAmount": 470,
+        "vatAmount": 127,
+        "grossAmount": 597
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "JE-2026-266",
+        "partnerName": "J & E KFT.",
+        "issueDate": "2026-07-27",
+        "vatPercentage": 0.05,
+        "netAmount": 14857.14,
+        "vatAmount": 742.86,
+        "grossAmount": 15600
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "KP005709",
+        "partnerName": "Hangony Hús Kft.",
+        "issueDate": "2026-07-27",
+        "vatPercentage": 0.27,
+        "netAmount": 48039.3,
+        "vatAmount": 12970.7,
+        "grossAmount": 61010
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-14741",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-27",
+        "vatPercentage": 0,
+        "netAmount": -2,
+        "vatAmount": 0,
+        "grossAmount": -2
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-14741",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-27",
+        "vatPercentage": 0.27,
+        "netAmount": 64336,
+        "vatAmount": 17371,
+        "grossAmount": 81707
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "KS-726016S-2026/615",
+        "partnerName": "MÁLYI KÖZSÉG ÖNKORMÁNYZATA",
+        "issueDate": "2026-07-28",
+        "vatPercentage": 0.27,
+        "netAmount": 9449,
+        "vatAmount": 2551,
+        "grossAmount": 12000
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SZAM-0002/00044645",
+        "partnerName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+        "issueDate": "2026-07-29",
+        "vatPercentage": 0.18,
+        "netAmount": 4972.92,
+        "vatAmount": 895.13,
+        "grossAmount": 5868
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SZAM-0002/00044645",
+        "partnerName": "Forrás Áruház Kereskedelmi és Szolgáltató Korlátolt Felelősségű Társaság",
+        "issueDate": "2026-07-29",
+        "vatPercentage": 0.27,
+        "netAmount": 13567.7,
+        "vatAmount": 3663.28,
+        "grossAmount": 17231
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 26003266,
+        "partnerName": "Fine Sweet Kft",
+        "issueDate": "2026-07-29",
+        "vatPercentage": 0.18,
+        "netAmount": 29000,
+        "vatAmount": 5220,
+        "grossAmount": 34220
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "MISK/106326",
+        "partnerName": "Kevaimpex Zrt.",
+        "issueDate": "2026-07-29",
+        "vatPercentage": 0.18,
+        "netAmount": 11132.46,
+        "vatAmount": 2003.84,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "MISK/106326",
+        "partnerName": "Kevaimpex Zrt.",
+        "issueDate": "2026-07-29",
+        "vatPercentage": 0.27,
+        "netAmount": 21803.15,
+        "vatAmount": 5886.85,
+        "grossAmount": 0
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-15055",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-30",
+        "vatPercentage": 0,
+        "netAmount": 2,
+        "vatAmount": 0,
+        "grossAmount": 2
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-15055",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-30",
+        "vatPercentage": 0.27,
+        "netAmount": 57202,
+        "vatAmount": 15444,
+        "grossAmount": 72646
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-15055",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-07-30",
+        "vatPercentage": 0.18,
+        "netAmount": 5760,
+        "vatAmount": 1037,
+        "grossAmount": 6797
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2700261/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-31",
+        "vatPercentage": 0,
+        "netAmount": -2,
+        "vatAmount": 0,
+        "grossAmount": -2
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2700261/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-31",
+        "vatPercentage": 0.05,
+        "netAmount": 5060,
+        "vatAmount": 253,
+        "grossAmount": 5313
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2700261/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-07-31",
+        "vatPercentage": 0.18,
+        "netAmount": 18918,
+        "vatAmount": 3406,
+        "grossAmount": 22324
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "26/S032365",
+        "partnerName": "Hús Depó",
+        "issueDate": "2026-07-31",
+        "vatPercentage": 0.27,
+        "netAmount": 49882,
+        "vatAmount": 13468,
+        "grossAmount": 63350
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2026/01577",
+        "partnerName": "Várdombi Sütőüzem Sütőipari és Kereskedelmi Kft.",
+        "issueDate": "2026-07-31",
+        "vatPercentage": 0.18,
+        "netAmount": 42510,
+        "vatAmount": 7652,
+        "grossAmount": 50162
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "KP005727",
+        "partnerName": "Hangony Hús Kft.",
+        "issueDate": "2026-08-03",
+        "vatPercentage": 0.27,
+        "netAmount": 52492.8,
+        "vatAmount": 14173.1,
+        "grossAmount": 66665.9
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "RKZPL-2026-654",
+        "partnerName": "Erkazo-Plusz Kft",
+        "issueDate": "2026-08-03",
+        "vatPercentage": 0.27,
+        "netAmount": 78750,
+        "vatAmount": 21263,
+        "grossAmount": 100013
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "SBP126-15169",
+        "partnerName": "\"Pa-Rol\" Kereskedelmi és Szolgáltató Kft",
+        "issueDate": "2026-08-03",
+        "vatPercentage": 0.27,
+        "netAmount": 21757,
+        "vatAmount": 5874,
+        "grossAmount": 27631
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "JE-2026-281",
+        "partnerName": "J & E KFT.",
+        "issueDate": "2026-08-04",
+        "vatPercentage": 0.05,
+        "netAmount": 14857.14,
+        "vatAmount": 742.86,
+        "grossAmount": 15600
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 26096471,
+        "partnerName": "Italkereskedő-Ház ZRt. Miskolc",
+        "issueDate": "2026-08-04",
+        "vatPercentage": 0,
+        "netAmount": 11250,
+        "vatAmount": 0,
+        "grossAmount": 11250
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": 26096471,
+        "partnerName": "Italkereskedő-Ház ZRt. Miskolc",
+        "issueDate": "2026-08-04",
+        "vatPercentage": 0.27,
+        "netAmount": 79537.09,
+        "vatAmount": 21475,
+        "grossAmount": 101012.09
+      },
+      {
+        "direction": "INBOUND",
+        "invoiceNumber": "2503014/2026",
+        "partnerName": "ABAÚJTEJ Kft.",
+        "issueDate": "2026-08-05",
+        "vatPercentage": 0.18,
+        "netAmount": 2361,
+        "vatAmount": 424,
+        "grossAmount": 2785
+      }
+    ],
+    "aggregate": {
+      "net": 2150777.4799999995,
+      "vat": 511170.83999999997,
+      "gross": 2496911.1999999997
+    }
+  },
+  "outbound": {
+    "from": "2026-07-03",
+    "to": "2026-08-06",
+    "digestCount": 0,
+    "processed": 0,
+    "failed": 0,
+    "rows": [],
+    "aggregate": {
+      "net": 0,
+      "vat": 0,
+      "gross": 0
+    }
+  }
+}

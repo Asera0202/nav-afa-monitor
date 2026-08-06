@@ -1,10 +1,22 @@
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { XMLParser } from "fast-xml-parser";
 import { queryInvoiceDigest, queryInvoiceData } from "./nav-client.js";
+import { supabase, COMPANY_ID } from "./supabase-client.js";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", removeNSPrefix: true });
 
 interface VatRateSummary {
+  vatPercentage: number;
+  netAmount: number;
+  vatAmount: number;
+  grossAmount: number;
+}
+
+interface InvoiceRow {
+  direction: "INBOUND" | "OUTBOUND";
+  invoiceNumber: string;
+  partnerName: string | null;
+  issueDate: string | null;
   vatPercentage: number;
   netAmount: number;
   vatAmount: number;
@@ -38,7 +50,7 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND") {
   const { invoices } = await queryInvoiceDigest({ dateFrom: from, dateTo: to, direction });
   console.log(`[${direction}] Digest találat: ${invoices.length} db`);
 
-  const aggregate: Record<number, { count: number; net: number; vat: number; gross: number }> = {};
+  const rows: InvoiceRow[] = [];
   let processed = 0;
   let failed = 0;
 
@@ -53,12 +65,16 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND") {
       }
       const rates = extractVatSummary(invoiceXml);
       for (const r of rates) {
-        const key = r.vatPercentage;
-        if (!aggregate[key]) aggregate[key] = { count: 0, net: 0, vat: 0, gross: 0 };
-        aggregate[key].count += 1;
-        aggregate[key].net += r.netAmount;
-        aggregate[key].vat += r.vatAmount;
-        aggregate[key].gross += r.grossAmount;
+        rows.push({
+          direction,
+          invoiceNumber,
+          partnerName: inv.supplierName ?? inv.customerName ?? null,
+          issueDate: inv.invoiceIssueDate ?? null,
+          vatPercentage: r.vatPercentage,
+          netAmount: r.netAmount,
+          vatAmount: r.vatAmount,
+          grossAmount: r.grossAmount,
+        });
       }
       processed++;
     } catch (err) {
@@ -69,7 +85,45 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND") {
   }
 
   console.log(`[${direction}] Feldolgozva: ${processed}, hibás: ${failed}`);
-  return { from, to, digestCount: invoices.length, processed, failed, aggregate };
+  return { from, to, digestCount: invoices.length, processed, failed, rows };
+}
+
+async function uploadRows(rows: InvoiceRow[]) {
+  const payload = rows.map((r) => ({
+    company_id: COMPANY_ID,
+    direction: r.direction,
+    invoice_number: r.invoiceNumber,
+    partner_name: r.partnerName,
+    issue_date: r.issueDate,
+    vat_percentage: r.vatPercentage,
+    net_amount: r.netAmount,
+    vat_amount: r.vatAmount,
+    gross_amount: r.grossAmount,
+  }));
+
+  const CHUNK_SIZE = 500;
+  let uploaded = 0;
+  let uploadFailed = 0;
+  for (let i = 0; i < payload.length; i += CHUNK_SIZE) {
+    const chunk = payload.slice(i, i + CHUNK_SIZE);
+    const { error } = await supabase
+      .from("invoice_vat_lines")
+      .upsert(chunk, { onConflict: "company_id,direction,invoice_number,vat_percentage" });
+    if (error) {
+      console.error(`Supabase feltöltési hiba (${i}-${i + chunk.length}):`, error.message);
+      uploadFailed += chunk.length;
+    } else {
+      uploaded += chunk.length;
+    }
+  }
+  return { uploaded, uploadFailed };
+}
+
+function aggregateForLog(rows: InvoiceRow[]) {
+  return rows.reduce(
+    (acc, r) => ({ net: acc.net + r.netAmount, vat: acc.vat + r.vatAmount, gross: acc.gross + r.grossAmount }),
+    { net: 0, vat: 0, gross: 0 }
+  );
 }
 
 async function main() {
@@ -84,27 +138,21 @@ async function main() {
 
   const snapshot = {
     fetchedAt: new Date().toISOString(),
-    inbound,
-    outbound,
+    inbound: { ...inbound, aggregate: aggregateForLog(inbound.rows) },
+    outbound: { ...outbound, aggregate: aggregateForLog(outbound.rows) },
   };
 
   const snapshotPath = new URL(`invoices-${today}.json`, historyDir);
   await writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf-8");
   console.log(`\nSnapshot mentve: ${snapshotPath.pathname}`);
 
-  const sumOf = (agg: typeof inbound.aggregate) =>
-    Object.values(agg).reduce(
-      (acc, v) => ({ net: acc.net + v.net, vat: acc.vat + v.vat, gross: acc.gross + v.gross }),
-      { net: 0, vat: 0, gross: 0 }
-    );
-
   const logPath = new URL("index-invoices.jsonl", historyDir);
   const logLine =
     JSON.stringify({
       date: today,
       fetchedAt: snapshot.fetchedAt,
-      inbound: { digestCount: inbound.digestCount, processed: inbound.processed, ...sumOf(inbound.aggregate) },
-      outbound: { digestCount: outbound.digestCount, processed: outbound.processed, ...sumOf(outbound.aggregate) },
+      inbound: { digestCount: inbound.digestCount, processed: inbound.processed, ...aggregateForLog(inbound.rows) },
+      outbound: { digestCount: outbound.digestCount, processed: outbound.processed, ...aggregateForLog(outbound.rows) },
     }) + "\n";
 
   let existingLog = "";
@@ -115,6 +163,34 @@ async function main() {
   }
   await writeFile(logPath, existingLog + logLine, "utf-8");
   console.log(`Napló bővítve: ${logPath.pathname}`);
+
+  console.log("\nSupabase feltöltés...");
+  const inboundUpload = await uploadRows(inbound.rows);
+  const outboundUpload = await uploadRows(outbound.rows);
+  console.log(
+    `Supabase: INBOUND ${inboundUpload.uploaded} sor (${inboundUpload.uploadFailed} hibás), OUTBOUND ${outboundUpload.uploaded} sor (${outboundUpload.uploadFailed} hibás).`
+  );
+
+  await supabase.from("sync_runs").insert([
+    {
+      company_id: COMPANY_ID,
+      source: "invoice_inbound",
+      items_found: inbound.rows.length,
+      items_failed: inbound.failed,
+      covered_from: inbound.from,
+      covered_to: inbound.to,
+      error_message: inboundUpload.uploadFailed > 0 ? `${inboundUpload.uploadFailed} sor feltöltése sikertelen` : null,
+    },
+    {
+      company_id: COMPANY_ID,
+      source: "invoice_outbound",
+      items_found: outbound.rows.length,
+      items_failed: outbound.failed,
+      covered_from: outbound.from,
+      covered_to: outbound.to,
+      error_message: outboundUpload.uploadFailed > 0 ? `${outboundUpload.uploadFailed} sor feltöltése sikertelen` : null,
+    },
+  ]);
 }
 
 main().catch((err) => {

@@ -36,6 +36,9 @@ jobs:
           SOFTWARE_NAME: AFA-Monitor
           SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
           SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_COMPANY_ID: ${{ secrets.SUPABASE_COMPANY_ID }}
 
       - name: Napi számla (bejövő + kimenő) szinkron futtatása
         run: npx tsx src/daily-invoice-sync.ts
@@ -50,6 +53,9 @@ jobs:
           SOFTWARE_NAME: AFA-Monitor
           SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
           SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_COMPANY_ID: ${{ secrets.SUPABASE_COMPANY_ID }}
 
       - name: Eredmény commitolása
         run: |

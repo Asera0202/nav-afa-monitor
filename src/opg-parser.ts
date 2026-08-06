@@ -34,6 +34,7 @@ export interface NynItem {
   vatLetter: string;
   timestamp: string | null;
   receiptNumber: string | null;
+  itemIndex: number;
 }
 
 export function parseNynEntries(xml: string): NynItem[] {
@@ -47,6 +48,7 @@ export function parseNynEntries(xml: string): NynItem[] {
     const dtsMatch = nyn.match(/<DTS>([^<]+)<\/DTS>/);
     const nszMatch = nyn.match(/<NSZ>([^<]+)<\/NSZ>/);
 
+    let itemIndex = 0;
     const itlBlocks = nyn.match(/<ITL>[\s\S]*?<\/ITL>/g) ?? [];
     for (const itl of itlBlocks) {
       const sus = [...itl.matchAll(/<SU>([-\d.,]+)<\/SU>/g)].map((m) => m[1]);
@@ -58,6 +60,7 @@ export function parseNynEntries(xml: string): NynItem[] {
           vatLetter: vcs[i],
           timestamp: dtsMatch ? dtsMatch[1] : null,
           receiptNumber: nszMatch ? nszMatch[1] : null,
+          itemIndex: itemIndex++,
         });
       }
     }
