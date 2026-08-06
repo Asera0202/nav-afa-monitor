@@ -57,4 +57,5 @@ jobs:
           git config user.email "afa-monitor-bot@users.noreply.github.com"
           git add out/history
           git diff --cached --quiet || git commit -m "Napi NAV-szinkron: $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main
           git push
