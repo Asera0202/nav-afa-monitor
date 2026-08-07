@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Irányítópult — Cégfókusz</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f4fb; --surface: #ffffff; --ink: #1a1b2e; --ink-soft: #6b7089;
+    --line: #eaeaf3; --primary: #4f46e5;
+    --ok: #16a34a; --ok-bg: #f0fdf4;
+    --error: #dc2626; --error-bg: #fef2f2;
+    --warn: #d97706; --warn-bg: #fffbeb;
+    --missing: #6b7089; --missing-bg: #f3f4f6;
+    --shadow: 0 1px 2px rgba(23,23,60,0.04), 0 6px 20px rgba(23,23,60,0.06);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .topnav { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .topnav-inner { max-width: 680px; margin: 0 auto; padding: 0.9rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+  .topnav .brand { display: flex; align-items: center; gap: 0.6rem; }
+  .topnav .brand img { width: 30px; height: 30px; }
+  .topnav .brand-name { font-weight: 700; font-size: 0.95rem; }
+  .topnav .nav-links { display: flex; align-items: center; gap: 1.1rem; }
+  .topnav .nav-links a, .topnav .nav-links button {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; color: var(--ink-soft); text-decoration: none;
+    background: none; border: none; cursor: pointer; padding: 0;
+  }
+  .topnav .nav-links a.active { color: var(--primary); font-weight: 600; }
+  .topnav .nav-links button:hover { color: var(--error); }
+
+  .wrap { max-width: 680px; margin: 0 auto; padding: 1.8rem 1.25rem 4rem; }
+  .company-header { margin-bottom: 1.5rem; }
+  .company-header h1 { font-size: 1.3rem; margin: 0 0 0.2rem; }
+  .company-header .sub { font-size: 0.85rem; color: var(--ink-soft); }
+
+  .section-title { font-size: 0.95rem; font-weight: 700; margin: 1.8rem 0 0.8rem; }
+  .section-title:first-of-type { margin-top: 0; }
+
+  .card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 1.3rem 1.4rem; margin-bottom: 1rem; }
+
+  .source-row { display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.8rem; padding: 0.55rem 0; border-top: 1px solid var(--line); align-items: baseline; }
+  .source-row:first-of-type { border-top: none; }
+  .source-name { font-size: 0.85rem; color: var(--ink-soft); grid-column: 1; }
+  .source-status { font-size: 0.8rem; font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 999px; grid-column: 2; white-space: nowrap; }
+  .source-detail { grid-column: 1 / -1; font-size: 0.75rem; color: var(--ink-soft); }
+  .status-ok { background: var(--ok-bg); color: var(--ok); }
+  .status-error { background: var(--error-bg); color: var(--error); }
+  .status-stale { background: var(--warn-bg); color: var(--warn); }
+  .status-missing { background: var(--missing-bg); color: var(--missing); }
+
+  .threshold-row { margin-bottom: 1rem; }
+  .threshold-row:last-child { margin-bottom: 0; }
+  .threshold-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .threshold-numbers { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .bar-track { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .bar-ok { background: var(--ok); }
+  .bar-warn { background: var(--warn); }
+  .bar-over { background: var(--error); }
+  .no-threshold { font-size: 0.82rem; color: var(--ink-soft); }
+
+  .loading, .empty-state { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topnav-inner">
+      <div class="brand">
+        <img src="favicon.svg" alt="Cégfókusz">
+        <div class="brand-name">Cégfókusz</div>
+      </div>
+      <div class="nav-links">
+        <a href="dashboard.html" class="active">Irányítópult</a>
+        <button id="logoutBtn">Kijelentkezés</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div id="content" class="loading">Betöltés...</div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const SOURCE_LABELS = {
+  opg: "Pénztárgép",
+  invoice_inbound: "Bejövő számlák",
+  invoice_outbound: "Kimenő számlák",
+};
+
+const THRESHOLDS = {
+  kata: { label: "KATA (kisadózó)", limit: 18_000_000 },
+  atalanyado: { label: "Átalányadó", limit: 38_736_000 },
+  alanyi_mentes: { label: "Alanyi ÁFA-mentesség", limit: 20_000_000 },
+};
+
+function formatFt(n) {
+  return Math.round(n).toLocaleString("hu-HU") + " Ft";
+}
+
+function formatDateTime(iso) {
+  return new Date(iso).toLocaleString("hu-HU", { dateStyle: "short", timeStyle: "short" });
+}
+
+function hoursSince(iso) {
+  return (Date.now() - new Date(iso).getTime()) / (1000 * 60 * 60);
+}
+
+function yearStartIso() {
+  return new Date(Date.UTC(new Date().getUTCFullYear(), 0, 1)).toISOString();
+}
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await sb.auth.signOut();
+  window.location.href = "login.html";
+});
+
+async function renderStatusSection(companyId) {
+  const since = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
+  const { data: runs, error } = await sb
+    .from("sync_runs")
+    .select("source, run_at, items_found, error_message")
+    .eq("company_id", companyId)
+    .gte("run_at", since)
+    .order("run_at", { ascending: false });
+  if (error) throw error;
+
+  const latestBySource = {};
+  for (const run of runs ?? []) {
+    if (!latestBySource[run.source]) latestBySource[run.source] = run;
+  }
+
+  const rows = Object.keys(SOURCE_LABELS)
+    .map((source) => {
+      const run = latestBySource[source];
+      let statusClass = "status-missing";
+      let statusText = "Nincs adat még";
+      let detail = "";
+
+      if (run) {
+        const age = hoursSince(run.run_at);
+        if (run.error_message) {
+          statusClass = "status-error";
+          statusText = "Hiba";
+          detail = run.error_message;
+        } else if (age > 30) {
+          statusClass = "status-stale";
+          statusText = "Elmaradt futás";
+          detail = `Utolsó futás: ${formatDateTime(run.run_at)}`;
+        } else {
+          statusClass = "status-ok";
+          statusText = "Rendben";
+          detail = `${run.items_found ?? 0} tétel · utoljára: ${formatDateTime(run.run_at)}`;
+        }
+      }
+
+      return `
+      <div class="source-row">
+        <div class="source-name">${SOURCE_LABELS[source]}</div>
+        <div class="source-status ${statusClass}">${statusText}</div>
+        <div class="source-detail">${detail}</div>
+      </div>`;
+    })
+    .join("");
+
+  return `<div class="card">${rows}</div>`;
+}
+
+async function renderThresholdSection(company) {
+  const from = yearStartIso();
+
+  const { data: invoiceRows, error: invoiceError } = await sb
+    .from("invoice_vat_lines")
+    .select("net_amount")
+    .eq("company_id", company.id)
+    .eq("direction", "OUTBOUND")
+    .gte("issue_date", from);
+  if (invoiceError) throw invoiceError;
+
+  const { data: opgRows, error: opgError } = await sb
+    .from("opg_receipt_items")
+    .select("net_amount")
+    .eq("company_id", company.id)
+    .gte("transaction_at", from);
+  if (opgError) throw opgError;
+
+  const invoiceTotal = (invoiceRows ?? []).reduce((s, r) => s + Number(r.net_amount ?? 0), 0);
+  const opgTotal = (opgRows ?? []).reduce((s, r) => s + Number(r.net_amount ?? 0), 0);
+  const revenue = invoiceTotal + opgTotal;
+
+  const checks = [];
+  if (company.tax_regime === "kata") checks.push({ ...THRESHOLDS.kata, revenue });
+  if (company.tax_regime === "atalanyado") checks.push({ ...THRESHOLDS.atalanyado, revenue });
+  if (company.alanyi_mentes) checks.push({ ...THRESHOLDS.alanyi_mentes, revenue });
+
+  if (checks.length === 0) {
+    return `<div class="card"><div class="no-threshold">Nincs beállított figyelendő bevételi küszöb (normál adózás, nem alanyi mentes).</div></div>`;
+  }
+
+  const rows = checks
+    .map((c) => {
+      const percent = (c.revenue / c.limit) * 100;
+      const pct = Math.min(percent, 100);
+      let barClass = "bar-ok";
+      if (percent >= 100) barClass = "bar-over";
+      else if (percent >= 80) barClass = "bar-warn";
+
+      return `
+      <div class="threshold-row">
+        <div class="threshold-label">${c.label}</div>
+        <div class="threshold-numbers">${formatFt(c.revenue)} / ${formatFt(c.limit)} (${percent.toFixed(1)}%)</div>
+        <div class="bar-track"><div class="bar-fill ${barClass}" style="width:${pct}%"></div></div>
+      </div>`;
+    })
+    .join("");
+
+  return `<div class="card">${rows}</div>`;
+}
+
+async function main() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const content = document.getElementById("content");
+
+  const { data: companies, error: companyError } = await sb.from("companies").select("*");
+  if (companyError) {
+    content.innerHTML = `<div class="empty-state">Hiba történt az adatok betöltésekor: ${companyError.message}</div>`;
+    return;
+  }
+
+  if (!companies || companies.length === 0) {
+    content.innerHTML = `<div class="empty-state">A regisztrációdat még átnézzük és aktiváljuk — ez rövidesen megtörténik, addig itt még nincs mit mutatni.</div>`;
+    return;
+  }
+
+  const company = companies[0];
+
+  try {
+    const [statusHtml, thresholdHtml] = await Promise.all([
+      renderStatusSection(company.id),
+      renderThresholdSection(company),
+    ]);
+
+    content.innerHTML = `
+      <div class="company-header">
+        <h1>${company.name}</h1>
+        <div class="sub">Adószám: ${company.tax_number}</div>
+      </div>
+
+      <div class="section-title">Napi szinkron állapota</div>
+      ${statusHtml}
+
+      <div class="section-title">Bevételi küszöbök (${new Date().getFullYear()})</div>
+      ${thresholdHtml}
+    `;
+  } catch (err) {
+    content.innerHTML = `<div class="empty-state">Hiba történt az adatok betöltésekor: ${err.message}</div>`;
+  }
+}
+
+main();
+</script>
+</body>
+</html>
