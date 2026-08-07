@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bevételi küszöbök — Cégfókusz</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f4fb; --surface: #ffffff; --ink: #1a1b2e; --ink-soft: #6b7089;
+    --line: #eaeaf3; --primary: #4f46e5;
+    --ok: #16a34a; --warn: #d97706; --over: #dc2626;
+    --shadow: 0 1px 2px rgba(23,23,60,0.04), 0 6px 20px rgba(23,23,60,0.06);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+  .masthead { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+  .masthead img { width: 34px; height: 34px; }
+  .masthead .title { font-size: 1.05rem; font-weight: 700; }
+  .updated { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 1.6rem; }
+
+  .company-card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 1.3rem 1.4rem; margin-bottom: 1rem; }
+  .company-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.9rem; }
+  .no-threshold { font-size: 0.82rem; color: var(--ink-soft); }
+  .threshold-row { margin-bottom: 1rem; }
+  .threshold-row:last-child { margin-bottom: 0; }
+  .threshold-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .threshold-numbers { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .bar-track { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .bar-ok { background: var(--ok); }
+  .bar-warn { background: var(--warn); }
+  .bar-over { background: var(--over); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="masthead">
+      <img src="favicon.svg" alt="Cégfókusz">
+      <div class="title">Cégfókusz — Bevételi küszöbök</div>
+    </div>
+    <div class="updated">Frissítve: 2026. augusztus 7. 14:27 · 2026-es adóév eddigi bevétele</div>
+
+    
+      <div class="company-card">
+        <div class="company-name">Korcsmárszki Gergő E.V.</div>
+        <div class="no-threshold">Nincs beállított figyelendő küszöb (normál adózás, nem alanyi mentes).</div>
+      </div>
+  </div>
+</body>
+</html>

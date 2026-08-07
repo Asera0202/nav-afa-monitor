@@ -40,6 +40,10 @@
   .checkbox-row .label-text { font-size: 0.85rem; }
   .checkbox-row .label-text .field-help { margin-top: 0.15rem; }
 
+  .radio-group { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.4rem; }
+  .radio-option { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 400; cursor: pointer; }
+  .radio-option input { margin: 0; }
+
   .telegram-box { display: none; background: var(--primary-soft); border-radius: 12px; padding: 0.9rem 1rem; margin-top: 0.7rem; font-size: 0.82rem; }
   .telegram-box.open { display: block; }
   .telegram-box a.btn { display: inline-block; margin-top: 0.6rem; background: #229ED9; color: #fff; text-decoration: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 600; font-size: 0.85rem; }
@@ -94,6 +98,24 @@
         <label>Adószám (törzsszám)</label>
         <input type="text" id="taxNumber" required pattern="[0-9]{8}" maxlength="8">
         <div class="field-help">Az adószámod első 8 számjegye (kötőjelek nélkül).</div>
+      </div>
+
+      <div class="card">
+        <h2>Adózási forma</h2>
+        <div class="desc">Ebből tudjuk megmondani, mennyi bevételi kereted maradt a saját adónemedben (pl. KATA, átalányadó) — csak ehhez a figyelmeztetéshez kell, máshova nem használjuk fel.</div>
+        <label>Milyen adózási formában vagy?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="taxRegime" value="kata" checked> KATA (kisadózó)</label>
+          <label class="radio-option"><input type="radio" name="taxRegime" value="atalanyado"> Átalányadó</label>
+          <label class="radio-option"><input type="radio" name="taxRegime" value="normal"> Egyéb / normál (nem KATA, nem átalányadó)</label>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="alanyiMentes">
+          <div class="label-text">
+            Alanyi ÁFA-mentes vagyok
+            <div class="field-help">Ha nem vagy biztos benne, kérdezd meg a könyvelődet — ez nem ugyanaz, mint a KATA/átalányadó.</div>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -206,6 +228,8 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     const navSigningKey = document.getElementById("navSigningKey").value.trim();
     const navExchangeKey = document.getElementById("navExchangeKey").value.trim();
     const apNumber = document.getElementById("apNumber").value.trim();
+    const taxRegime = document.querySelector('input[name="taxRegime"]:checked').value;
+    const alanyiMentes = document.getElementById("alanyiMentes").checked;
     const wantsTelegram = wantsTelegramEl.checked;
     const marketingConsent = document.getElementById("marketingConsent").checked;
 
@@ -226,6 +250,8 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       user_id: userId,
       company_name: companyName,
       tax_number: taxNumber,
+      tax_regime: taxRegime,
+      alanyi_mentes: alanyiMentes,
       contact_email: email,
       nav_login_encrypted: encLogin,
       nav_password_encrypted: encPassword,
