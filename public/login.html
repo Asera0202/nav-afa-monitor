@@ -17,8 +17,8 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
   .wrap { max-width: 400px; width: 100%; padding: 1.25rem; }
-  .masthead { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.5rem; justify-content: center; }
-  .masthead .logo { width: 38px; height: 38px; }
+  .masthead { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 1.5rem; justify-content: center; }
+  .masthead .logo { width: 52px; height: 52px; }
   .masthead .title { font-size: 1.05rem; font-weight: 700; }
 
   .card { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 1.8rem 1.6rem; }
@@ -75,6 +75,21 @@
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+function translateError(message) {
+  const map = [
+    [/invalid login credentials/i, "Hibás email cím vagy jelszó."],
+    [/error sending recovery email/i, "Nem sikerült elküldeni a jelszó-visszaállító emailt — technikai hiba történt a küldő rendszerünkben. Próbáld újra pár perc múlva."],
+    [/error sending confirmation email/i, "Nem sikerült elküldeni a megerősítő emailt — technikai hiba történt a küldő rendszerünkben. Próbáld újra pár perc múlva."],
+    [/rate limit/i, "Túl sok próbálkozás történt rövid idő alatt — kérjük, várj egy percet, és próbáld újra."],
+    [/network|fetch/i, "Hálózati hiba történt — ellenőrizd az internetkapcsolatod, és próbáld újra."],
+    [/email not confirmed/i, "Az email címed még nincs megerősítve."],
+  ];
+  for (const [pattern, hu] of map) {
+    if (pattern.test(message)) return hu;
+  }
+  return "Hiba történt: " + message;
+}
+
 function showStatus(message, type) {
   const box = document.getElementById("statusBox");
   box.textContent = message;
@@ -93,13 +108,14 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const { data, error } = await sb.auth.signInWithPassword({ email, password });
 
   if (error) {
-    showStatus("Hiba: " + error.message, "error");
+    showStatus(translateError(error.message), "error");
     submitBtn.disabled = false;
     submitBtn.textContent = "Bejelentkezés";
     return;
   }
 
-  showStatus("Sikeres bejelentkezés! (A saját, élő dashboard-nézet fejlesztés alatt áll — egyelőre az adataidat a szolgáltató kezeli és küldi el neked.)", "success");
+  showStatus("Sikeres bejelentkezés! Átirányítás...", "success");
+  window.location.href = "dashboard.html";
 });
 
 document.getElementById("forgotBtn").addEventListener("click", async () => {
@@ -112,7 +128,7 @@ document.getElementById("forgotBtn").addEventListener("click", async () => {
     redirectTo: window.location.origin + window.location.pathname.replace("login.html", "reset-password.html"),
   });
   if (error) {
-    showStatus("Hiba: " + error.message, "error");
+    showStatus(translateError(error.message), "error");
   } else {
     showStatus("Ha ez az email cím regisztrálva van nálunk, elküldtük a jelszó-visszaállító linket — nézd meg a postaládád.", "success");
   }
