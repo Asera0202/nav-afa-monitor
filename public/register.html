@@ -18,7 +18,7 @@
   body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
   .wrap { max-width: 620px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
   .masthead { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.75rem; }
-  .masthead .logo { width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; }
+  .masthead .logo { width: 38px; height: 38px; flex-shrink: 0; }
   .masthead .title { font-size: 1.05rem; font-weight: 700; }
   .masthead .sub { font-size: 0.8rem; color: var(--ink-soft); }
 
@@ -58,11 +58,12 @@
   .login-link { text-align: center; font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; }
   .login-link a { color: var(--primary); font-weight: 600; text-decoration: none; }
 </style>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
   <div class="wrap">
     <div class="masthead">
-      <div class="logo">🎯</div>
+      <img src="favicon.svg" alt="Cégfókusz" class="logo">
       <div>
         <div class="title">Cégfókusz</div>
         <div class="sub">Regisztráció</div>
