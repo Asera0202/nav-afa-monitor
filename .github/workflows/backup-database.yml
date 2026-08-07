@@ -1,0 +1,38 @@
+name: Napi adatbázis-mentés
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: PostgreSQL kliens telepítése
+        run: sudo apt-get update && sudo apt-get install --yes postgresql-client
+
+      - name: Adatbázis-mentés készítése
+        run: |
+          mkdir -p backups
+          DATE=$(date -u +%Y-%m-%d)
+          pg_dump "${{ secrets.SUPABASE_DB_URL }}" \
+            --no-owner --no-acl \
+            --schema=public \
+            -f "backups/backup-${DATE}.sql"
+          echo "Mentés kész: backups/backup-${DATE}.sql ($(wc -l < backups/backup-${DATE}.sql) sor)"
+
+      - name: Mentés commitolása
+        run: |
+          git config user.name "cegfokusz-bot"
+          git config user.email "cegfokusz-bot@users.noreply.github.com"
+          git add backups/
+          git diff --cached --quiet || git commit -m "Napi adatbázis-mentés: $(date -u +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push
