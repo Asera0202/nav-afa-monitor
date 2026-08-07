@@ -1,0 +1,18 @@
+name: Kétheti emlékeztető — könyvelői analitika
+
+on:
+  schedule:
+    - cron: "0 8 1,15 * *"
+  workflow_dispatch: {}
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Telegram-emlékeztető küldése
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="📋 ÁFA-monitor emlékeztető
+
+Kérj a könyvelődtől friss főkönyvi kivonatot vagy analitikát, és töltsd fel az ÁFA-monitorba — így az adat naprakész marad, és láthatod, ha valami lemaradt a könyvelésből."
