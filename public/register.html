@@ -198,6 +198,22 @@ function updateTelegramLink() {
   link.href = "https://t.me/" + TELEGRAM_BOT_USERNAME + (taxNumber ? "?start=" + encodeURIComponent(taxNumber) : "");
 }
 
+function translateError(message) {
+  const map = [
+    [/user already registered/i, "Ezzel az email címmel már regisztráltak korábban — próbálj bejelentkezni, vagy használj másik email címet."],
+    [/invalid login credentials/i, "Hibás email cím vagy jelszó."],
+    [/password should be at least/i, "A jelszónak legalább 8 karakter hosszúnak kell lennie."],
+    [/row-level security policy/i, "Technikai hiba történt a fiók létrehozásakor. Kérjük, próbáld újra — ha ismétlődik, jelezd nekünk."],
+    [/rate limit/i, "Túl sok próbálkozás történt rövid idő alatt — kérjük, várj egy percet, és próbáld újra."],
+    [/network|fetch/i, "Hálózati hiba történt — ellenőrizd az internetkapcsolatod, és próbáld újra."],
+    [/duplicate key/i, "Ez az adószám már regisztrálva van nálunk."],
+  ];
+  for (const [pattern, hu] of map) {
+    if (pattern.test(message)) return hu;
+  }
+  return "Hiba történt: " + message;
+}
+
 function showStatus(message, type) {
   const box = document.getElementById("statusBox");
   box.textContent = message;
@@ -272,7 +288,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       "success"
     );
   } catch (err) {
-    showStatus("Hiba történt: " + (err.message || err), "error");
+    showStatus(translateError(err.message || String(err)), "error");
     submitBtn.disabled = false;
     submitBtn.textContent = "Regisztráció";
   }
