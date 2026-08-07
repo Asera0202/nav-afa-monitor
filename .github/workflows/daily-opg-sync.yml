@@ -51,11 +51,18 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           ADMIN_TELEGRAM_CHAT_ID: ${{ secrets.ADMIN_TELEGRAM_CHAT_ID }}
 
+      - name: Bevételi küszöb-jelentés generálása
+        run: npx tsx src/generate-threshold-report.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
       - name: Eredmény commitolása
         run: |
           git config user.name "cegfokusz-bot"
           git config user.email "cegfokusz-bot@users.noreply.github.com"
-          git add public/status.html
+          git add public/status.html public/thresholds.html
           git diff --cached --quiet || git commit -m "Napi NAV-szinkron + állapot-frissítés: $(date -u +%Y-%m-%d)"
           git pull --rebase origin main
           git push
