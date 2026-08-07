@@ -1,3 +1,4 @@
 {"date":"2026-08-06","fetchedAt":"2026-08-06T12:17:14.696Z","inbound":{"digestCount":55,"processed":55,"net":2150777.48,"vat":511170.83999999997,"gross":2496911.2},"outbound":{"digestCount":0,"processed":0,"net":0,"vat":0,"gross":0}}
 {"date":"2026-08-06","fetchedAt":"2026-08-06T13:07:31.874Z","inbound":{"digestCount":55,"processed":55,"net":2150777.48,"vat":511170.83999999997,"gross":2496911.2},"outbound":{"digestCount":0,"processed":0,"net":0,"vat":0,"gross":0}}
 {"date":"2026-08-06","fetchedAt":"2026-08-06T13:08:45.428Z","inbound":{"digestCount":55,"processed":55,"net":2150777.48,"vat":511170.83999999997,"gross":2496911.2},"outbound":{"digestCount":0,"processed":0,"net":0,"vat":0,"gross":0}}
+{"date":"2026-08-07","fetchedAt":"2026-08-07T06:10:17.183Z","inbound":{"digestCount":54,"processed":54,"net":2107550.48,"vat":503103.83999999997,"gross":2445617.2},"outbound":{"digestCount":0,"processed":0,"net":0,"vat":0,"gross":0}}
