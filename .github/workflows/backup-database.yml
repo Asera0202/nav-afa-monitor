@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir -p backups
           DATE=$(date -u +%Y-%m-%d)
-          pg_dump "${{ secrets.SUPABASE_DB_URL }}" \
+          /usr/lib/postgresql/17/bin/pg_dump "${{ secrets.SUPABASE_DB_URL }}" \
             --no-owner --no-acl \
             --schema=public \
             -f "backups/backup-${DATE}.sql"
