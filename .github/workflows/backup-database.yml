@@ -15,8 +15,12 @@ jobs:
       - name: Repó kicsomagolása
         uses: actions/checkout@v4
 
-      - name: PostgreSQL kliens telepítése
-        run: sudo apt-get update && sudo apt-get install --yes postgresql-client
+      - name: PostgreSQL 17 kliens telepítése
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y postgresql-client-17
 
       - name: Adatbázis-mentés készítése
         run: |
