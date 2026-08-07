@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regisztráció — ÁFA-monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f4fb; --surface: #ffffff; --ink: #1a1b2e; --ink-soft: #6b7089;
+    --line: #eaeaf3; --primary: #4f46e5; --primary-soft: #eef0fe;
+    --danger: #dc2626; --danger-soft: #fef2f2; --ok: #16a34a; --ok-soft: #f0fdf4;
+    --shadow: 0 1px 2px rgba(23,23,60,0.04), 0 6px 20px rgba(23,23,60,0.06);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 620px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+  .masthead { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.75rem; }
+  .masthead .logo { width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; }
+  .masthead .title { font-size: 1.05rem; font-weight: 700; }
+  .masthead .sub { font-size: 0.8rem; color: var(--ink-soft); }
+
+  .card { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 1.6rem 1.6rem; margin-bottom: 1.25rem; }
+  .card h2 { font-size: 0.95rem; margin: 0 0 0.3rem; }
+  .card .desc { font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 1.1rem; line-height: 1.5; }
+
+  label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.9rem; }
+  label:first-of-type { margin-top: 0; }
+  .field-help { font-size: 0.76rem; color: var(--ink-soft); margin-top: 0.25rem; line-height: 1.45; }
+  input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%; font-family: "Inter", sans-serif; font-size: 0.9rem; padding: 0.6rem 0.75rem;
+    border: 1.5px solid var(--line); border-radius: 10px; background: #fafafe; color: var(--ink);
+  }
+  input:focus { outline: none; border-color: var(--primary); }
+
+  .checkbox-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: 1rem; }
+  .checkbox-row input { margin-top: 0.2rem; }
+  .checkbox-row .label-text { font-size: 0.85rem; }
+  .checkbox-row .label-text .field-help { margin-top: 0.15rem; }
+
+  .telegram-box { display: none; background: var(--primary-soft); border-radius: 12px; padding: 0.9rem 1rem; margin-top: 0.7rem; font-size: 0.82rem; }
+  .telegram-box.open { display: block; }
+  .telegram-box a.btn { display: inline-block; margin-top: 0.6rem; background: #229ED9; color: #fff; text-decoration: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 600; font-size: 0.85rem; }
+
+  .submit-btn {
+    width: 100%; background: var(--primary); color: #fff; border: none; border-radius: 12px;
+    padding: 0.85rem; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem;
+  }
+  .submit-btn:hover { background: #4338ca; }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .status { display: none; border-radius: 12px; padding: 0.9rem 1.1rem; font-size: 0.86rem; margin-bottom: 1.25rem; line-height: 1.55; }
+  .status.error { display: block; background: var(--danger-soft); color: #991b1b; }
+  .status.success { display: block; background: var(--ok-soft); color: #166534; }
+
+  .login-link { text-align: center; font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; }
+  .login-link a { color: var(--primary); font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="masthead">
+      <div class="logo">💶</div>
+      <div>
+        <div class="title">ÁFA-monitor</div>
+        <div class="sub">Regisztráció</div>
+      </div>
+    </div>
+
+    <div id="statusBox" class="status"></div>
+
+    <form id="registerForm">
+      <div class="card">
+        <h2>Saját fiók</h2>
+        <div class="desc">Ezzel az email címmel és jelszóval fogsz majd bejelentkezni.</div>
+        <label>Email cím</label>
+        <input type="email" id="email" required>
+        <label>Jelszó</label>
+        <input type="password" id="password" minlength="8" required>
+        <div class="field-help">Legalább 8 karakter.</div>
+        <label>Jelszó megerősítése</label>
+        <input type="password" id="passwordConfirm" minlength="8" required>
+      </div>
+
+      <div class="card">
+        <h2>Cégadatok</h2>
+        <div class="desc">Ezekkel az adatokkal azonosítjuk a vállalkozásodat.</div>
+        <label>Cégnév</label>
+        <input type="text" id="companyName" required>
+        <div class="field-help">A hivatalos, bejegyzett neved (pl. ahogy a cégkivonaton/vállalkozói igazolványon szerepel).</div>
+        <label>Adószám (törzsszám)</label>
+        <input type="text" id="taxNumber" required pattern="[0-9]{8}" maxlength="8">
+        <div class="field-help">Az adószámod első 8 számjegye (kötőjelek nélkül).</div>
+      </div>
+
+      <div class="card">
+        <h2>NAV technikai felhasználó adatai</h2>
+        <div class="desc">
+          Ezeket az adatokat a <b>onlineszamla.nav.gov.hu</b> oldalon, bejelentkezés után, a "Felhasználók kezelése → Technikai felhasználó" menüpontban tudod létrehozni/megnézni.
+          <b>Ezeket az adatokat a böngésződ titkosítja, mielőtt elküldi</b> — sem mi, sem senki más nem tudja elolvasni őket, csak az automatizált rendszer, ami a NAV-lekérdezéshez ténylegesen felhasználja.
+        </div>
+        <label>Technikai felhasználó login neve</label>
+        <input type="text" id="navLogin" required>
+        <label>Technikai felhasználó jelszava</label>
+        <input type="password" id="navPassword" required>
+        <label>Aláíró kulcs (Signing key)</label>
+        <input type="text" id="navSigningKey" required>
+        <div class="field-help">A "Kulcsgenerálás" menüpontban jön létre, a technikai felhasználó regisztrálásakor.</div>
+        <label>Cserekulcs (Exchange key)</label>
+        <input type="text" id="navExchangeKey" required>
+      </div>
+
+      <div class="card">
+        <h2>Pénztárgép (opcionális)</h2>
+        <div class="desc">Ha van online pénztárgéped, add meg az azonosítóját — ebből tudjuk lekérni a nyugtaforgalmat is, nem csak a számlákat.</div>
+        <label>Pénztárgép AP-száma</label>
+        <input type="text" id="apNumber" placeholder="pl. A00813560">
+        <div class="field-help">A pénztárgépeden vagy a hozzá tartozó dokumentációban található, "APxxxxxxxxx" formában — az "AP" előtagot NE írd be, csak az utána lévő betű+számsort.</div>
+      </div>
+
+      <div class="card">
+        <h2>Értesítések és hozzájárulások</h2>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="wantsTelegram">
+          <div class="label-text">
+            Szeretnék Telegram-értesítést kapni (pl. emlékeztető, ha frissítened kell az adatokat)
+            <div class="telegram-box" id="telegramBox">
+              Kattints a gombra — ez megnyitja a Telegramot, elindítja a beszélgetést a botunkkal, és automatikusan hozzárendeli a fiókodhoz. Nincs más teendőd.
+              <br>
+              <a class="btn" id="telegramLink" href="#" target="_blank">Telegram-értesítés bekapcsolása</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="marketingConsent">
+          <div class="label-text">
+            Hozzájárulok, hogy marketing célú (pl. új funkciókról szóló) megkeresést kapjak emailben
+            <div class="field-help">Ez nem kötelező, és bármikor visszavonható.</div>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="termsConsent" required>
+          <div class="label-text">
+            Hozzájárulok, hogy a megadott adatokat a szolgáltatás nyújtásához (NAV-adatok automatikus lekérdezéséhez) felhasználjuk
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Regisztráció</button>
+    </form>
+
+    <div class="login-link">Már van fiókod? <a href="login.html">Jelentkezz be</a></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const wantsTelegramEl = document.getElementById("wantsTelegram");
+const telegramBox = document.getElementById("telegramBox");
+wantsTelegramEl.addEventListener("change", () => {
+  telegramBox.classList.toggle("open", wantsTelegramEl.checked);
+  updateTelegramLink();
+});
+document.getElementById("taxNumber").addEventListener("input", updateTelegramLink);
+function updateTelegramLink() {
+  const taxNumber = document.getElementById("taxNumber").value.trim();
+  const link = document.getElementById("telegramLink");
+  link.href = "https://t.me/" + TELEGRAM_BOT_USERNAME + (taxNumber ? "?start=" + encodeURIComponent(taxNumber) : "");
+}
+
+function showStatus(message, type) {
+  const box = document.getElementById("statusBox");
+  box.textContent = message;
+  box.className = "status " + type;
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById("submitBtn");
+
+  const password = document.getElementById("password").value;
+  const passwordConfirm = document.getElementById("passwordConfirm").value;
+  if (password !== passwordConfirm) {
+    showStatus("A két jelszó nem egyezik.", "error");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Feldolgozás...";
+
+  try {
+    const email = document.getElementById("email").value.trim();
+    const companyName = document.getElementById("companyName").value.trim();
+    const taxNumber = document.getElementById("taxNumber").value.trim();
+    const navLogin = document.getElementById("navLogin").value.trim();
+    const navPassword = document.getElementById("navPassword").value;
+    const navSigningKey = document.getElementById("navSigningKey").value.trim();
+    const navExchangeKey = document.getElementById("navExchangeKey").value.trim();
+    const apNumber = document.getElementById("apNumber").value.trim();
+    const wantsTelegram = wantsTelegramEl.checked;
+    const marketingConsent = document.getElementById("marketingConsent").checked;
+
+    const { data: signUpData, error: signUpError } = await sb.auth.signUp({ email, password });
+    if (signUpError) throw signUpError;
+    const userId = signUpData.user?.id;
+    if (!userId) throw new Error("Nem sikerült a felhasználói fiók létrehozása.");
+
+    const publicKey = await importRegistrationPublicKey();
+    const [encLogin, encPassword, encSigningKey, encExchangeKey] = await Promise.all([
+      encryptField(publicKey, navLogin),
+      encryptField(publicKey, navPassword),
+      encryptField(publicKey, navSigningKey),
+      encryptField(publicKey, navExchangeKey),
+    ]);
+
+    const { error: insertError } = await sb.from("pending_registrations").insert({
+      user_id: userId,
+      company_name: companyName,
+      tax_number: taxNumber,
+      contact_email: email,
+      nav_login_encrypted: encLogin,
+      nav_password_encrypted: encPassword,
+      nav_signing_key_encrypted: encSigningKey,
+      nav_exchange_key_encrypted: encExchangeKey,
+      opg_ap_number: apNumber || null,
+      wants_telegram: wantsTelegram,
+      marketing_consent: marketingConsent,
+      marketing_consent_at: marketingConsent ? new Date().toISOString() : null,
+    });
+    if (insertError) throw insertError;
+
+    document.getElementById("registerForm").style.display = "none";
+    showStatus(
+      "Sikeres regisztráció! Ellenőrizd az email fiókodat egy megerősítő linkért. " +
+        (wantsTelegram ? "Ne felejtsd el a Telegram-gombra is kattintani, ha még nem tetted." : "") +
+        " Az adataidat hamarosan átnézzük és aktiváljuk a fiókodat.",
+      "success"
+    );
+  } catch (err) {
+    showStatus("Hiba történt: " + (err.message || err), "error");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Regisztráció";
+  }
+});
+</script>
+</body>
+</html>
