@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
-import { config } from "./config.js";
+import { opfBaseUrl, type NavCredentials } from "./config.js";
 import {
   computePasswordHash,
   computeRequestSignature,
@@ -9,16 +9,11 @@ import {
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", removeNSPrefix: true });
 
-const OPF_BASE =
-  (process.env.NAV_ENV ?? "test") === "production"
-    ? "https://api-onlinepenztargep.nav.gov.hu"
-    : "https://api-test-onlinepenztargep.nav.gov.hu";
-
-function buildOpfHeaderXml(): string {
+function buildOpfHeaderXml(creds: NavCredentials): string {
   const requestId = generateRequestId();
   const timestamp = currentTimestamp();
-  const passwordHash = computePasswordHash(config.password);
-  const requestSignature = computeRequestSignature(requestId, timestamp, config.signingKey);
+  const passwordHash = computePasswordHash(creds.password);
+  const requestSignature = computeRequestSignature(requestId, timestamp, creds.signingKey);
 
   return `
   <common:header>
@@ -28,27 +23,31 @@ function buildOpfHeaderXml(): string {
     <common:headerVersion>1.0</common:headerVersion>
   </common:header>
   <common:user>
-    <common:login>${config.login}</common:login>
+    <common:login>${creds.login}</common:login>
     <common:passwordHash cryptoType="SHA-512">${passwordHash}</common:passwordHash>
-    <common:taxNumber>${config.taxNumber}</common:taxNumber>
+    <common:taxNumber>${creds.taxNumber}</common:taxNumber>
     <common:requestSignature cryptoType="SHA3-512">${requestSignature}</common:requestSignature>
   </common:user>
   <software>
-    <softwareId>${config.softwareId}</softwareId>
-    <softwareName>${config.softwareName}</softwareName>
+    <softwareId>${creds.softwareId}</softwareId>
+    <softwareName>${creds.softwareName}</softwareName>
     <softwareOperation>LOCAL_SOFTWARE</softwareOperation>
     <softwareMainVersion>0.1</softwareMainVersion>
-    <softwareDevName>${config.softwareDevName}</softwareDevName>
-    <softwareDevContact>${config.softwareDevContact}</softwareDevContact>
+    <softwareDevName>${creds.softwareDevName}</softwareDevName>
+    <softwareDevContact>${creds.softwareDevContact}</softwareDevContact>
   </software>`;
 }
 
-async function postSoap(path: string, bodyXml: string): Promise<string> {
-  const { text } = await postSoapRaw(path, bodyXml);
+async function postSoap(path: string, bodyXml: string, creds: NavCredentials): Promise<string> {
+  const { text } = await postSoapRaw(path, bodyXml, creds);
   return text;
 }
 
-async function postSoapRaw(path: string, bodyXml: string): Promise<{ buffer: Buffer; contentType: string; text: string }> {
+async function postSoapRaw(
+  path: string,
+  bodyXml: string,
+  creds: NavCredentials
+): Promise<{ buffer: Buffer; contentType: string; text: string }> {
   const soapEnvelope = `<?xml version="1.0" encoding="UTF-8"?>
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns="http://schemas.nav.gov.hu/OPF/1.0/api" xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common">
   <soap:Body>
@@ -56,7 +55,7 @@ async function postSoapRaw(path: string, bodyXml: string): Promise<{ buffer: Buf
   </soap:Body>
 </soap:Envelope>`;
 
-  const res = await fetch(`${OPF_BASE}${path}`, {
+  const res = await fetch(`${opfBaseUrl(creds.navEnv)}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/soap+xml; charset=UTF-8" },
     body: soapEnvelope,
@@ -114,8 +113,8 @@ function parseMultipartRelated(buffer: Buffer, boundary: string): MultipartPart[
   return parts;
 }
 
-export async function queryCashRegisterStatus(apNumbers?: string[]): Promise<unknown> {
-  const header = buildOpfHeaderXml();
+export async function queryCashRegisterStatus(apNumbers: string[] | undefined, creds: NavCredentials): Promise<unknown> {
+  const header = buildOpfHeaderXml(creds);
   const apList = apNumbers && apNumbers.length
     ? apNumbers.map((ap) => `<APNumber>${ap}</APNumber>`).join("")
     : "";
@@ -126,7 +125,7 @@ export async function queryCashRegisterStatus(apNumbers?: string[]): Promise<unk
   </cashRegisterStatusQuery>
 </QueryCashRegisterStatusRequest>`;
 
-  const responseXml = await postSoap("/queryCashRegisterFile/v1/queryCashRegisterStatus", requestXml);
+  const responseXml = await postSoap("/queryCashRegisterFile/v1/queryCashRegisterStatus", requestXml, creds);
   const parsed = parser.parse(responseXml);
   return parsed.Envelope?.Body ?? parsed;
 }
@@ -141,13 +140,14 @@ export interface CashRegisterFileResult {
 export async function queryCashRegisterFile(
   apNumber: string,
   fileNumberStart: number,
-  fileNumberEnd?: number
+  fileNumberEnd: number | undefined,
+  creds: NavCredentials
 ): Promise<{
   files: CashRegisterFileResult[];
   rawXml: string;
   partsInfo: { headers: Record<string, string>; length: number }[];
 }> {
-  const header = buildOpfHeaderXml();
+  const header = buildOpfHeaderXml(creds);
   const requestXml = `<QueryCashRegisterFileDataRequest>${header}
   <cashRegisterFileDataQuery>
     <APNumber>${apNumber}</APNumber>
@@ -158,7 +158,8 @@ export async function queryCashRegisterFile(
 
   const { buffer, contentType, text } = await postSoapRaw(
     "/queryCashRegisterFile/v1/queryCashRegisterFile",
-    requestXml
+    requestXml,
+    creds
   );
 
   const boundaryMatch = contentType.match(/boundary="?([^";]+)"?/i);

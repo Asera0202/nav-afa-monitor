@@ -2,12 +2,14 @@ import { writeFile } from "node:fs/promises";
 import { queryCashRegisterStatus, queryCashRegisterFile } from "./opf-client.js";
 import { unzipSingleEntry } from "./zip-utils.js";
 import { extractXmlFromP7b, parseNynEntries, aggregateByVatRate, VAT_LABELS, type NynItem } from "./opg-parser.js";
+import { buildCredentialsFromEnv } from "./config.js";
 
 async function main() {
   const apNumber = process.argv[2] ?? "A00813560";
+  const creds = buildCredentialsFromEnv();
 
   console.log(`1) Elérhető fájltartomány lekérdezése: AP=${apNumber}...`);
-  const status: any = await queryCashRegisterStatus([apNumber]);
+  const status: any = await queryCashRegisterStatus([apNumber], creds);
   const statusResult = status?.QueryCashRegisterStatusResponse?.cashRegisterStatusResult?.cashRegisterStatusList?.cashRegisterStatus;
   const minFile = Number(statusResult?.minAvailableFileNumber);
   const maxFile = Number(statusResult?.maxAvailableFileNumber);
@@ -21,7 +23,7 @@ async function main() {
   console.log(`   Elérhető tartomány: ${minFile}-${maxFile} (${maxFile - minFile + 1} fájl)`);
 
   console.log(`\n2) Fájlok letöltése...`);
-  const { files } = await queryCashRegisterFile(apNumber, minFile, maxFile);
+  const { files } = await queryCashRegisterFile(apNumber, minFile, maxFile, creds);
   console.log(`   Kapott fájlok: ${files.length}`);
 
   console.log(`\n3) Kicsomagolás, kinyerés, tétel-parszolás...`);

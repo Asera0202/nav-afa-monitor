@@ -1,9 +1,34 @@
-import { mkdir, writeFile, readFile } from "node:fs/promises";
+import "dotenv/config";
+import { createClient } from "@supabase/supabase-js";
 import { XMLParser } from "fast-xml-parser";
 import { queryInvoiceDigest, queryInvoiceData } from "./nav-client.js";
-import { supabase, COMPANY_ID } from "./supabase-client.js";
+import { decryptField } from "./crypto-utils.js";
+import { buildSoftwareId, type NavCredentials } from "./config.js";
 
+const SUPABASE_URL = process.env.SUPABASE_URL!;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const REGISTRATION_PRIVATE_KEY = process.env.REGISTRATION_PRIVATE_KEY!;
+const SOFTWARE_NAME = process.env.SOFTWARE_NAME ?? "Cégfókusz";
+const SOFTWARE_DEV_NAME = process.env.SOFTWARE_DEV_NAME ?? "";
+const SOFTWARE_DEV_CONTACT = process.env.SOFTWARE_DEV_CONTACT ?? "";
+
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !REGISTRATION_PRIVATE_KEY) {
+  console.error("Hiányzó környezeti változó (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / REGISTRATION_PRIVATE_KEY)");
+  process.exit(1);
+}
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", removeNSPrefix: true });
+
+interface CompanyRow {
+  id: string;
+  name: string;
+  tax_number: string;
+  nav_login_encrypted: string | null;
+  nav_password_encrypted: string | null;
+  nav_signing_key_encrypted: string | null;
+  nav_exchange_key_encrypted: string | null;
+}
 
 interface VatRateSummary {
   vatPercentage: number;
@@ -12,15 +37,19 @@ interface VatRateSummary {
   grossAmount: number;
 }
 
-interface InvoiceRow {
-  direction: "INBOUND" | "OUTBOUND";
-  invoiceNumber: string;
-  partnerName: string | null;
-  issueDate: string | null;
-  vatPercentage: number;
-  netAmount: number;
-  vatAmount: number;
-  grossAmount: number;
+function buildCredentials(company: CompanyRow): NavCredentials {
+  return {
+    login: decryptField(company.nav_login_encrypted!, REGISTRATION_PRIVATE_KEY),
+    password: decryptField(company.nav_password_encrypted!, REGISTRATION_PRIVATE_KEY),
+    signingKey: decryptField(company.nav_signing_key_encrypted!, REGISTRATION_PRIVATE_KEY),
+    exchangeKey: decryptField(company.nav_exchange_key_encrypted!, REGISTRATION_PRIVATE_KEY),
+    taxNumber: company.tax_number,
+    navEnv: "production",
+    softwareId: buildSoftwareId(company.tax_number),
+    softwareName: SOFTWARE_NAME,
+    softwareDevName: SOFTWARE_DEV_NAME,
+    softwareDevContact: SOFTWARE_DEV_CONTACT,
+  };
 }
 
 function extractVatSummary(invoiceXml: string): VatRateSummary[] {
@@ -42,15 +71,13 @@ function dateNDaysAgo(n: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-async function syncDirection(direction: "INBOUND" | "OUTBOUND") {
+async function syncDirection(direction: "INBOUND" | "OUTBOUND", creds: NavCredentials, companyId: string) {
   const from = dateNDaysAgo(34);
   const to = dateNDaysAgo(0);
 
-  console.log(`\n[${direction}] Lekérdezés: ${from} – ${to}`);
-  const { invoices } = await queryInvoiceDigest({ dateFrom: from, dateTo: to, direction });
-  console.log(`[${direction}] Digest találat: ${invoices.length} db`);
+  const { invoices } = await queryInvoiceDigest({ dateFrom: from, dateTo: to, direction }, creds);
 
-  const rows: InvoiceRow[] = [];
+  const rows: any[] = [];
   let processed = 0;
   let failed = 0;
 
@@ -58,7 +85,7 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND") {
     const invoiceNumber = inv.invoiceNumber;
     const batchIndex = inv.batchIndex ? Number(inv.batchIndex) : undefined;
     try {
-      const { invoiceXml } = await queryInvoiceData(invoiceNumber, direction, batchIndex);
+      const { invoiceXml } = await queryInvoiceData(invoiceNumber, direction, batchIndex, creds);
       if (!invoiceXml) {
         failed++;
         continue;
@@ -66,51 +93,39 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND") {
       const rates = extractVatSummary(invoiceXml);
       for (const r of rates) {
         rows.push({
+          company_id: companyId,
           direction,
-          invoiceNumber,
-          partnerName: inv.supplierName ?? inv.customerName ?? null,
-          issueDate: inv.invoiceIssueDate ?? null,
-          vatPercentage: r.vatPercentage,
-          netAmount: r.netAmount,
-          vatAmount: r.vatAmount,
-          grossAmount: r.grossAmount,
+          invoice_number: invoiceNumber,
+          partner_name: inv.supplierName ?? inv.customerName ?? null,
+          issue_date: inv.invoiceIssueDate ?? null,
+          vat_percentage: r.vatPercentage,
+          net_amount: r.netAmount,
+          vat_amount: r.vatAmount,
+          gross_amount: r.grossAmount,
         });
       }
       processed++;
     } catch (err) {
-      console.error(`[${direction}] Hiba (${invoiceNumber}):`, (err as Error).message.split("\n")[0]);
+      console.error(`    Hiba (${invoiceNumber}): ${(err as Error).message.split("\n")[0]}`);
       failed++;
     }
     await new Promise((r) => setTimeout(r, 150));
   }
 
-  console.log(`[${direction}] Feldolgozva: ${processed}, hibás: ${failed}`);
   return { from, to, digestCount: invoices.length, processed, failed, rows };
 }
 
-async function uploadRows(rows: InvoiceRow[]) {
-  const payload = rows.map((r) => ({
-    company_id: COMPANY_ID,
-    direction: r.direction,
-    invoice_number: r.invoiceNumber,
-    partner_name: r.partnerName,
-    issue_date: r.issueDate,
-    vat_percentage: r.vatPercentage,
-    net_amount: r.netAmount,
-    vat_amount: r.vatAmount,
-    gross_amount: r.grossAmount,
-  }));
-
+async function uploadRows(rows: any[]) {
   const CHUNK_SIZE = 500;
   let uploaded = 0;
   let uploadFailed = 0;
-  for (let i = 0; i < payload.length; i += CHUNK_SIZE) {
-    const chunk = payload.slice(i, i + CHUNK_SIZE);
+  for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
+    const chunk = rows.slice(i, i + CHUNK_SIZE);
     const { error } = await supabase
       .from("invoice_vat_lines")
       .upsert(chunk, { onConflict: "company_id,direction,invoice_number,vat_percentage" });
     if (error) {
-      console.error(`Supabase feltöltési hiba (${i}-${i + chunk.length}):`, error.message);
+      console.error(`    Supabase feltöltési hiba: ${error.message}`);
       uploadFailed += chunk.length;
     } else {
       uploaded += chunk.length;
@@ -119,78 +134,96 @@ async function uploadRows(rows: InvoiceRow[]) {
   return { uploaded, uploadFailed };
 }
 
-function aggregateForLog(rows: InvoiceRow[]) {
-  return rows.reduce(
-    (acc, r) => ({ net: acc.net + r.netAmount, vat: acc.vat + r.vatAmount, gross: acc.gross + r.grossAmount }),
-    { net: 0, vat: 0, gross: 0 }
-  );
+async function syncCompany(company: CompanyRow) {
+  console.log(`\n=== ${company.name} (${company.id}) ===`);
+
+  if (!company.nav_login_encrypted) {
+    console.log("  Kihagyva: nincs NAV-hitelesítő adat megadva.");
+    return;
+  }
+
+  let creds: NavCredentials;
+  try {
+    creds = buildCredentials(company);
+  } catch (err) {
+    console.error(`  Hiba a hitelesítő adatok visszafejtésekor: ${(err as Error).message}`);
+    await supabase.from("sync_runs").insert({
+      company_id: company.id,
+      source: "invoice_inbound",
+      items_found: 0,
+      items_failed: 0,
+      error_message: `Visszafejtési hiba: ${(err as Error).message}`,
+    });
+    return;
+  }
+
+  try {
+    const inbound = await syncDirection("INBOUND", creds, company.id);
+    const outbound = await syncDirection("OUTBOUND", creds, company.id);
+
+    console.log(`  INBOUND: ${inbound.processed} feldolgozva, ${inbound.failed} hibás`);
+    console.log(`  OUTBOUND: ${outbound.processed} feldolgozva, ${outbound.failed} hibás`);
+
+    const inboundUpload = await uploadRows(inbound.rows);
+    const outboundUpload = await uploadRows(outbound.rows);
+
+    console.log(
+      `  Supabase: INBOUND ${inboundUpload.uploaded} sor, OUTBOUND ${outboundUpload.uploaded} sor feltöltve.`
+    );
+
+    await supabase.from("sync_runs").insert([
+      {
+        company_id: company.id,
+        source: "invoice_inbound",
+        items_found: inbound.rows.length,
+        items_failed: inbound.failed,
+        covered_from: inbound.from,
+        covered_to: inbound.to,
+        error_message: inboundUpload.uploadFailed > 0 ? `${inboundUpload.uploadFailed} sor feltöltése sikertelen` : null,
+      },
+      {
+        company_id: company.id,
+        source: "invoice_outbound",
+        items_found: outbound.rows.length,
+        items_failed: outbound.failed,
+        covered_from: outbound.from,
+        covered_to: outbound.to,
+        error_message: outboundUpload.uploadFailed > 0 ? `${outboundUpload.uploadFailed} sor feltöltése sikertelen` : null,
+      },
+    ]);
+  } catch (err) {
+    console.error(`  Hiba a(z) ${company.name} feldolgozásakor: ${(err as Error).message}`);
+    await supabase.from("sync_runs").insert({
+      company_id: company.id,
+      source: "invoice_inbound",
+      items_found: 0,
+      items_failed: 0,
+      error_message: (err as Error).message,
+    });
+  }
 }
 
 async function main() {
-  const today = new Date().toISOString().slice(0, 10);
-  console.log(`[${new Date().toISOString()}] Napi számla-szinkron indul`);
+  console.log(`[${new Date().toISOString()}] Napi számla-szinkron indul (minden cégre)`);
 
-  const inbound = await syncDirection("INBOUND");
-  const outbound = await syncDirection("OUTBOUND");
+  const { data: companies, error } = await supabase
+    .from("companies")
+    .select("id, name, tax_number, nav_login_encrypted, nav_password_encrypted, nav_signing_key_encrypted, nav_exchange_key_encrypted");
 
-  const historyDir = new URL("../out/history/", import.meta.url);
-  await mkdir(historyDir, { recursive: true });
+  if (error) throw error;
 
-  const snapshot = {
-    fetchedAt: new Date().toISOString(),
-    inbound: { ...inbound, aggregate: aggregateForLog(inbound.rows) },
-    outbound: { ...outbound, aggregate: aggregateForLog(outbound.rows) },
-  };
-
-  const snapshotPath = new URL(`invoices-${today}.json`, historyDir);
-  await writeFile(snapshotPath, JSON.stringify(snapshot, null, 2), "utf-8");
-  console.log(`\nSnapshot mentve: ${snapshotPath.pathname}`);
-
-  const logPath = new URL("index-invoices.jsonl", historyDir);
-  const logLine =
-    JSON.stringify({
-      date: today,
-      fetchedAt: snapshot.fetchedAt,
-      inbound: { digestCount: inbound.digestCount, processed: inbound.processed, ...aggregateForLog(inbound.rows) },
-      outbound: { digestCount: outbound.digestCount, processed: outbound.processed, ...aggregateForLog(outbound.rows) },
-    }) + "\n";
-
-  let existingLog = "";
-  try {
-    existingLog = await readFile(logPath, "utf-8");
-  } catch {
-    // első futás
+  if (!companies || companies.length === 0) {
+    console.log("Nincs egyetlen cég sem az adatbázisban.");
+    return;
   }
-  await writeFile(logPath, existingLog + logLine, "utf-8");
-  console.log(`Napló bővítve: ${logPath.pathname}`);
 
-  console.log("\nSupabase feltöltés...");
-  const inboundUpload = await uploadRows(inbound.rows);
-  const outboundUpload = await uploadRows(outbound.rows);
-  console.log(
-    `Supabase: INBOUND ${inboundUpload.uploaded} sor (${inboundUpload.uploadFailed} hibás), OUTBOUND ${outboundUpload.uploaded} sor (${outboundUpload.uploadFailed} hibás).`
-  );
+  console.log(`${companies.length} cég található, végigmegyünk mindegyiken.`);
 
-  await supabase.from("sync_runs").insert([
-    {
-      company_id: COMPANY_ID,
-      source: "invoice_inbound",
-      items_found: inbound.rows.length,
-      items_failed: inbound.failed,
-      covered_from: inbound.from,
-      covered_to: inbound.to,
-      error_message: inboundUpload.uploadFailed > 0 ? `${inboundUpload.uploadFailed} sor feltöltése sikertelen` : null,
-    },
-    {
-      company_id: COMPANY_ID,
-      source: "invoice_outbound",
-      items_found: outbound.rows.length,
-      items_failed: outbound.failed,
-      covered_from: outbound.from,
-      covered_to: outbound.to,
-      error_message: outboundUpload.uploadFailed > 0 ? `${outboundUpload.uploadFailed} sor feltöltése sikertelen` : null,
-    },
-  ]);
+  for (const company of companies as CompanyRow[]) {
+    await syncCompany(company);
+  }
+
+  console.log("\nKész, minden cég feldolgozva.");
 }
 
 main().catch((err) => {

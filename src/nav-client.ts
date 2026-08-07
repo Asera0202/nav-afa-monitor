@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import { gunzipSync } from "node:zlib";
-import { config } from "./config.js";
+import { invoiceBaseUrl, type NavCredentials } from "./config.js";
 import {
   computePasswordHash,
   computeRequestSignature,
@@ -15,11 +15,11 @@ const xmlParser = new XMLParser({
   removeNSPrefix: true,
 });
 
-function buildCommonHeaderXml(): { xml: string; requestId: string; timestamp: string } {
+function buildCommonHeaderXml(creds: NavCredentials): { xml: string; requestId: string; timestamp: string } {
   const requestId = generateRequestId();
   const timestamp = currentTimestamp();
-  const passwordHash = computePasswordHash(config.password);
-  const requestSignature = computeRequestSignature(requestId, timestamp, config.signingKey);
+  const passwordHash = computePasswordHash(creds.password);
+  const requestSignature = computeRequestSignature(requestId, timestamp, creds.signingKey);
 
   const xml = `
   <common:header>
@@ -29,18 +29,18 @@ function buildCommonHeaderXml(): { xml: string; requestId: string; timestamp: st
     <common:headerVersion>1.0</common:headerVersion>
   </common:header>
   <common:user>
-    <common:login>${config.login}</common:login>
+    <common:login>${creds.login}</common:login>
     <common:passwordHash cryptoType="SHA-512">${passwordHash}</common:passwordHash>
-    <common:taxNumber>${config.taxNumber}</common:taxNumber>
+    <common:taxNumber>${creds.taxNumber}</common:taxNumber>
     <common:requestSignature cryptoType="SHA3-512">${requestSignature}</common:requestSignature>
   </common:user>
   <software>
-    <softwareId>${config.softwareId}</softwareId>
-    <softwareName>${config.softwareName}</softwareName>
+    <softwareId>${creds.softwareId}</softwareId>
+    <softwareName>${creds.softwareName}</softwareName>
     <softwareOperation>LOCAL_SOFTWARE</softwareOperation>
     <softwareMainVersion>0.1</softwareMainVersion>
-    <softwareDevName>${config.softwareDevName}</softwareDevName>
-    <softwareDevContact>${config.softwareDevContact}</softwareDevContact>
+    <softwareDevName>${creds.softwareDevName}</softwareDevName>
+    <softwareDevContact>${creds.softwareDevContact}</softwareDevContact>
   </software>`;
 
   return { xml, requestId, timestamp };
@@ -48,7 +48,7 @@ function buildCommonHeaderXml(): { xml: string; requestId: string; timestamp: st
 
 const XML_NS = `xmlns="http://schemas.nav.gov.hu/OSA/3.0/api" xmlns:common="http://schemas.nav.gov.hu/NTCA/1.0/common"`;
 
-async function postXml(endpoint: string, bodyXml: string, baseUrl: string = config.baseUrl): Promise<string> {
+async function postXml(endpoint: string, bodyXml: string, baseUrl: string): Promise<string> {
   const res = await fetch(`${baseUrl}/${endpoint}`, {
     method: "POST",
     headers: { "Content-Type": "application/xml" },
@@ -73,11 +73,11 @@ async function postXml(endpoint: string, bodyXml: string, baseUrl: string = conf
   return text;
 }
 
-export async function tokenExchange(): Promise<string> {
-  const { xml } = buildCommonHeaderXml();
+export async function tokenExchange(creds: NavCredentials): Promise<string> {
+  const { xml } = buildCommonHeaderXml(creds);
   const requestXml = `<TokenExchangeRequest ${XML_NS}>${xml}\n</TokenExchangeRequest>`;
 
-  const responseXml = await postXml("tokenExchange", requestXml);
+  const responseXml = await postXml("tokenExchange", requestXml, invoiceBaseUrl(creds.navEnv));
   const parsed = xmlParser.parse(responseXml);
   const root = parsed.TokenExchangeResponse;
   const encryptedToken: string = root?.encodedExchangeToken;
@@ -86,7 +86,7 @@ export async function tokenExchange(): Promise<string> {
     throw new Error(`Nem sikerült tokent kinyerni a NAV válaszból:\n${responseXml}`);
   }
 
-  return decryptExchangeToken(encryptedToken, config.exchangeKey);
+  return decryptExchangeToken(encryptedToken, creds.exchangeKey);
 }
 
 export interface InvoiceDigestQuery {
@@ -96,8 +96,8 @@ export interface InvoiceDigestQuery {
   page?: number;
 }
 
-export async function queryInvoiceDigest(query: InvoiceDigestQuery) {
-  const { xml } = buildCommonHeaderXml();
+export async function queryInvoiceDigest(query: InvoiceDigestQuery, creds: NavCredentials) {
+  const { xml } = buildCommonHeaderXml(creds);
   const direction = query.direction ?? "INBOUND";
   const page = query.page ?? 1;
 
@@ -114,7 +114,7 @@ export async function queryInvoiceDigest(query: InvoiceDigestQuery) {
   </invoiceQueryParams>
 </QueryInvoiceDigestRequest>`;
 
-  const responseXml = await postXml("queryInvoiceDigest", requestXml);
+  const responseXml = await postXml("queryInvoiceDigest", requestXml, invoiceBaseUrl(creds.navEnv));
   const parsed = xmlParser.parse(responseXml);
   const result = parsed.QueryInvoiceDigestResponse?.invoiceDigestResult;
   const digests = result?.invoiceDigest ?? [];
@@ -128,9 +128,10 @@ export async function queryInvoiceDigest(query: InvoiceDigestQuery) {
 export async function queryInvoiceData(
   invoiceNumber: string,
   direction: "INBOUND" | "OUTBOUND" = "INBOUND",
-  batchIndex?: number
+  batchIndex: number | undefined,
+  creds: NavCredentials
 ): Promise<{ raw: unknown; invoiceXml: string | null }> {
-  const { xml } = buildCommonHeaderXml();
+  const { xml } = buildCommonHeaderXml(creds);
 
   const requestXml = `<QueryInvoiceDataRequest ${XML_NS}>${xml}
   <invoiceNumberQuery>
@@ -140,7 +141,7 @@ export async function queryInvoiceData(
   </invoiceNumberQuery>
 </QueryInvoiceDataRequest>`;
 
-  const responseXml = await postXml("queryInvoiceData", requestXml);
+  const responseXml = await postXml("queryInvoiceData", requestXml, invoiceBaseUrl(creds.navEnv));
   const parsed = xmlParser.parse(responseXml);
   const root = parsed.QueryInvoiceDataResponse;
   const result = root?.invoiceDataResult;
@@ -155,26 +156,4 @@ export async function queryInvoiceData(
   }
 
   return { raw: root, invoiceXml };
-}
-
-export interface CashRegisterQuery {
-  apNumber: string;
-  fileNumberStart: string;
-  fileNumberEnd: string;
-}
-
-export async function queryCashRegister(query: CashRegisterQuery): Promise<{ raw: unknown; rawXml: string }> {
-  const { xml } = buildCommonHeaderXml();
-
-  const requestXml = `<QueryCashRegisterRequest ${XML_NS}>${xml}
-  <APNumber>${query.apNumber}</APNumber>
-  <FileNumberStart>${query.fileNumberStart}</FileNumberStart>
-  <FileNumberEnd>${query.fileNumberEnd}</FileNumberEnd>
-</QueryCashRegisterRequest>`;
-
-  const responseXml = await postXml("queryCashRegister", requestXml, config.cashRegisterBaseUrl);
-  const parsed = xmlParser.parse(responseXml);
-  const root = parsed.QueryCashRegisterResponse ?? parsed;
-
-  return { raw: root, rawXml: responseXml };
 }

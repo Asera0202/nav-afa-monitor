@@ -1,7 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { queryInvoiceData } from "./nav-client.js";
+import { buildCredentialsFromEnv } from "./config.js";
 
 async function main() {
+  const creds = buildCredentialsFromEnv();
   const raw = await readFile(new URL("../out/invoices.json", import.meta.url), "utf-8");
   const invoices: any[] = JSON.parse(raw);
 
@@ -25,7 +27,7 @@ async function main() {
   }
 
   console.log(`\nTeljes adat lekérése: ${invoiceNumber} (batchIndex: ${batchIndex ?? "nincs"})...`);
-  const { raw: rawResponse, invoiceXml } = await queryInvoiceData(invoiceNumber, "INBOUND", batchIndex);
+  const { raw: rawResponse, invoiceXml } = await queryInvoiceData(invoiceNumber, "INBOUND", batchIndex, creds);
 
   if (!invoiceXml) {
     console.log("\nNem sikerült kicsomagolni az invoiceData-t. Nyers válasz (ebből kiderül, mi a valós mezőnév):");

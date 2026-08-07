@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { XMLParser } from "fast-xml-parser";
 import { queryInvoiceData } from "./nav-client.js";
+import { buildCredentialsFromEnv } from "./config.js";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", removeNSPrefix: true });
 
@@ -26,6 +27,7 @@ function extractVatSummary(invoiceXml: string): VatRateSummary[] {
 
 async function main() {
   const direction = process.argv[2] === "OUTBOUND" ? "OUTBOUND" : "INBOUND";
+  const creds = buildCredentialsFromEnv();
   const inPath = new URL(`../out/invoices-${direction}.json`, import.meta.url);
   const raw = await readFile(inPath, "utf-8");
   const invoices: any[] = JSON.parse(raw);
@@ -45,7 +47,7 @@ async function main() {
     process.stdout.write(`  [${i + 1}/${invoices.length}] ${invoiceNumber}... `);
 
     try {
-      const { invoiceXml } = await queryInvoiceData(invoiceNumber, direction, batchIndex);
+      const { invoiceXml } = await queryInvoiceData(invoiceNumber, direction, batchIndex, creds);
       if (!invoiceXml) {
         console.log("nincs invoiceData (kihagyva)");
         failed++;

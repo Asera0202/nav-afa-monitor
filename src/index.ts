@@ -1,5 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import { queryInvoiceDigest, tokenExchange } from "./nav-client.js";
+import { buildCredentialsFromEnv } from "./config.js";
 
 function dateRangeFromArgsOrDefault(): { from: string; to: string; direction: "INBOUND" | "OUTBOUND" } {
   const [, , argFrom, argTo, argDirection] = process.argv;
@@ -33,10 +34,11 @@ function splitDateRange(from: string, to: string, maxDays = 35): { from: string;
 
 async function main() {
   console.log(`NAV környezet: ${process.env.NAV_ENV ?? "test"}`);
+  const creds = buildCredentialsFromEnv();
 
   console.log("\n1) Hitelesítés ellenőrzése (tokenExchange)...");
   try {
-    const token = await tokenExchange();
+    const token = await tokenExchange(creds);
     console.log(`   OK — token megérkezett (${token.length} karakter).`);
   } catch (err) {
     console.error("   HIBA a hitelesítésnél:", (err as Error).message);
@@ -57,12 +59,15 @@ async function main() {
   for (const chunk of chunks) {
     let page = 1;
     while (true) {
-      const { invoices, currentPage, availablePage } = await queryInvoiceDigest({
-        dateFrom: chunk.from,
-        dateTo: chunk.to,
-        direction,
-        page,
-      });
+      const { invoices, currentPage, availablePage } = await queryInvoiceDigest(
+        {
+          dateFrom: chunk.from,
+          dateTo: chunk.to,
+          direction,
+          page,
+        },
+        creds
+      );
       allInvoices.push(...invoices);
       console.log(
         `   ${chunk.from} – ${chunk.to} (oldal ${currentPage ?? page}/${availablePage ?? 1}): ${invoices.length} találat`

@@ -1,14 +1,16 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { queryCashRegisterFile } from "./opf-client.js";
+import { buildCredentialsFromEnv } from "./config.js";
 
 async function main() {
   const apNumber = process.argv[2] ?? "A00813560";
   const fileStart = Number(process.argv[3] ?? "12513");
   const fileEnd = Number(process.argv[4] ?? "12560");
+  const creds = buildCredentialsFromEnv();
 
   console.log(`Fájlok lekérése: AP=${apNumber}, tartomány: ${fileStart}-${fileEnd}\n`);
 
-  const { files } = await queryCashRegisterFile(apNumber, fileStart, fileEnd);
+  const { files } = await queryCashRegisterFile(apNumber, fileStart, fileEnd, creds);
   console.log(`Kapott fájlok száma: ${files.length}`);
 
   const outDir = new URL("../out/opf-files/", import.meta.url);
