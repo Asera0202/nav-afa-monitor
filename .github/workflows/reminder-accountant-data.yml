@@ -9,10 +9,20 @@ jobs:
   remind:
     runs-on: ubuntu-latest
     steps:
-      - name: Telegram-emlékeztető küldése
-        run: |
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="📋 ÁFA-monitor emlékeztető
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
 
-Kérj a könyvelődtől friss főkönyvi kivonatot vagy analitikát, és töltsd fel az ÁFA-monitorba — így az adat naprakész marad, és láthatod, ha valami lemaradt a könyvelésből."
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Függőségek telepítése
+        run: npm ci
+
+      - name: Emlékeztetők küldése minden cégnek
+        run: npx tsx src/send-reminders.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
