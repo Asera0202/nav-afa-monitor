@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adataim — Cégfókusz</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f4fb; --surface: #ffffff; --ink: #1a1b2e; --ink-soft: #6b7089;
+    --line: #eaeaf3; --primary: #4f46e5; --primary-soft: #eef0fe;
+    --ok: #16a34a; --ok-bg: #f0fdf4;
+    --error: #dc2626; --error-bg: #fef2f2;
+    --shadow: 0 1px 2px rgba(23,23,60,0.04), 0 6px 20px rgba(23,23,60,0.06);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .topnav { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .topnav-inner { max-width: 900px; margin: 0 auto; padding: 0.9rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+  .topnav .brand { display: flex; align-items: center; gap: 0.4rem; }
+  .topnav .brand img { width: 38px; height: 38px; }
+  .topnav .brand-name { font-weight: 700; font-size: 0.95rem; }
+  .topnav .nav-links { display: flex; align-items: center; gap: 1.1rem; }
+  .topnav .nav-links a, .topnav .nav-links button {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; color: var(--ink-soft); text-decoration: none;
+    background: none; border: none; cursor: pointer; padding: 0;
+  }
+  .topnav .nav-links a.active { color: var(--primary); font-weight: 600; }
+  .topnav .nav-links button:hover { color: var(--error); }
+
+  .wrap { max-width: 900px; margin: 0 auto; padding: 1.8rem 1.25rem 4rem; }
+  h1 { font-size: 1.3rem; margin: 0 0 1.2rem; }
+
+  .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+  .tab-btn {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; font-weight: 600; padding: 0.5rem 1rem;
+    border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink-soft); cursor: pointer;
+  }
+  .tab-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  .filters { display: flex; gap: 0.8rem; align-items: end; margin-bottom: 1.2rem; flex-wrap: wrap; background: var(--surface); border-radius: 14px; padding: 1rem 1.2rem; box-shadow: var(--shadow); }
+  .filter-group { display: flex; flex-direction: column; gap: 0.3rem; }
+  .filter-group label { font-size: 0.76rem; color: var(--ink-soft); font-weight: 600; }
+  .filter-group input {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; padding: 0.45rem 0.6rem;
+    border: 1.5px solid var(--line); border-radius: 8px; background: #fafafe; color: var(--ink);
+  }
+  .filter-btn {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; font-weight: 700; padding: 0.5rem 1.1rem;
+    border-radius: 8px; border: none; background: var(--primary); color: #fff; cursor: pointer;
+  }
+
+  .summary-card { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); padding: 1rem 1.2rem; margin-bottom: 1.2rem; display: flex; gap: 2rem; flex-wrap: wrap; }
+  .summary-item .label { font-size: 0.75rem; color: var(--ink-soft); }
+  .summary-item .value { font-size: 1.05rem; font-weight: 700; }
+
+  table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+  th, td { text-align: left; padding: 0.65rem 0.9rem; font-size: 0.82rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { background: #fafafe; color: var(--ink-soft); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--primary-soft); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .table-wrap { overflow-x: auto; border-radius: 14px; }
+  .loading, .empty-state { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
+  .cap-note { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.7rem; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topnav-inner">
+      <div class="brand">
+        <img src="favicon.svg" alt="Cégfókusz">
+        <div class="brand-name">Cégfókusz</div>
+      </div>
+      <div class="nav-links">
+        <a href="dashboard.html">Irányítópult</a>
+        <a href="adataim.html" class="active">Adataim</a>
+        <a href="beallitasok.html">Beállítások</a>
+        <button id="logoutBtn">Kijelentkezés</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h1>Adataim</h1>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-type="opg">Pénztárgép</button>
+      <button class="tab-btn" data-type="inbound">Bejövő számlák</button>
+      <button class="tab-btn" data-type="outbound">Kimenő számlák</button>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <label>Ettől</label>
+        <input type="date" id="fromDate">
+      </div>
+      <div class="filter-group">
+        <label>Eddig</label>
+        <input type="date" id="toDate">
+      </div>
+      <button class="filter-btn" id="applyFilter">Szűrés</button>
+    </div>
+
+    <div id="content" class="loading">Betöltés...</div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let currentType = "opg";
+let companyId = null;
+const ROW_LIMIT = 300;
+
+function formatFt(n) {
+  return Math.round(n ?? 0).toLocaleString("hu-HU") + " Ft";
+}
+function formatDate(iso) {
+  if (!iso) return "";
+  return new Date(iso).toLocaleDateString("hu-HU");
+}
+function defaultDates() {
+  const to = new Date();
+  const from = new Date();
+  from.setDate(from.getDate() - 30);
+  return { from: from.toISOString().slice(0, 10), to: to.toISOString().slice(0, 10) };
+}
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await sb.auth.signOut();
+  window.location.href = "login.html";
+});
+
+document.querySelectorAll(".tab-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentType = btn.dataset.type;
+    loadData();
+  });
+});
+
+document.getElementById("applyFilter").addEventListener("click", loadData);
+
+async function loadData() {
+  const content = document.getElementById("content");
+  content.innerHTML = `<div class="loading">Betöltés...</div>`;
+
+  const from = document.getElementById("fromDate").value;
+  const to = document.getElementById("toDate").value;
+
+  try {
+    let rows = [];
+    if (currentType === "opg") {
+      const { data, error } = await sb
+        .from("opg_receipt_items")
+        .select("transaction_at, receipt_number, vat_letter, vat_percentage, net_amount, vat_amount, gross_amount")
+        .eq("company_id", companyId)
+        .gte("transaction_at", from)
+        .lte("transaction_at", to + "T23:59:59")
+        .order("transaction_at", { ascending: false })
+        .limit(ROW_LIMIT);
+      if (error) throw error;
+      rows = data ?? [];
+      renderTable(rows, [
+        { key: "transaction_at", label: "Dátum", fmt: formatDate },
+        { key: "receipt_number", label: "Nyugtaszám" },
+        { key: "vat_letter", label: "ÁFA-kulcs" },
+        { key: "net_amount", label: "Nettó", num: true, fmt: formatFt },
+        { key: "vat_amount", label: "ÁFA", num: true, fmt: formatFt },
+        { key: "gross_amount", label: "Bruttó", num: true, fmt: formatFt },
+      ]);
+    } else {
+      const direction = currentType === "inbound" ? "INBOUND" : "OUTBOUND";
+      const { data, error } = await sb
+        .from("invoice_vat_lines")
+        .select("issue_date, invoice_number, partner_name, vat_percentage, net_amount, vat_amount, gross_amount")
+        .eq("company_id", companyId)
+        .eq("direction", direction)
+        .gte("issue_date", from)
+        .lte("issue_date", to)
+        .order("issue_date", { ascending: false })
+        .limit(ROW_LIMIT);
+      if (error) throw error;
+      rows = data ?? [];
+      renderTable(rows, [
+        { key: "issue_date", label: "Dátum", fmt: formatDate },
+        { key: "invoice_number", label: "Számlaszám" },
+        { key: "partner_name", label: "Partner" },
+        { key: "vat_percentage", label: "ÁFA%", fmt: (v) => `${Math.round((v ?? 0) * 100)}%` },
+        { key: "net_amount", label: "Nettó", num: true, fmt: formatFt },
+        { key: "vat_amount", label: "ÁFA", num: true, fmt: formatFt },
+        { key: "gross_amount", label: "Bruttó", num: true, fmt: formatFt },
+      ]);
+    }
+  } catch (err) {
+    content.innerHTML = `<div class="empty-state">Hiba történt az adatok betöltésekor: ${err.message}</div>`;
+  }
+}
+
+function renderTable(rows, columns) {
+  const content = document.getElementById("content");
+
+  if (rows.length === 0) {
+    content.innerHTML = `<div class="empty-state">Nincs adat a kiválasztott időszakban.</div>`;
+    return;
+  }
+
+  const totalNet = rows.reduce((s, r) => s + Number(r.net_amount ?? 0), 0);
+  const totalVat = rows.reduce((s, r) => s + Number(r.vat_amount ?? 0), 0);
+  const totalGross = rows.reduce((s, r) => s + Number(r.gross_amount ?? 0), 0);
+
+  const summaryHtml = `
+    <div class="summary-card">
+      <div class="summary-item"><div class="label">Tételek száma</div><div class="value">${rows.length}</div></div>
+      <div class="summary-item"><div class="label">Összes nettó</div><div class="value">${formatFt(totalNet)}</div></div>
+      <div class="summary-item"><div class="label">Összes ÁFA</div><div class="value">${formatFt(totalVat)}</div></div>
+      <div class="summary-item"><div class="label">Összes bruttó</div><div class="value">${formatFt(totalGross)}</div></div>
+    </div>`;
+
+  const headerHtml = columns.map((c) => `<th${c.num ? ' class="num"' : ""}>${c.label}</th>`).join("");
+  const rowsHtml = rows
+    .map((row) => {
+      const cells = columns
+        .map((c) => {
+          const raw = row[c.key];
+          const val = c.fmt ? c.fmt(raw) : raw ?? "";
+          return `<td${c.num ? ' class="num"' : ""}>${val}</td>`;
+        })
+        .join("");
+      return `<tr>${cells}</tr>`;
+    })
+    .join("");
+
+  const capNote = rows.length >= ROW_LIMIT ? `<div class="cap-note">Az első ${ROW_LIMIT} tétel jelenik meg — szűkítsd az időszakot a teljes lista megtekintéséhez.</div>` : "";
+
+  content.innerHTML = `
+    ${summaryHtml}
+    <div class="table-wrap">
+      <table>
+        <thead><tr>${headerHtml}</tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>
+    ${capNote}
+  `;
+}
+
+async function main() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data: companies, error } = await sb.from("companies").select("id");
+  if (error || !companies || companies.length === 0) {
+    document.getElementById("content").innerHTML = `<div class="empty-state">A regisztrációdat még átnézzük és aktiváljuk — addig itt még nincs mit mutatni.</div>`;
+    return;
+  }
+  companyId = companies[0].id;
+
+  const { from, to } = defaultDates();
+  document.getElementById("fromDate").value = from;
+  document.getElementById("toDate").value = to;
+
+  loadData();
+}
+
+main();
+</script>
+</body>
+</html>
