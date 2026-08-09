@@ -65,6 +65,14 @@
   .bar-over { background: var(--error); }
   .no-threshold { font-size: 0.82rem; color: var(--ink-soft); }
 
+  .vat-hero { border-radius: 20px; padding: 1.6rem 1.7rem; margin-bottom: 1.6rem; color: #fff; }
+  .vat-payable { background: linear-gradient(135deg, #4338ca, #6d28d9); }
+  .vat-refund { background: linear-gradient(135deg, #059669, #16a34a); }
+  .vat-hero-label { font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.4rem; }
+  .vat-hero-amount { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
+  .vat-hero-breakdown { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.8rem; opacity: 0.92; }
+  .vat-hero-breakdown .dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; margin-right: 0.4rem; background: rgba(255,255,255,0.7); }
+
   .loading, .empty-state { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
 </style>
 </head>
@@ -177,6 +185,38 @@ async function renderStatusSection(companyId) {
   return `<div class="card">${rows}</div>`;
 }
 
+async function renderVatSummarySection(companyId) {
+  const now = new Date();
+  const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
+
+  const [{ data: outboundRows, error: e1 }, { data: inboundRows, error: e2 }, { data: opgRows, error: e3 }] = await Promise.all([
+    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", monthStart),
+    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", monthStart),
+    sb.from("opg_receipt_items").select("vat_amount").eq("company_id", companyId).gte("transaction_at", monthStart),
+  ]);
+  if (e1 || e2 || e3) throw (e1 || e2 || e3);
+
+  const sum = (rows) => (rows ?? []).reduce((s, r) => s + Number(r.vat_amount ?? 0), 0);
+  const outboundVat = sum(outboundRows);
+  const opgVat = sum(opgRows);
+  const inboundVat = sum(inboundRows);
+  const net = outboundVat + opgVat - inboundVat;
+
+  const isPayable = net >= 0;
+  const monthLabel = now.toLocaleDateString("hu-HU", { year: "numeric", month: "long" });
+
+  return `
+  <div class="vat-hero ${isPayable ? "vat-payable" : "vat-refund"}">
+    <div class="vat-hero-label">${isPayable ? "Amit eddig be kellene fizetned" : "Amit eddig visszaigényelhetsz"} — ${monthLabel}</div>
+    <div class="vat-hero-amount">${formatFt(Math.abs(net))}</div>
+    <div class="vat-hero-breakdown">
+      <div><span class="dot dot-out"></span>Kimenő számla ÁFA: ${formatFt(outboundVat)}</div>
+      <div><span class="dot dot-out"></span>Pénztárgép ÁFA: ${formatFt(opgVat)}</div>
+      <div><span class="dot dot-in"></span>Levonható (bejövő) ÁFA: ${formatFt(inboundVat)}</div>
+    </div>
+  </div>`;
+}
+
 async function renderThresholdSection(company) {
   const from = yearStartIso();
 
@@ -251,9 +291,10 @@ async function main() {
   const company = companies[0];
 
   try {
-    const [statusHtml, thresholdHtml] = await Promise.all([
+    const [statusHtml, thresholdHtml, vatSummaryHtml] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
+      renderVatSummarySection(company.id),
     ]);
 
     content.innerHTML = `
@@ -261,6 +302,8 @@ async function main() {
         <h1>${company.name}</h1>
         <div class="sub">Adószám: ${company.tax_number}</div>
       </div>
+
+      ${vatSummaryHtml}
 
       <div class="section-title">Napi szinkron állapota</div>
       ${statusHtml}
