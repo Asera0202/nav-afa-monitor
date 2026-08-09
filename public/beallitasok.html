@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beállítások — Cégfókusz</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f4fb; --surface: #ffffff; --ink: #1a1b2e; --ink-soft: #6b7089;
+    --line: #eaeaf3; --primary: #4f46e5; --primary-soft: #eef0fe;
+    --danger: #dc2626; --danger-soft: #fef2f2; --ok: #16a34a; --ok-soft: #f0fdf4;
+    --shadow: 0 1px 2px rgba(23,23,60,0.04), 0 6px 20px rgba(23,23,60,0.06);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .topnav { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .topnav-inner { max-width: 640px; margin: 0 auto; padding: 0.9rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+  .topnav .brand { display: flex; align-items: center; gap: 0.4rem; }
+  .topnav .brand img { width: 38px; height: 38px; }
+  .topnav .brand-name { font-weight: 700; font-size: 0.95rem; }
+  .topnav .nav-links { display: flex; align-items: center; gap: 1.1rem; }
+  .topnav .nav-links a, .topnav .nav-links button {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; color: var(--ink-soft); text-decoration: none;
+    background: none; border: none; cursor: pointer; padding: 0;
+  }
+  .topnav .nav-links a.active { color: var(--primary); font-weight: 600; }
+  .topnav .nav-links button:hover { color: var(--danger); }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 1.8rem 1.25rem 4rem; }
+  h1 { font-size: 1.3rem; margin: 0 0 1.2rem; }
+
+  .status { display: none; border-radius: 12px; padding: 0.8rem 1rem; font-size: 0.84rem; margin-bottom: 1.2rem; line-height: 1.5; }
+  .status.error { display: block; background: var(--danger-soft); color: #991b1b; }
+  .status.success { display: block; background: var(--ok-soft); color: #166534; }
+
+  .card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 1.4rem 1.5rem; margin-bottom: 1.2rem; }
+  .card h2 { font-size: 0.92rem; margin: 0 0 0.3rem; }
+  .card .desc { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 1rem; line-height: 1.5; }
+
+  label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.85rem; }
+  label:first-of-type { margin-top: 0; }
+  .field-help { font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.2rem; line-height: 1.4; }
+  input[type="text"], input[type="password"] {
+    width: 100%; font-family: "Inter", sans-serif; font-size: 0.88rem; padding: 0.55rem 0.7rem;
+    border: 1.5px solid var(--line); border-radius: 10px; background: #fafafe; color: var(--ink);
+  }
+  input:focus { outline: none; border-color: var(--primary); }
+  input[disabled] { background: #f1f1f5; color: var(--ink-soft); }
+
+  .radio-group { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.4rem; }
+  .radio-option { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 400; cursor: pointer; }
+  .radio-option input { margin: 0; }
+
+  .checkbox-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: 0.9rem; }
+  .checkbox-row input { margin-top: 0.2rem; }
+  .checkbox-row .label-text { font-size: 0.85rem; }
+
+  .telegram-status { display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 0.9rem; border-radius: 10px; font-size: 0.85rem; }
+  .telegram-status.connected { background: var(--ok-soft); color: #166534; }
+  .telegram-status.disconnected { background: #f1f1f5; color: var(--ink-soft); }
+  a.telegram-btn { display: inline-block; margin-top: 0.7rem; background: #229ED9; color: #fff; text-decoration: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 600; font-size: 0.85rem; }
+
+  .save-btn {
+    width: 100%; background: var(--primary); color: #fff; border: none; border-radius: 12px;
+    padding: 0.8rem; font-size: 0.92rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem;
+  }
+  .save-btn:hover { background: #4338ca; }
+  .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .loading { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topnav-inner">
+      <div class="brand">
+        <img src="favicon.svg" alt="Cégfókusz">
+        <div class="brand-name">Cégfókusz</div>
+      </div>
+      <div class="nav-links">
+        <a href="dashboard.html">Irányítópult</a>
+        <a href="adataim.html">Adataim</a>
+        <a href="beallitasok.html" class="active">Beállítások</a>
+        <button id="logoutBtn">Kijelentkezés</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h1>Beállítások</h1>
+    <div id="statusBox" class="status"></div>
+    <div id="loadingBox" class="loading">Betöltés...</div>
+
+    <form id="settingsForm" style="display:none;">
+      <div class="card">
+        <h2>Cégadatok</h2>
+        <label>Cégnév</label>
+        <input type="text" id="companyName" required>
+        <label>Adószám</label>
+        <input type="text" id="taxNumber" disabled>
+        <div class="field-help">Az adószám nem módosítható itt — ha ez hibás, írj nekünk.</div>
+      </div>
+
+      <div class="card">
+        <h2>Adózási forma</h2>
+        <div class="desc">Ebből számoljuk a bevételi küszöb-figyelést.</div>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="taxRegime" value="kata"> KATA (kisadózó)</label>
+          <label class="radio-option"><input type="radio" name="taxRegime" value="atalanyado"> Átalányadó</label>
+          <label class="radio-option"><input type="radio" name="taxRegime" value="normal"> Egyéb / normál</label>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="alanyiMentes">
+          <div class="label-text">Alanyi ÁFA-mentes vagyok</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>NAV technikai felhasználó adatai</h2>
+        <div class="desc">
+          Biztonsági okból a jelenlegi adataidat <b>nem tudjuk megmutatni</b> (titkosítva tároljuk) — csak új adatokat tudsz megadni, amik felülírják a régieket. <b>Hagyd üresen azokat a mezőket, amiket nem szeretnél módosítani.</b>
+        </div>
+        <label>Technikai felhasználó login neve (új)</label>
+        <input type="text" id="navLogin" placeholder="Hagyd üresen, ha nem változott">
+        <label>Technikai felhasználó jelszava (új)</label>
+        <input type="password" id="navPassword" placeholder="Hagyd üresen, ha nem változott">
+        <label>Aláíró kulcs (új)</label>
+        <input type="text" id="navSigningKey" placeholder="Hagyd üresen, ha nem változott">
+        <label>Cserekulcs (új)</label>
+        <input type="text" id="navExchangeKey" placeholder="Hagyd üresen, ha nem változott">
+      </div>
+
+      <div class="card">
+        <h2>Pénztárgép</h2>
+        <label>Pénztárgép AP-száma</label>
+        <input type="text" id="apNumber" placeholder="pl. A00813560">
+      </div>
+
+      <div class="card">
+        <h2>Telegram-értesítés</h2>
+        <div id="telegramStatusBox"></div>
+      </div>
+
+      <button type="submit" class="save-btn" id="saveBtn">Mentés</button>
+    </form>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let company = null;
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await sb.auth.signOut();
+  window.location.href = "login.html";
+});
+
+function showStatus(message, type) {
+  const box = document.getElementById("statusBox");
+  box.textContent = message;
+  box.className = "status " + type;
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderTelegramStatus() {
+  const box = document.getElementById("telegramStatusBox");
+  if (company.telegram_chat_id) {
+    box.innerHTML = `<div class="telegram-status connected">✅ Telegram-értesítés aktív</div>`;
+  } else {
+    box.innerHTML = `
+      <div class="telegram-status disconnected">⚪ Nincs bekötve Telegram-értesítés</div>
+      <a class="telegram-btn" href="https://t.me/${TELEGRAM_BOT_USERNAME}?start=${encodeURIComponent(company.tax_number)}" target="_blank">Telegram-értesítés bekapcsolása</a>
+    `;
+  }
+}
+
+async function main() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data: companies, error } = await sb.from("companies").select("*");
+  if (error || !companies || companies.length === 0) {
+    document.getElementById("loadingBox").textContent = "A regisztrációdat még átnézzük és aktiváljuk — addig itt még nincs mit beállítani.";
+    return;
+  }
+  company = companies[0];
+
+  document.getElementById("companyName").value = company.name || "";
+  document.getElementById("taxNumber").value = company.tax_number || "";
+  document.getElementById("apNumber").value = company.opg_ap_number || "";
+  document.getElementById("alanyiMentes").checked = !!company.alanyi_mentes;
+  const regimeInput = document.querySelector(`input[name="taxRegime"][value="${company.tax_regime || 'normal'}"]`);
+  if (regimeInput) regimeInput.checked = true;
+
+  renderTelegramStatus();
+
+  document.getElementById("loadingBox").style.display = "none";
+  document.getElementById("settingsForm").style.display = "block";
+}
+
+document.getElementById("settingsForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const saveBtn = document.getElementById("saveBtn");
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Mentés...";
+
+  try {
+    const updates = {
+      name: document.getElementById("companyName").value.trim(),
+      tax_regime: document.querySelector('input[name="taxRegime"]:checked').value,
+      alanyi_mentes: document.getElementById("alanyiMentes").checked,
+      opg_ap_number: document.getElementById("apNumber").value.trim() || null,
+    };
+
+    const navLogin = document.getElementById("navLogin").value.trim();
+    const navPassword = document.getElementById("navPassword").value;
+    const navSigningKey = document.getElementById("navSigningKey").value.trim();
+    const navExchangeKey = document.getElementById("navExchangeKey").value.trim();
+
+    if (navLogin || navPassword || navSigningKey || navExchangeKey) {
+      if (!navLogin || !navPassword || !navSigningKey || !navExchangeKey) {
+        throw new Error("Ha módosítod a NAV-adatokat, mind a négy mezőt ki kell töltened (login, jelszó, aláíró kulcs, cserekulcs).");
+      }
+      const publicKey = await importRegistrationPublicKey();
+      const [encLogin, encPassword, encSigningKey, encExchangeKey] = await Promise.all([
+        encryptField(publicKey, navLogin),
+        encryptField(publicKey, navPassword),
+        encryptField(publicKey, navSigningKey),
+        encryptField(publicKey, navExchangeKey),
+      ]);
+      updates.nav_login_encrypted = encLogin;
+      updates.nav_password_encrypted = encPassword;
+      updates.nav_signing_key_encrypted = encSigningKey;
+      updates.nav_exchange_key_encrypted = encExchangeKey;
+    }
+
+    const { error } = await sb.from("companies").update(updates).eq("id", company.id);
+    if (error) throw error;
+
+    company = { ...company, ...updates };
+    document.getElementById("navLogin").value = "";
+    document.getElementById("navPassword").value = "";
+    document.getElementById("navSigningKey").value = "";
+    document.getElementById("navExchangeKey").value = "";
+
+    showStatus("Sikeresen mentve!", "success");
+  } catch (err) {
+    showStatus("Hiba történt: " + (err.message || err), "error");
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Mentés";
+  }
+});
+
+main();
+</script>
+</body>
+</html>
