@@ -73,6 +73,18 @@
   .vat-hero-breakdown { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.8rem; opacity: 0.92; }
   .vat-hero-breakdown .dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; margin-right: 0.4rem; background: rgba(255,255,255,0.7); }
 
+  .vat-filter { display: flex; gap: 0.7rem; align-items: end; margin-bottom: 0.9rem; flex-wrap: wrap; }
+  .vat-filter-group { display: flex; flex-direction: column; gap: 0.25rem; }
+  .vat-filter-group label { font-size: 0.72rem; color: var(--ink-soft); font-weight: 600; }
+  .vat-filter-group input {
+    font-family: "Inter", sans-serif; font-size: 0.82rem; padding: 0.4rem 0.55rem;
+    border: 1.5px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink);
+  }
+  .vat-filter-btn {
+    font-family: "Inter", sans-serif; font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1rem;
+    border-radius: 8px; border: none; background: var(--primary); color: #fff; cursor: pointer;
+  }
+
   .loading, .empty-state { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
 </style>
 </head>
@@ -185,14 +197,11 @@ async function renderStatusSection(companyId) {
   return `<div class="card">${rows}</div>`;
 }
 
-async function renderVatSummarySection(companyId) {
-  const now = new Date();
-  const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
-
+async function computeVatSummary(companyId, fromIso, toIso) {
   const [{ data: outboundRows, error: e1 }, { data: inboundRows, error: e2 }, { data: opgRows, error: e3 }] = await Promise.all([
-    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", monthStart),
-    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", monthStart),
-    sb.from("opg_receipt_items").select("vat_amount").eq("company_id", companyId).gte("transaction_at", monthStart),
+    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
+    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
+    sb.from("opg_receipt_items").select("vat_amount").eq("company_id", companyId).gte("transaction_at", fromIso).lte("transaction_at", toIso + "T23:59:59"),
   ]);
   if (e1 || e2 || e3) throw (e1 || e2 || e3);
 
@@ -201,20 +210,28 @@ async function renderVatSummarySection(companyId) {
   const opgVat = sum(opgRows);
   const inboundVat = sum(inboundRows);
   const net = outboundVat + opgVat - inboundVat;
+  return { outboundVat, opgVat, inboundVat, net };
+}
 
-  const isPayable = net >= 0;
-  const monthLabel = now.toLocaleDateString("hu-HU", { year: "numeric", month: "long" });
-
+function renderVatSummaryHtml(summary) {
+  const isPayable = summary.net >= 0;
   return `
   <div class="vat-hero ${isPayable ? "vat-payable" : "vat-refund"}">
-    <div class="vat-hero-label">${isPayable ? "Amit eddig be kellene fizetned" : "Amit eddig visszaigényelhetsz"} — ${monthLabel}</div>
-    <div class="vat-hero-amount">${formatFt(Math.abs(net))}</div>
+    <div class="vat-hero-label">${isPayable ? "Amit a kiválasztott időszakban be kellene fizetned" : "Amit a kiválasztott időszakban visszaigényelhetsz"}</div>
+    <div class="vat-hero-amount">${formatFt(Math.abs(summary.net))}</div>
     <div class="vat-hero-breakdown">
-      <div><span class="dot dot-out"></span>Kimenő számla ÁFA: ${formatFt(outboundVat)}</div>
-      <div><span class="dot dot-out"></span>Pénztárgép ÁFA: ${formatFt(opgVat)}</div>
-      <div><span class="dot dot-in"></span>Levonható (bejövő) ÁFA: ${formatFt(inboundVat)}</div>
+      <div><span class="dot"></span>Kimenő számla ÁFA: ${formatFt(summary.outboundVat)}</div>
+      <div><span class="dot"></span>Pénztárgép ÁFA: ${formatFt(summary.opgVat)}</div>
+      <div><span class="dot"></span>Levonható (bejövő) ÁFA: ${formatFt(summary.inboundVat)}</div>
     </div>
   </div>`;
+}
+
+function defaultVatDates() {
+  const now = new Date();
+  const from = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString().slice(0, 10);
+  const to = now.toISOString().slice(0, 10);
+  return { from, to };
 }
 
 async function renderThresholdSection(company) {
@@ -291,10 +308,11 @@ async function main() {
   const company = companies[0];
 
   try {
-    const [statusHtml, thresholdHtml, vatSummaryHtml] = await Promise.all([
+    const { from: defFrom, to: defTo } = defaultVatDates();
+    const [statusHtml, thresholdHtml, vatSummary] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
-      renderVatSummarySection(company.id),
+      computeVatSummary(company.id, defFrom, defTo),
     ]);
 
     content.innerHTML = `
@@ -303,7 +321,18 @@ async function main() {
         <div class="sub">Adószám: ${company.tax_number}</div>
       </div>
 
-      ${vatSummaryHtml}
+      <div class="vat-filter">
+        <div class="vat-filter-group">
+          <label>Ettől</label>
+          <input type="date" id="vatFrom" value="${defFrom}">
+        </div>
+        <div class="vat-filter-group">
+          <label>Eddig</label>
+          <input type="date" id="vatTo" value="${defTo}">
+        </div>
+        <button class="vat-filter-btn" id="vatRefreshBtn">Frissítés</button>
+      </div>
+      <div id="vatHeroContainer">${renderVatSummaryHtml(vatSummary)}</div>
 
       <div class="section-title">Napi szinkron állapota</div>
       ${statusHtml}
@@ -311,6 +340,19 @@ async function main() {
       <div class="section-title">Bevételi küszöbök (${new Date().getFullYear()})</div>
       ${thresholdHtml}
     `;
+
+    document.getElementById("vatRefreshBtn").addEventListener("click", async () => {
+      const from = document.getElementById("vatFrom").value;
+      const to = document.getElementById("vatTo").value;
+      const container = document.getElementById("vatHeroContainer");
+      container.innerHTML = `<div class="loading">Számolás...</div>`;
+      try {
+        const summary = await computeVatSummary(company.id, from, to);
+        container.innerHTML = renderVatSummaryHtml(summary);
+      } catch (err) {
+        container.innerHTML = `<div class="empty-state">Hiba: ${err.message}</div>`;
+      }
+    });
   } catch (err) {
     content.innerHTML = `<div class="empty-state">Hiba történt az adatok betöltésekor: ${err.message}</div>`;
   }
