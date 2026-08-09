@@ -54,9 +54,27 @@
     border-radius: 8px; border: none; background: var(--primary); color: #fff; cursor: pointer;
   }
 
+  .breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .breadcrumb button { font-family: "Inter", sans-serif; background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; padding: 0; font-size: 0.85rem; }
+  .breadcrumb span.sep { color: var(--ink-soft); }
+  .breadcrumb span.current { color: var(--ink-soft); }
+
   .summary-card { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); padding: 1rem 1.2rem; margin-bottom: 1.2rem; display: flex; gap: 2rem; flex-wrap: wrap; }
   .summary-item .label { font-size: 0.75rem; color: var(--ink-soft); }
   .summary-item .value { font-size: 1.05rem; font-weight: 700; }
+
+  .list-card { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+  .list-row {
+    display: grid; grid-template-columns: 1fr auto auto auto; gap: 0.4rem 1.2rem; align-items: center;
+    padding: 0.85rem 1.1rem; border-top: 1px solid var(--line); cursor: pointer;
+  }
+  .list-row:first-child { border-top: none; }
+  .list-row:hover { background: var(--primary-soft); }
+  .list-row .main-label { font-weight: 600; font-size: 0.88rem; }
+  .list-row .sub-label { font-size: 0.75rem; color: var(--ink-soft); grid-column: 1; }
+  .list-row .num { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+  .list-row .num-label { font-size: 0.68rem; color: var(--ink-soft); display: block; }
+  .list-row .chevron { color: var(--ink-soft); }
 
   table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
   th, td { text-align: left; padding: 0.65rem 0.9rem; font-size: 0.82rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
@@ -116,20 +134,33 @@
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let currentType = "opg";
 let companyId = null;
-const ROW_LIMIT = 300;
+let allRows = [];
+let view = "days";
+let selectedDate = null;
+let selectedGroupKey = null;
+const FETCH_LIMIT = 3000;
 
 function formatFt(n) {
   return Math.round(n ?? 0).toLocaleString("hu-HU") + " Ft";
 }
 function formatDate(iso) {
   if (!iso) return "";
-  return new Date(iso).toLocaleDateString("hu-HU");
+  return new Date(iso).toLocaleDateString("hu-HU", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
+}
+function dayKey(iso) {
+  return (iso ?? "").slice(0, 10);
 }
 function defaultDates() {
   const to = new Date();
   const from = new Date();
   from.setDate(from.getDate() - 30);
   return { from: from.toISOString().slice(0, 10), to: to.toISOString().slice(0, 10) };
+}
+function dateField() {
+  return currentType === "opg" ? "transaction_at" : "issue_date";
+}
+function groupKeyField() {
+  return currentType === "opg" ? "receipt_number" : "invoice_number";
 }
 
 document.getElementById("logoutBtn").addEventListener("click", async () => {
@@ -151,31 +182,25 @@ document.getElementById("applyFilter").addEventListener("click", loadData);
 async function loadData() {
   const content = document.getElementById("content");
   content.innerHTML = `<div class="loading">Betöltés...</div>`;
+  view = "days";
+  selectedDate = null;
+  selectedGroupKey = null;
 
   const from = document.getElementById("fromDate").value;
   const to = document.getElementById("toDate").value;
 
   try {
-    let rows = [];
     if (currentType === "opg") {
       const { data, error } = await sb
         .from("opg_receipt_items")
-        .select("transaction_at, receipt_number, vat_letter, vat_percentage, net_amount, vat_amount, gross_amount")
+        .select("transaction_at, receipt_number, item_index, vat_letter, vat_percentage, net_amount, vat_amount, gross_amount")
         .eq("company_id", companyId)
         .gte("transaction_at", from)
         .lte("transaction_at", to + "T23:59:59")
         .order("transaction_at", { ascending: false })
-        .limit(ROW_LIMIT);
+        .limit(FETCH_LIMIT);
       if (error) throw error;
-      rows = data ?? [];
-      renderTable(rows, [
-        { key: "transaction_at", label: "Dátum", fmt: formatDate },
-        { key: "receipt_number", label: "Nyugtaszám" },
-        { key: "vat_letter", label: "ÁFA-kulcs" },
-        { key: "net_amount", label: "Nettó", num: true, fmt: formatFt },
-        { key: "vat_amount", label: "ÁFA", num: true, fmt: formatFt },
-        { key: "gross_amount", label: "Bruttó", num: true, fmt: formatFt },
-      ]);
+      allRows = data ?? [];
     } else {
       const direction = currentType === "inbound" ? "INBOUND" : "OUTBOUND";
       const { data, error } = await sb
@@ -186,43 +211,170 @@ async function loadData() {
         .gte("issue_date", from)
         .lte("issue_date", to)
         .order("issue_date", { ascending: false })
-        .limit(ROW_LIMIT);
+        .limit(FETCH_LIMIT);
       if (error) throw error;
-      rows = data ?? [];
-      renderTable(rows, [
-        { key: "issue_date", label: "Dátum", fmt: formatDate },
-        { key: "invoice_number", label: "Számlaszám" },
-        { key: "partner_name", label: "Partner" },
-        { key: "vat_percentage", label: "ÁFA%", fmt: (v) => `${Math.round((v ?? 0) * 100)}%` },
-        { key: "net_amount", label: "Nettó", num: true, fmt: formatFt },
-        { key: "vat_amount", label: "ÁFA", num: true, fmt: formatFt },
-        { key: "gross_amount", label: "Bruttó", num: true, fmt: formatFt },
-      ]);
+      allRows = data ?? [];
     }
+    render();
   } catch (err) {
     content.innerHTML = `<div class="empty-state">Hiba történt az adatok betöltésekor: ${err.message}</div>`;
   }
 }
 
-function renderTable(rows, columns) {
-  const content = document.getElementById("content");
+function sumRows(rows) {
+  return {
+    net: rows.reduce((s, r) => s + Number(r.net_amount ?? 0), 0),
+    vat: rows.reduce((s, r) => s + Number(r.vat_amount ?? 0), 0),
+    gross: rows.reduce((s, r) => s + Number(r.gross_amount ?? 0), 0),
+  };
+}
 
-  if (rows.length === 0) {
-    content.innerHTML = `<div class="empty-state">Nincs adat a kiválasztott időszakban.</div>`;
+function render() {
+  if (allRows.length === 0) {
+    document.getElementById("content").innerHTML = `<div class="empty-state">Nincs adat a kiválasztott időszakban.</div>`;
     return;
   }
+  if (view === "days") renderDaysView();
+  else if (view === "groups") renderGroupsView();
+  else renderItemsView();
+}
 
-  const totalNet = rows.reduce((s, r) => s + Number(r.net_amount ?? 0), 0);
-  const totalVat = rows.reduce((s, r) => s + Number(r.vat_amount ?? 0), 0);
-  const totalGross = rows.reduce((s, r) => s + Number(r.gross_amount ?? 0), 0);
+function renderDaysView() {
+  const byDay = new Map();
+  for (const row of allRows) {
+    const key = dayKey(row[dateField()]);
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(row);
+  }
 
-  const summaryHtml = `
+  const days = [...byDay.keys()].sort((a, b) => (a < b ? 1 : -1));
+  const groupField = groupKeyField();
+
+  const rowsHtml = days
+    .map((day) => {
+      const rows = byDay.get(day);
+      const groupCount = new Set(rows.map((r) => r[groupField])).size;
+      const totals = sumRows(rows);
+      const groupLabel = currentType === "opg" ? "nyugta" : "számla";
+      return `
+      <div class="list-row" data-day="${day}">
+        <div>
+          <div class="main-label">${formatDate(day)}</div>
+          <div class="sub-label">${groupCount} ${groupLabel} · ${rows.length} tétel</div>
+        </div>
+        <div class="num"><span class="num-label">Nettó</span>${formatFt(totals.net)}</div>
+        <div class="num"><span class="num-label">ÁFA</span>${formatFt(totals.vat)}</div>
+        <div class="num"><span class="num-label">Bruttó</span>${formatFt(totals.gross)}</div>
+      </div>`;
+    })
+    .join("");
+
+  const grandTotals = sumRows(allRows);
+
+  document.getElementById("content").innerHTML = `
     <div class="summary-card">
-      <div class="summary-item"><div class="label">Tételek száma</div><div class="value">${rows.length}</div></div>
-      <div class="summary-item"><div class="label">Összes nettó</div><div class="value">${formatFt(totalNet)}</div></div>
-      <div class="summary-item"><div class="label">Összes ÁFA</div><div class="value">${formatFt(totalVat)}</div></div>
-      <div class="summary-item"><div class="label">Összes bruttó</div><div class="value">${formatFt(totalGross)}</div></div>
-    </div>`;
+      <div class="summary-item"><div class="label">Napok száma</div><div class="value">${days.length}</div></div>
+      <div class="summary-item"><div class="label">Összes nettó</div><div class="value">${formatFt(grandTotals.net)}</div></div>
+      <div class="summary-item"><div class="label">Összes ÁFA</div><div class="value">${formatFt(grandTotals.vat)}</div></div>
+      <div class="summary-item"><div class="label">Összes bruttó</div><div class="value">${formatFt(grandTotals.gross)}</div></div>
+    </div>
+    <div class="list-card">${rowsHtml}</div>
+  `;
+
+  document.querySelectorAll(".list-row[data-day]").forEach((el) => {
+    el.addEventListener("click", () => {
+      selectedDate = el.dataset.day;
+      view = "groups";
+      render();
+    });
+  });
+}
+
+function renderGroupsView() {
+  const groupField = groupKeyField();
+  const dayRows = allRows.filter((r) => dayKey(r[dateField()]) === selectedDate);
+
+  const byGroup = new Map();
+  for (const row of dayRows) {
+    const key = row[groupField] ?? "(ismeretlen)";
+    if (!byGroup.has(key)) byGroup.set(key, []);
+    byGroup.get(key).push(row);
+  }
+
+  const groupKeys = [...byGroup.keys()].sort();
+  const groupLabel = currentType === "opg" ? "Nyugtaszám" : "Számlaszám";
+
+  const rowsHtml = groupKeys
+    .map((key) => {
+      const rows = byGroup.get(key);
+      const totals = sumRows(rows);
+      const partner = currentType !== "opg" ? (rows[0].partner_name || "") : "";
+      const subLabel = currentType === "opg" ? `${rows.length} tétel` : (partner || `${rows.length} ÁFA-kulcs`);
+      return `
+      <div class="list-row" data-group="${encodeURIComponent(key)}">
+        <div>
+          <div class="main-label">${key}</div>
+          <div class="sub-label">${subLabel}</div>
+        </div>
+        <div class="num"><span class="num-label">Nettó</span>${formatFt(totals.net)}</div>
+        <div class="num"><span class="num-label">ÁFA</span>${formatFt(totals.vat)}</div>
+        <div class="num"><span class="num-label">Bruttó</span>${formatFt(totals.gross)}</div>
+      </div>`;
+    })
+    .join("");
+
+  const dayTotals = sumRows(dayRows);
+
+  document.getElementById("content").innerHTML = `
+    <div class="breadcrumb">
+      <button id="backToDays">Napok</button>
+      <span class="sep">›</span>
+      <span class="current">${formatDate(selectedDate)}</span>
+    </div>
+    <div class="summary-card">
+      <div class="summary-item"><div class="label">${groupLabel === "Nyugtaszám" ? "Nyugták" : "Számlák"}</div><div class="value">${groupKeys.length}</div></div>
+      <div class="summary-item"><div class="label">Összes nettó</div><div class="value">${formatFt(dayTotals.net)}</div></div>
+      <div class="summary-item"><div class="label">Összes ÁFA</div><div class="value">${formatFt(dayTotals.vat)}</div></div>
+      <div class="summary-item"><div class="label">Összes bruttó</div><div class="value">${formatFt(dayTotals.gross)}</div></div>
+    </div>
+    <div class="list-card">${rowsHtml}</div>
+  `;
+
+  document.getElementById("backToDays").addEventListener("click", () => {
+    view = "days";
+    render();
+  });
+  document.querySelectorAll(".list-row[data-group]").forEach((el) => {
+    el.addEventListener("click", () => {
+      selectedGroupKey = decodeURIComponent(el.dataset.group);
+      view = "items";
+      render();
+    });
+  });
+}
+
+function renderItemsView() {
+  const groupField = groupKeyField();
+  const rows = allRows.filter(
+    (r) => dayKey(r[dateField()]) === selectedDate && (r[groupField] ?? "(ismeretlen)") === selectedGroupKey
+  );
+
+  let columns;
+  if (currentType === "opg") {
+    columns = [
+      { key: "vat_letter", label: "ÁFA-kulcs" },
+      { key: "net_amount", label: "Nettó", num: true, fmt: formatFt },
+      { key: "vat_amount", label: "ÁFA", num: true, fmt: formatFt },
+      { key: "gross_amount", label: "Bruttó", num: true, fmt: formatFt },
+    ];
+  } else {
+    columns = [
+      { key: "vat_percentage", label: "ÁFA%", fmt: (v) => `${Math.round((v ?? 0) * 100)}%` },
+      { key: "net_amount", label: "Nettó", num: true, fmt: formatFt },
+      { key: "vat_amount", label: "ÁFA", num: true, fmt: formatFt },
+      { key: "gross_amount", label: "Bruttó", num: true, fmt: formatFt },
+    ];
+  }
 
   const headerHtml = columns.map((c) => `<th${c.num ? ' class="num"' : ""}>${c.label}</th>`).join("");
   const rowsHtml = rows
@@ -238,18 +390,39 @@ function renderTable(rows, columns) {
     })
     .join("");
 
-  const capNote = rows.length >= ROW_LIMIT ? `<div class="cap-note">Az első ${ROW_LIMIT} tétel jelenik meg — szűkítsd az időszakot a teljes lista megtekintéséhez.</div>` : "";
+  const totals = sumRows(rows);
+  const groupLabelType = currentType === "opg" ? "Nyugta" : "Számla";
 
-  content.innerHTML = `
-    ${summaryHtml}
+  document.getElementById("content").innerHTML = `
+    <div class="breadcrumb">
+      <button id="backToDays">Napok</button>
+      <span class="sep">›</span>
+      <button id="backToGroups">${formatDate(selectedDate)}</button>
+      <span class="sep">›</span>
+      <span class="current">${groupLabelType}: ${selectedGroupKey}</span>
+    </div>
+    <div class="summary-card">
+      <div class="summary-item"><div class="label">Tételek</div><div class="value">${rows.length}</div></div>
+      <div class="summary-item"><div class="label">Nettó</div><div class="value">${formatFt(totals.net)}</div></div>
+      <div class="summary-item"><div class="label">ÁFA</div><div class="value">${formatFt(totals.vat)}</div></div>
+      <div class="summary-item"><div class="label">Bruttó</div><div class="value">${formatFt(totals.gross)}</div></div>
+    </div>
     <div class="table-wrap">
       <table>
         <thead><tr>${headerHtml}</tr></thead>
         <tbody>${rowsHtml}</tbody>
       </table>
     </div>
-    ${capNote}
   `;
+
+  document.getElementById("backToDays").addEventListener("click", () => {
+    view = "days";
+    render();
+  });
+  document.getElementById("backToGroups").addEventListener("click", () => {
+    view = "groups";
+    render();
+  });
 }
 
 async function main() {
