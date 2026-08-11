@@ -84,6 +84,11 @@
     font-family: "Inter", sans-serif; font-size: 0.82rem; font-weight: 700; padding: 0.45rem 1rem;
     border-radius: 8px; border: none; background: var(--primary); color: #fff; cursor: pointer;
   }
+  .pdf-filter-btn {
+    font-family: "Inter", sans-serif; font-size: 0.82rem; font-weight: 700; padding: 0.44rem 1rem;
+    border-radius: 8px; border: 1.5px solid var(--primary); background: var(--surface); color: var(--primary); cursor: pointer;
+  }
+  .pdf-filter-btn:disabled { opacity: 0.55; cursor: default; }
 
   .payment-card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 1.3rem 1.4rem; margin-bottom: 1rem; }
   .payment-summary-text { font-size: 0.88rem; line-height: 1.6; margin-bottom: 0.9rem; }
@@ -118,6 +123,7 @@
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2"></script>
 <script src="config.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -295,7 +301,7 @@ function renderPaymentSummaryHtml(totals) {
   </div>`;
 }
 
-async function renderThresholdSection(company) {
+async function computeThresholdChecks(company) {
   const from = yearStartIso();
 
   const { data: invoiceRows, error: invoiceError } = await sb
@@ -322,6 +328,10 @@ async function renderThresholdSection(company) {
   if (company.tax_regime === "atalanyado") checks.push({ ...THRESHOLDS.atalanyado, revenue });
   if (company.alanyi_mentes) checks.push({ ...THRESHOLDS.alanyi_mentes, revenue });
 
+  return checks;
+}
+
+function renderThresholdHtml(checks) {
   if (checks.length === 0) {
     return `<div class="card"><div class="no-threshold">Nincs beállított figyelendő bevételi küszöb (normál adózás, nem alanyi mentes).</div></div>`;
   }
@@ -344,6 +354,196 @@ async function renderThresholdSection(company) {
     .join("");
 
   return `<div class="card">${rows}</div>`;
+}
+
+async function renderThresholdSection(company) {
+  const checks = await computeThresholdChecks(company);
+  return renderThresholdHtml(checks);
+}
+
+// --- PDF-jelentés ---
+// Az alap PDF-betűtípusok (helvetica stb.) nem tartalmazzák a magyar ő/ű
+// karaktereket, ezért egy Inter TTF-et töltünk be külön (ugyanaz a betűtípus,
+// amit az oldal is használ). Ha ez bármiért nem sikerül, simán visszaesünk az
+// alap betűtípusra — a PDF akkor is elkészül, csak az ő/ű nem lesz pontos.
+let pdfFontPromise = null;
+function loadPdfFont() {
+  if (!pdfFontPromise) {
+    const toBase64 = (buf) => {
+      let binary = "";
+      const bytes = new Uint8Array(buf);
+      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      return btoa(binary);
+    };
+    pdfFontPromise = Promise.all([
+      fetch("https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-ext-400-normal.ttf").then((r) => r.arrayBuffer()),
+      fetch("https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-ext-700-normal.ttf").then((r) => r.arrayBuffer()),
+    ])
+      .then(([regular, bold]) => ({ regular: toBase64(regular), bold: toBase64(bold) }))
+      .catch((err) => {
+        console.warn("Egyedi PDF-betűtípus nem tölthető be, alap betűtípusra váltunk:", err);
+        return null;
+      });
+  }
+  return pdfFontPromise;
+}
+
+function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, paymentSummary, thresholdChecks }) {
+  const marginX = 18;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const contentWidth = pageWidth - marginX * 2;
+  let y = 22;
+
+  const primary = [79, 70, 229];
+  const ink = [26, 27, 46];
+  const inkSoft = [107, 112, 137];
+  const lineColor = [234, 234, 243];
+  const white = [255, 255, 255];
+
+  const setFont = (weight, size, color) => {
+    doc.setFont(fontFamily, fontFamily === "Inter" ? weight : (weight === "bold" ? "bold" : "normal"));
+    doc.setFontSize(size);
+    doc.setTextColor(color[0], color[1], color[2]);
+  };
+  const hr = () => {
+    doc.setDrawColor(lineColor[0], lineColor[1], lineColor[2]);
+    doc.line(marginX, y, marginX + contentWidth, y);
+    y += 10;
+  };
+
+  setFont("bold", 18, primary);
+  doc.text("Cégfókusz — pénzügyi jelentés", marginX, y);
+  y += 9;
+
+  setFont("normal", 10.5, ink);
+  doc.text(company.name, marginX, y);
+  y += 5.4;
+  setFont("normal", 9, inkSoft);
+  doc.text(`Adószám: ${company.tax_number}`, marginX, y);
+  y += 5.2;
+  doc.text(`Időszak: ${from} – ${to}`, marginX, y);
+  y += 5.2;
+  doc.text(`Készült: ${new Date().toLocaleString("hu-HU", { dateStyle: "long", timeStyle: "short" })}`, marginX, y);
+  y += 8;
+  hr();
+
+  // ÁFA-pozíció
+  setFont("bold", 13, ink);
+  doc.text("ÁFA-pozíció", marginX, y);
+  y += 8;
+
+  const isPayable = vatSummary.net >= 0;
+  const heroColor = isPayable ? [67, 56, 202] : [5, 150, 105];
+  doc.setFillColor(heroColor[0], heroColor[1], heroColor[2]);
+  doc.roundedRect(marginX, y, contentWidth, 26, 3, 3, "F");
+  setFont("normal", 9.5, white);
+  doc.text(isPayable ? "Befizetendő ÁFA a kiválasztott időszakban" : "Visszaigényelhető ÁFA a kiválasztott időszakban", marginX + 6, y + 9);
+  setFont("bold", 16, white);
+  doc.text(formatFt(Math.abs(vatSummary.net)), marginX + 6, y + 19);
+  y += 33;
+
+  setFont("normal", 9.5, ink);
+  [
+    `Kimenő számla ÁFA: ${formatFt(vatSummary.outboundVat)}`,
+    `Pénztárgép ÁFA: ${formatFt(vatSummary.opgVat)}`,
+    `Levonható (bejövő) ÁFA: ${formatFt(vatSummary.inboundVat)}`,
+  ].forEach((l) => { doc.text(l, marginX, y); y += 5.6; });
+  y += 5;
+  hr();
+
+  // Fizetési mód megoszlása
+  setFont("bold", 13, ink);
+  doc.text("Fizetési mód megoszlása", marginX, y);
+  y += 8;
+
+  const grandTotal = paymentSummary["Bankkártya"] + paymentSummary["Készpénz"] + paymentSummary["Egyéb"];
+  if (grandTotal === 0) {
+    setFont("normal", 9.5, inkSoft);
+    doc.text("Nincs pénztárgépes forgalom a kiválasztott időszakban.", marginX, y);
+    y += 10;
+  } else {
+    const paymentColors = { "Bankkártya": [67, 56, 202], "Készpénz": [22, 163, 74], "Egyéb": [217, 119, 6] };
+    let barX = marginX;
+    const barH = 5;
+    for (const k of ["Bankkártya", "Készpénz", "Egyéb"]) {
+      const v = paymentSummary[k];
+      if (v <= 0) continue;
+      const segW = (v / grandTotal) * contentWidth;
+      doc.setFillColor(paymentColors[k][0], paymentColors[k][1], paymentColors[k][2]);
+      doc.rect(barX, y, segW, barH, "F");
+      barX += segW;
+    }
+    y += barH + 6;
+
+    setFont("normal", 9.5, ink);
+    for (const k of ["Bankkártya", "Készpénz", "Egyéb"]) {
+      const v = paymentSummary[k];
+      if (v <= 0) continue;
+      const pct = Math.round((v / grandTotal) * 100);
+      doc.text(`${k}: ${formatFt(v)} (${pct}%)`, marginX, y);
+      y += 5.6;
+    }
+    y += 4;
+  }
+  hr();
+
+  // Bevételi küszöbök
+  setFont("bold", 13, ink);
+  doc.text(`Bevételi küszöbök (${new Date().getFullYear()})`, marginX, y);
+  y += 8;
+
+  if (thresholdChecks.length === 0) {
+    setFont("normal", 9.5, inkSoft);
+    doc.text("Nincs beállított figyelendő bevételi küszöb (normál adózás, nem alanyi mentes).", marginX, y);
+    y += 10;
+  } else {
+    for (const c of thresholdChecks) {
+      const percent = (c.revenue / c.limit) * 100;
+      setFont("normal", 9.5, ink);
+      doc.text(c.label, marginX, y);
+      y += 5;
+      setFont("normal", 8.5, inkSoft);
+      doc.text(`${formatFt(c.revenue)} / ${formatFt(c.limit)} (${percent.toFixed(1)}%)`, marginX, y);
+      y += 4.5;
+
+      doc.setFillColor(lineColor[0], lineColor[1], lineColor[2]);
+      doc.rect(marginX, y, contentWidth, 3, "F");
+      let barColor = [22, 163, 74];
+      if (percent >= 100) barColor = [220, 38, 38];
+      else if (percent >= 80) barColor = [217, 119, 6];
+      doc.setFillColor(barColor[0], barColor[1], barColor[2]);
+      doc.rect(marginX, y, Math.min(percent, 100) / 100 * contentWidth, 3, "F");
+      y += 10;
+    }
+  }
+
+  y += 3;
+  setFont("normal", 8, inkSoft);
+  doc.text(
+    "Ez a jelentés tájékoztató jellegű, a Cégfókusz által szinkronizált NAV-adatok alapján készült — nem helyettesíti a könyvelői egyeztetést.",
+    marginX, y, { maxWidth: contentWidth }
+  );
+}
+
+async function buildReportPdf(data) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+
+  const fontData = await loadPdfFont();
+  let fontFamily = "helvetica";
+  if (fontData) {
+    doc.addFileToVFS("Inter-Regular.ttf", fontData.regular);
+    doc.addFont("Inter-Regular.ttf", "Inter", "normal");
+    doc.addFileToVFS("Inter-Bold.ttf", fontData.bold);
+    doc.addFont("Inter-Bold.ttf", "Inter", "bold");
+    fontFamily = "Inter";
+  }
+
+  drawReportPdf(doc, fontFamily, data);
+
+  const safeFrom = data.from.replaceAll("-", "");
+  const safeTo = data.to.replaceAll("-", "");
+  doc.save(`cegfokusz-jelentes_${data.company.tax_number}_${safeFrom}-${safeTo}.pdf`);
 }
 
 async function main() {
@@ -393,6 +593,7 @@ async function main() {
           <input type="date" id="vatTo" value="${defTo}">
         </div>
         <button class="vat-filter-btn" id="vatRefreshBtn">Frissítés</button>
+        <button class="pdf-filter-btn" id="pdfBtn">PDF-jelentés letöltése</button>
       </div>
       <div id="vatHeroContainer">${renderVatSummaryHtml(vatSummary)}</div>\n      <div id="paymentContainer">${renderPaymentSummaryHtml(paymentSummary)}</div>
 
@@ -417,6 +618,28 @@ async function main() {
         paymentContainer.innerHTML = renderPaymentSummaryHtml(paymentSummary);
       } catch (err) {
         container.innerHTML = `<div class="empty-state">Hiba: ${err.message}</div>`;
+      }
+    });
+
+    document.getElementById("pdfBtn").addEventListener("click", async () => {
+      const btn = document.getElementById("pdfBtn");
+      const from = document.getElementById("vatFrom").value;
+      const to = document.getElementById("vatTo").value;
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Készül...";
+      try {
+        const [freshVatSummary, freshPaymentSummary, thresholdChecks] = await Promise.all([
+          computeVatSummary(company.id, from, to),
+          computePaymentSummary(company.id, from, to),
+          computeThresholdChecks(company),
+        ]);
+        await buildReportPdf({ company, from, to, vatSummary: freshVatSummary, paymentSummary: freshPaymentSummary, thresholdChecks });
+      } catch (err) {
+        alert("Hiba történt a PDF elkészítése közben: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
       }
     });
   } catch (err) {
