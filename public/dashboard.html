@@ -85,6 +85,15 @@
     border-radius: 8px; border: none; background: var(--primary); color: #fff; cursor: pointer;
   }
 
+  .payment-card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 1.3rem 1.4rem; margin-bottom: 1rem; }
+  .payment-summary-text { font-size: 0.88rem; line-height: 1.6; margin-bottom: 0.9rem; }
+  .payment-bar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; margin-bottom: 0.7rem; }
+  .payment-bar-segment { height: 100%; }
+  .payment-legend { display: flex; flex-direction: column; gap: 0.35rem; }
+  .payment-legend-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; }
+  .payment-legend-item .legend-label { display: flex; align-items: center; gap: 0.5rem; }
+  .payment-legend-item .legend-dot { width: 9px; height: 9px; border-radius: 999px; display: inline-block; }
+
   .loading, .empty-state { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
 </style>
 </head>
@@ -234,6 +243,58 @@ function defaultVatDates() {
   return { from, to };
 }
 
+const PAYMENT_COLORS = { "Bankkártya": "#4338ca", "Készpénz": "#16a34a", "Egyéb": "#d97706" };
+
+async function computePaymentSummary(companyId, fromIso, toIso) {
+  const { data, error } = await sb
+    .from("opg_receipt_payments")
+    .select("payment_type, amount")
+    .eq("company_id", companyId)
+    .gte("transaction_at", fromIso)
+    .lte("transaction_at", toIso + "T23:59:59");
+  if (error) throw error;
+
+  const totals = { "Bankkártya": 0, "Készpénz": 0, "Egyéb": 0 };
+  for (const row of data ?? []) {
+    const key = row.payment_type === "Bankkártya" || row.payment_type === "Készpénz" ? row.payment_type : "Egyéb";
+    totals[key] += Number(row.amount ?? 0);
+  }
+  return totals;
+}
+
+function renderPaymentSummaryHtml(totals) {
+  const grandTotal = totals["Bankkártya"] + totals["Készpénz"] + totals["Egyéb"];
+
+  if (grandTotal === 0) {
+    return `<div class="payment-card"><div class="payment-summary-text">Nincs pénztárgépes forgalom a kiválasztott időszakban.</div></div>`;
+  }
+
+  const pct = (v) => Math.round((v / grandTotal) * 100);
+  const cardPct = pct(totals["Bankkártya"]);
+  const cashPct = pct(totals["Készpénz"]);
+
+  const barSegments = Object.entries(totals)
+    .filter(([, v]) => v > 0)
+    .map(([type, v]) => `<div class="payment-bar-segment" style="width:${(v / grandTotal) * 100}%; background:${PAYMENT_COLORS[type]};"></div>`)
+    .join("");
+
+  const legendItems = Object.entries(totals)
+    .filter(([, v]) => v > 0)
+    .map(([type, v]) => `
+      <div class="payment-legend-item">
+        <div class="legend-label"><span class="legend-dot" style="background:${PAYMENT_COLORS[type]};"></span>${type}</div>
+        <div>${formatFt(v)} (${pct(v)}%)</div>
+      </div>`)
+    .join("");
+
+  return `
+  <div class="payment-card">
+    <div class="payment-summary-text">A bevételed <b>${cardPct}%-a kártyás</b>, <b>${cashPct}%-a készpénzes</b> volt ebben az időszakban — összesen ${formatFt(grandTotal)}.</div>
+    <div class="payment-bar">${barSegments}</div>
+    <div class="payment-legend">${legendItems}</div>
+  </div>`;
+}
+
 async function renderThresholdSection(company) {
   const from = yearStartIso();
 
@@ -309,10 +370,11 @@ async function main() {
 
   try {
     const { from: defFrom, to: defTo } = defaultVatDates();
-    const [statusHtml, thresholdHtml, vatSummary] = await Promise.all([
+    const [statusHtml, thresholdHtml, vatSummary, paymentSummary] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
       computeVatSummary(company.id, defFrom, defTo),
+      computePaymentSummary(company.id, defFrom, defTo),
     ]);
 
     content.innerHTML = `
@@ -332,7 +394,7 @@ async function main() {
         </div>
         <button class="vat-filter-btn" id="vatRefreshBtn">Frissítés</button>
       </div>
-      <div id="vatHeroContainer">${renderVatSummaryHtml(vatSummary)}</div>
+      <div id="vatHeroContainer">${renderVatSummaryHtml(vatSummary)}</div>\n      <div id="paymentContainer">${renderPaymentSummaryHtml(paymentSummary)}</div>
 
       <div class="section-title">Napi szinkron állapota</div>
       ${statusHtml}
@@ -345,10 +407,14 @@ async function main() {
       const from = document.getElementById("vatFrom").value;
       const to = document.getElementById("vatTo").value;
       const container = document.getElementById("vatHeroContainer");
+      const paymentContainer = document.getElementById("paymentContainer");
       container.innerHTML = `<div class="loading">Számolás...</div>`;
+      paymentContainer.innerHTML = `<div class="loading">Számolás...</div>`;
       try {
         const summary = await computeVatSummary(company.id, from, to);
         container.innerHTML = renderVatSummaryHtml(summary);
+        const paymentSummary = await computePaymentSummary(company.id, from, to);
+        paymentContainer.innerHTML = renderPaymentSummaryHtml(paymentSummary);
       } catch (err) {
         container.innerHTML = `<div class="empty-state">Hiba: ${err.message}</div>`;
       }
