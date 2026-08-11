@@ -118,7 +118,7 @@ async function syncSingleRegister(companyId: string, apNumber: string, creds: Na
     const chunk = rows.slice(i, i + CHUNK_SIZE);
     const { error } = await supabase
       .from("opg_receipt_items")
-      .upsert(chunk, { onConflict: "company_id,receipt_number,item_index" });
+      .upsert(chunk, { onConflict: "company_id,ap_number,receipt_number,item_index" });
     if (error) {
       console.error(`  [${apNumber}] Supabase feltöltési hiba: ${error.message}`);
       uploadFailed += chunk.length;

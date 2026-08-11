@@ -47,7 +47,7 @@ async function main() {
     console.log(`Adószám:     ${reg.tax_number}`);
     console.log(`Email:       ${reg.contact_email}`);
     console.log(`Beküldve:    ${new Date(reg.submitted_at).toLocaleString("hu-HU")}`);
-    console.log(`Pénztárgép:  ${reg.opg_ap_number || "(nincs megadva)"}`);
+    console.log(`Pénztárgépek: ${reg.opg_ap_numbers && reg.opg_ap_numbers.length > 0 ? reg.opg_ap_numbers.join(", ") : "(nincs megadva)"}`);
     console.log(`Telegram:    ${reg.wants_telegram ? "igen, kéri" : "nem kéri"}`);
     console.log(`Marketing:   ${reg.marketing_consent ? "hozzájárult" : "nem járult hozzá"}`);
 
@@ -87,12 +87,13 @@ async function main() {
         console.log(`⚠️  Hiba a cég létrehozásakor: ${insertErr.message}`);
         continue;
       }
-      if (reg.opg_ap_number) {
+      const apNumbers: string[] = reg.opg_ap_numbers && reg.opg_ap_numbers.length > 0 ? reg.opg_ap_numbers : reg.opg_ap_number ? [reg.opg_ap_number] : [];
+      for (const apNumber of apNumbers) {
         const { error: registerErr } = await supabase
           .from("cash_registers")
-          .insert({ company_id: newCompany.id, ap_number: reg.opg_ap_number });
+          .insert({ company_id: newCompany.id, ap_number: apNumber });
         if (registerErr) {
-          console.log(`⚠️  Hiba a pénztárgép felvételekor: ${registerErr.message}`);
+          console.log(`⚠️  Hiba a(z) ${apNumber} pénztárgép felvételekor: ${registerErr.message}`);
         }
       }
       await supabase

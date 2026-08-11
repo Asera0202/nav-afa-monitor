@@ -45,7 +45,7 @@
   .filters { display: flex; gap: 0.8rem; align-items: end; margin-bottom: 1.2rem; flex-wrap: wrap; background: var(--surface); border-radius: 14px; padding: 1rem 1.2rem; box-shadow: var(--shadow); }
   .filter-group { display: flex; flex-direction: column; gap: 0.3rem; }
   .filter-group label { font-size: 0.76rem; color: var(--ink-soft); font-weight: 600; }
-  .filter-group input {
+  .filter-group input, .filter-group select {
     font-family: "Inter", sans-serif; font-size: 0.85rem; padding: 0.45rem 0.6rem;
     border: 1.5px solid var(--line); border-radius: 8px; background: #fafafe; color: var(--ink);
   }
@@ -114,6 +114,12 @@
     </div>
 
     <div class="filters">
+      <div class="filter-group" id="registerFilterGroup" style="display:none;">
+        <label>Pénztárgép</label>
+        <select id="registerFilter">
+          <option value="">Összes pénztárgép</option>
+        </select>
+      </div>
       <div class="filter-group">
         <label>Ettől</label>
         <input type="date" id="fromDate">
@@ -173,6 +179,7 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
     document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     currentType = btn.dataset.type;
+    document.getElementById("registerFilterGroup").style.display = currentType === "opg" ? "flex" : "none";
     loadData();
   });
 });
@@ -191,13 +198,17 @@ async function loadData() {
 
   try {
     if (currentType === "opg") {
-      const { data, error } = await sb
+      let query = sb
         .from("opg_receipt_items")
-        .select("transaction_at, receipt_number, item_index, vat_letter, vat_percentage, net_amount, vat_amount, gross_amount")
+        .select("transaction_at, receipt_number, item_index, ap_number, vat_letter, vat_percentage, net_amount, vat_amount, gross_amount")
         .eq("company_id", companyId)
         .gte("transaction_at", from)
-        .lte("transaction_at", to + "T23:59:59")
-        .order("transaction_at", { ascending: false })
+        .lte("transaction_at", to + "T23:59:59");
+
+      const selectedRegister = document.getElementById("registerFilter").value;
+      if (selectedRegister) query = query.eq("ap_number", selectedRegister);
+
+      const { data, error } = await query.order("transaction_at", { ascending: false })
         .limit(FETCH_LIMIT);
       if (error) throw error;
       allRows = data ?? [];
@@ -362,6 +373,7 @@ function renderItemsView() {
   let columns;
   if (currentType === "opg") {
     columns = [
+      { key: "ap_number", label: "Pénztárgép" },
       { key: "vat_letter", label: "ÁFA-kulcs" },
       { key: "net_amount", label: "Nettó", num: true, fmt: formatFt },
       { key: "vat_amount", label: "ÁFA", num: true, fmt: formatFt },
@@ -438,6 +450,19 @@ async function main() {
     return;
   }
   companyId = companies[0].id;
+
+  const { data: registers } = await sb.from("cash_registers").select("ap_number").eq("company_id", companyId).order("ap_number");
+  if (registers && registers.length > 0) {
+    const select = document.getElementById("registerFilter");
+    for (const r of registers) {
+      const opt = document.createElement("option");
+      opt.value = r.ap_number;
+      opt.textContent = r.ap_number;
+      select.appendChild(opt);
+    }
+  }
+  document.getElementById("registerFilterGroup").style.display = currentType === "opg" ? "flex" : "none";
+  document.getElementById("registerFilter").addEventListener("change", loadData);
 
   const { from, to } = defaultDates();
   document.getElementById("fromDate").value = from;

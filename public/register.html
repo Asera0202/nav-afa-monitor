@@ -40,6 +40,17 @@
   .checkbox-row .label-text { font-size: 0.85rem; }
   .checkbox-row .label-text .field-help { margin-top: 0.15rem; }
 
+  .register-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-top: 1px solid var(--line); }
+  .register-item:first-child { border-top: none; }
+  .register-item .ap-number { font-size: 0.88rem; font-weight: 600; }
+  .register-item .remove-btn { background: none; border: none; color: var(--danger); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+  .add-register-row { display: flex; gap: 0.5rem; margin-top: 0.3rem; }
+  .add-register-row input { flex: 1; }
+  .add-btn {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; font-weight: 700; padding: 0.55rem 1rem;
+    border-radius: 10px; border: none; background: var(--primary); color: #fff; cursor: pointer; white-space: nowrap;
+  }
+
   .radio-group { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.4rem; }
   .radio-option { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 400; cursor: pointer; }
   .radio-option input { margin: 0; }
@@ -136,10 +147,13 @@
       </div>
 
       <div class="card">
-        <h2>Pénztárgép (opcionális)</h2>
-        <div class="desc">Ha van online pénztárgéped, add meg az azonosítóját — ebből tudjuk lekérni a nyugtaforgalmat is, nem csak a számlákat.</div>
-        <label>Pénztárgép AP-száma</label>
-        <input type="text" id="apNumber" placeholder="pl. A00813560">
+        <h2>Pénztárgépek (opcionális)</h2>
+        <div class="desc">Ha van online pénztárgéped (akár több is), add meg az azonosítóját/azonosítóikat — ebből tudjuk lekérni a nyugtaforgalmat is, nem csak a számlákat.</div>
+        <div id="apNumbersList"></div>
+        <div class="add-register-row">
+          <input type="text" id="newApNumberInput" placeholder="pl. A00813560">
+          <button type="button" class="add-btn" id="addApNumberBtn">Hozzáadás</button>
+        </div>
         <div class="field-help">A pénztárgépeden vagy a hozzá tartozó dokumentációban található, "APxxxxxxxxx" formában — az "AP" előtagot NE írd be, csak az utána lévő betű+számsort.</div>
       </div>
 
@@ -198,6 +212,41 @@ function updateTelegramLink() {
   link.href = "https://t.me/" + TELEGRAM_BOT_USERNAME + (taxNumber ? "?start=" + encodeURIComponent(taxNumber) : "");
 }
 
+let apNumbers = [];
+
+function renderApNumbersList() {
+  const box = document.getElementById("apNumbersList");
+  if (apNumbers.length === 0) {
+    box.innerHTML = "";
+    return;
+  }
+  box.innerHTML = apNumbers
+    .map(
+      (ap, i) => `
+    <div class="register-item">
+      <div class="ap-number">${ap}</div>
+      <button type="button" class="remove-btn" data-index="${i}">Törlés</button>
+    </div>`
+    )
+    .join("");
+
+  box.querySelectorAll(".remove-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      apNumbers.splice(Number(btn.dataset.index), 1);
+      renderApNumbersList();
+    });
+  });
+}
+
+document.getElementById("addApNumberBtn").addEventListener("click", () => {
+  const input = document.getElementById("newApNumberInput");
+  const value = input.value.trim();
+  if (!value) return;
+  apNumbers.push(value);
+  input.value = "";
+  renderApNumbersList();
+});
+
 function translateError(message) {
   const map = [
     [/user already registered/i, "Ezzel az email címmel már regisztráltak korábban — próbálj bejelentkezni, vagy használj másik email címet."],
@@ -243,7 +292,6 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     const navPassword = document.getElementById("navPassword").value;
     const navSigningKey = document.getElementById("navSigningKey").value.trim();
     const navExchangeKey = document.getElementById("navExchangeKey").value.trim();
-    const apNumber = document.getElementById("apNumber").value.trim();
     const taxRegime = document.querySelector('input[name="taxRegime"]:checked').value;
     const alanyiMentes = document.getElementById("alanyiMentes").checked;
     const wantsTelegram = wantsTelegramEl.checked;
@@ -273,7 +321,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       nav_password_encrypted: encPassword,
       nav_signing_key_encrypted: encSigningKey,
       nav_exchange_key_encrypted: encExchangeKey,
-      opg_ap_number: apNumber || null,
+      opg_ap_numbers: apNumbers,
       wants_telegram: wantsTelegram,
       marketing_consent: marketingConsent,
       marketing_consent_at: marketingConsent ? new Date().toISOString() : null,
