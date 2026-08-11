@@ -3,3 +3,5 @@ dist/
 .env
 *.log
 out/history/
+out/opf-extracted/
+out/opf-files/

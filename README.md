@@ -1,83 +1,85 @@
-# NAV ÁFA-monitor — NAV Online Számla kliens
+# Cégfókusz — NAV-alapú ÁFA- és pénzügyi monitor
 
-Ez a szkript a bejövő (beszerzési) számlák automatikus lekérdezésére szolgál a
-NAV Online Számla API-n keresztül — ez az ÁFA-monitor projekt első lépése.
-Cél: a saját kézi feldolgozás (ami a 49 hiányzó számlát és a ~507.000 Ft
-levonható ÁFA-eltérést feltárta) helyett automatikusan lekérni ugyanezt az
-adatot a NAV-tól.
+Magyar kisvállalkozásoknak szóló SaaS. Automatikusan lekérdezi a NAV-tól
+(Online Számla API + Online Pénztárgép API) a számla- és nyugtaadatokat,
+megmutatja az ÁFA-pozíciót, és figyelmeztet a hiányzó könyvelésre és a
+közelgő adózási bevételi küszöbökre.
 
-## Mit tud most?
+Nem számlázó program — egy független, kívülről jövő ellenőrző réteg a
+Billingo / Számlázz.hu típusú rendszerek fölé.
 
-- Hitelesítés a NAV Online Számla API-val (SHA-512 jelszó-hash, aláírás)
-- `tokenExchange` hívás — gyors teszt, hogy a hitelesítési adatok jók-e
-- `queryInvoiceDigest` — bejövő számlák listázása egy dátumtartományra
-- `queryInvoiceData` — egy konkrét számla teljes adatának lekérése (a
-  tételes ÁFA-bontáshoz ez kell majd, de a válasz feldolgozása még nincs
-  kész — lásd "Következő lépések")
+Élő oldal: **cegfokusz.hu**
 
-## 1. NAV hitelesítési adatok beszerzése (ha még nincs meg)
+## Architektúra
 
-1. Lépj be a **teszt** rendszerbe: `onlineszamla-test.nav.gov.hu`,
-   ügyfélkapus/KAÜ bejelentkezéssel, elsődleges felhasználóként.
-2. **Felhasználók → Technikai felhasználó hozzáadása.** Adj meg jelszót,
-   pipáld be a "Számlák kezelése" és "Számlák lekérdezése" jogokat.
-3. A technikai felhasználó **Részletek** lapján **Kulcsgenerálás** — ez adja
-   az XML aláírókulcsot és cserekulcsot.
-4. Az éles (`onlineszamla.nav.gov.hu`) rendszerben ugyanezt külön meg kell
-   csinálni, amikor arra sor kerül — a teszt és éles technikai
-   felhasználók/kulcsok nem átjárhatók.
+- **Supabase** — adatbázis, hitelesítés (Auth), jogosultságkezelés (RLS —
+  cégenkénti adatelkülönítés adatbázis-szinten, nem csak kódszinten)
+- **Vercel** — a `public/` mappát szolgálja ki éles környezetben
+- **GitHub Actions** — 4 ütemezett automatizált feladat (lásd lent)
+- **Brevo** — SMTP e-mail küldés (Supabase Auth-emailek + havi összefoglaló)
+- **Telegram-bot** (`@Afa_monitor_bot`) — értesítések
 
-## 2. Telepítés
+Minden regisztrált cég NAV-kulcsai titkosítva kerülnek az adatbázisba. A napi
+szinkron ezeket a Supabase service role kulccsal és egy dedikált visszafejtő
+kulccsal (`REGISTRATION_PRIVATE_KEY`) olvassa vissza, cégenként külön.
 
-```bash
-npm install
-cp .env.example .env
-```
+## Mappák
 
-Töltsd ki a `.env` fájlt a NAV-tól kapott adatokkal (login, jelszó,
-aláírókulcs, cserekulcs, adószám törzsszáma). Hagyd `NAV_ENV=test`-en,
-amíg a teszt környezetben nem megy stabilan minden.
+- `src/` — Node/TypeScript háttérszkriptek. Ezeket vagy a GitHub Actions
+  futtatja ütemezetten, vagy kézzel indíthatók Codespace terminálból:
+  `npx tsx src/fájlnév.ts`
+- `public/` — a tényleges éles weboldal (statikus HTML+JS): regisztráció,
+  bejelentkezés, irányítópult, adataim, beállítások, admin állapot-oldalak
+- `.github/workflows/` — a 4 ütemezett automatizálás
+- `backups/` — napi adatbázis-mentések. Szándékosan git-tracked: a mentés-
+  workflow magába a repóba commitolja a napi `pg_dump`-ot, ez maga a mentési
+  mechanizmus — ezért NEM kerülhet `.gitignore`-ba
+- `out/` — helyi szkriptfuttatások kimenete / minta-fájlok fejlesztéshez,
+  nem éles, nem automatizált
 
-## 3. Futtatás
+## Automatizált feladatok (GitHub Actions)
 
-```bash
-npm run dev
-```
+| Workflow | Ütemezés (UTC) | Mit csinál |
+|---|---|---|
+| Napi NAV-szinkron | minden nap 05:00 | Lekéri az aktivált cégek számla- és pénztárgép-adatát, frissíti a `public/status.html`-t és a `public/thresholds.html`-t |
+| Napi adatbázis-mentés | minden nap 06:00 | `pg_dump`-ol és bekommitol egy `backups/backup-ÉÉÉÉ-HH-NN.sql` fájlt |
+| Kétheti könyvelői emlékeztető | havonta 1. és 15. 08:00 | Emlékeztetőt küld minden cégnek a könyvelői analitika összeállításáról |
+| Havi összefoglaló e-mail | havonta 1. 07:00 | Elküldi minden cégnek az előző havi ÁFA-pozíciót és fizetésimód-bontást |
 
-Ez lefuttatja a `src/index.ts`-t: ellenőrzi a hitelesítést, majd lekéri a
-folyó hónap bejövő számláit, és elmenti a `out/invoices.json` fájlba.
+## Fejlesztés
 
-## Fontos — mit érdemes ellenőrizni, mielőtt élesben használod
+A fejlesztés GitHub Codespaces terminálból történik, telepítés:
 
-Ezt a klienst a hivatalos "Online Számla Interfész Specifikáció HU v3.0"
-alapján írtuk, de néhány pontot **mindenképp validálj a teszt környezetben**,
-mielőtt élesre váltasz:
+    npm install
 
-- **`SOFTWARE_ID` formátuma** (`.env`-ben) — a NAV pontos hossz-/
-  karakterkészlet-követelményét érdemes az aktuális XSD-vel összevetni,
-  ha a NAV validációs hibát ad rá.
-- **`requestSignature` számítás** — SHA3-512(requestId + maszkolt timestamp +
-  aláírókulcs), nagybetűs hex. Ezt a NAV teszt API-val élesben leteszteltük
-  (2026-08-05) — SHA-512-vel `INVALID_REQUEST_SIGNATURE_HASH_CRYPTO` hibát
-  adott, SHA3-512-vel jó. A `passwordHash` marad SHA-512. Ha később
-  számla-*beküldést* (manageInvoice) is építünk, ahhoz más, index-hash
-  alapú aláírás-összeállítás kell — az ebben a szkriptben még nincs
-  implementálva.
-- Az XML kérés-struktúra (elemek sorrendje, névterek) a publikus
-  dokumentáció alapján készült — ha a NAV séma-validációs hibát ad,
-  az konkrétan megmondja, melyik mezőt kell igazítani.
+A **production** rendszer nem helyi `.env`-ből dolgozik: a cégek NAV-kulcsai
+titkosítva az adatbázisban vannak, a workflow-k GitHub Secrets-ből kapják meg
+a visszafejtéshez szükséges kulcsokat.
 
-A teszt környezet (`api-test.onlineszamla.nav.gov.hu`) pontosan erre való:
-minden éles funkciót tud, de nem kerül be az éles rendszerbe, szóval
-nyugodtan lehet vele próbálkozni és hibázni.
+Néhány egyszemélyes fejlesztői/teszt-szkript (pl. `fetch-sample-invoice.ts`,
+`inspect-nyn-sample.ts`, `test-opf-file.ts`) viszont egy helyi `.env` fájlból
+olvassa a fejlesztő saját NAV technikai felhasználóját. Ehhez ezek a
+változók kellenek:
 
-## Következő lépések (roadmap)
+    NAV_LOGIN=
+    NAV_PASSWORD=
+    NAV_SIGNING_KEY=
+    NAV_EXCHANGE_KEY=
+    NAV_TAX_NUMBER=
+    NAV_ENV=test
+    SOFTWARE_ID=
+    SOFTWARE_NAME=
+    SOFTWARE_DEV_NAME=
+    SOFTWARE_DEV_CONTACT=
 
-1. ✅ Projekt váz + hitelesítés + számlalista lekérdezés
-2. `queryInvoiceData` válaszának feldolgozása — a Base64+gzip tömörített
-   `invoiceData` XML kibontása és a tételes ÁFA-adatok kinyerése
-   (ÁFA-kulcsonkénti bontás, ahogy a kézi feldolgozásnál is volt)
-3. Az eredmény bekötése a tervezett Supabase adatmodellbe
-4. Dashboard (Next.js) — fizetendő vs. levonható ÁFA, nettó pozíció,
-   kulcsonkénti arány-riasztás
-5. Ütemezett, automatikus futtatás (pl. napi cron)
+A technikai felhasználót a NAV Online Számla **teszt** rendszerében
+(`onlineszamla-test.nav.gov.hu`) kell létrehozni, ügyfélkapus belépés után:
+Felhasználók → Technikai felhasználó hozzáadása, majd a Részletek lapon
+Kulcsgenerálás adja az aláíró- és cserekulcsot.
+
+## Jelenlegi állapot
+
+Minden alapfunkció éles és validálva: regisztráció, bejelentkezés,
+multi-tenant napi NAV-szinkron, interaktív irányítópult (ÁFA-pozíció,
+küszöb-figyelő, fizetésimód-bontás, letölthető PDF-jelentés), Adataim,
+Beállítások, napi mentés, havi összefoglaló e-mail.
