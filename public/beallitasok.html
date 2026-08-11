@@ -73,6 +73,18 @@
   .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
   .loading { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
+
+  .register-item { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0; border-top: 1px solid var(--line); }
+  .register-item:first-child { border-top: none; }
+  .register-item .ap-number { font-size: 0.88rem; font-weight: 600; }
+  .register-item .remove-btn { background: none; border: none; color: var(--danger); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+  .no-registers { font-size: 0.82rem; color: var(--ink-soft); padding: 0.5rem 0; }
+  .add-register-row { display: flex; gap: 0.5rem; margin-top: 0.9rem; }
+  .add-register-row input { flex: 1; }
+  .add-btn {
+    font-family: "Inter", sans-serif; font-size: 0.85rem; font-weight: 700; padding: 0.55rem 1rem;
+    border-radius: 10px; border: none; background: var(--primary); color: #fff; cursor: pointer; white-space: nowrap;
+  }
 </style>
 </head>
 <body>
@@ -136,9 +148,13 @@
       </div>
 
       <div class="card">
-        <h2>Pénztárgép</h2>
-        <label>Pénztárgép AP-száma</label>
-        <input type="text" id="apNumber" placeholder="pl. A00813560">
+        <h2>Pénztárgépek</h2>
+        <div class="desc">Ha több pénztárgéped van, mindegyiket felveheted — mindegyiket külön figyeli majd a rendszer.</div>
+        <div id="cashRegistersList"></div>
+        <div class="add-register-row">
+          <input type="text" id="newApNumber" placeholder="Új AP-szám, pl. A00813560">
+          <button type="button" class="add-btn" id="addRegisterBtn">Hozzáadás</button>
+        </div>
       </div>
 
       <div class="card">
@@ -168,6 +184,57 @@ function showStatus(message, type) {
   box.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+async function loadCashRegisters() {
+  const { data, error } = await sb.from("cash_registers").select("id, ap_number").eq("company_id", company.id).order("ap_number");
+  if (error) {
+    document.getElementById("cashRegistersList").innerHTML = `<div class="no-registers">Hiba a betöltéskor: ${error.message}</div>`;
+    return;
+  }
+  renderCashRegistersList(data ?? []);
+}
+
+function renderCashRegistersList(registers) {
+  const box = document.getElementById("cashRegistersList");
+  if (registers.length === 0) {
+    box.innerHTML = `<div class="no-registers">Még nincs felvett pénztárgéped.</div>`;
+    return;
+  }
+  box.innerHTML = registers
+    .map(
+      (r) => `
+    <div class="register-item">
+      <div class="ap-number">${r.ap_number}</div>
+      <button type="button" class="remove-btn" data-id="${r.id}">Törlés</button>
+    </div>`
+    )
+    .join("");
+
+  box.querySelectorAll(".remove-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const { error } = await sb.from("cash_registers").delete().eq("id", btn.dataset.id);
+      if (error) {
+        showStatus("Hiba a törléskor: " + error.message, "error");
+      } else {
+        loadCashRegisters();
+      }
+    });
+  });
+}
+
+document.getElementById("addRegisterBtn").addEventListener("click", async () => {
+  const input = document.getElementById("newApNumber");
+  const apNumber = input.value.trim();
+  if (!apNumber) return;
+
+  const { error } = await sb.from("cash_registers").insert({ company_id: company.id, ap_number: apNumber });
+  if (error) {
+    showStatus("Hiba a hozzáadáskor: " + error.message, "error");
+  } else {
+    input.value = "";
+    loadCashRegisters();
+  }
+});
+
 function renderTelegramStatus() {
   const box = document.getElementById("telegramStatusBox");
   if (company.telegram_chat_id) {
@@ -196,11 +263,11 @@ async function main() {
 
   document.getElementById("companyName").value = company.name || "";
   document.getElementById("taxNumber").value = company.tax_number || "";
-  document.getElementById("apNumber").value = company.opg_ap_number || "";
   document.getElementById("alanyiMentes").checked = !!company.alanyi_mentes;
   const regimeInput = document.querySelector(`input[name="taxRegime"][value="${company.tax_regime || 'normal'}"]`);
   if (regimeInput) regimeInput.checked = true;
 
+  await loadCashRegisters();
   renderTelegramStatus();
 
   document.getElementById("loadingBox").style.display = "none";
@@ -218,7 +285,6 @@ document.getElementById("settingsForm").addEventListener("submit", async (e) => 
       name: document.getElementById("companyName").value.trim(),
       tax_regime: document.querySelector('input[name="taxRegime"]:checked').value,
       alanyi_mentes: document.getElementById("alanyiMentes").checked,
-      opg_ap_number: document.getElementById("apNumber").value.trim() || null,
     };
 
     const navLogin = document.getElementById("navLogin").value.trim();

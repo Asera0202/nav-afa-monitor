@@ -45,7 +45,6 @@ async function main() {
     console.log("─".repeat(60));
     console.log(`Cégnév:      ${reg.company_name}`);
     console.log(`Adószám:     ${reg.tax_number}`);
-    console.log(`Adózás:      ${reg.tax_regime ?? "(nincs megadva)"}${reg.alanyi_mentes ? " + alanyi mentes" : ""}`);
     console.log(`Email:       ${reg.contact_email}`);
     console.log(`Beküldve:    ${new Date(reg.submitted_at).toLocaleString("hu-HU")}`);
     console.log(`Pénztárgép:  ${reg.opg_ap_number || "(nincs megadva)"}`);
@@ -68,21 +67,33 @@ async function main() {
     const answer = (await rl.question("\nJóváhagyod ezt a regisztrációt? (i = igen / n = nem / s = kihagy most): ")).trim().toLowerCase();
 
     if (answer === "i") {
-      const { error: insertErr } = await supabase.from("companies").insert({
-        name: reg.company_name,
-        tax_number: reg.tax_number,
-        tax_regime: reg.tax_regime,
-        alanyi_mentes: reg.alanyi_mentes,
-        owner_user_id: reg.user_id,
-        nav_login_encrypted: reg.nav_login_encrypted,
-        nav_password_encrypted: reg.nav_password_encrypted,
-        nav_signing_key_encrypted: reg.nav_signing_key_encrypted,
-        nav_exchange_key_encrypted: reg.nav_exchange_key_encrypted,
-        opg_ap_number: reg.opg_ap_number,
-      });
+      const { data: newCompany, error: insertErr } = await supabase
+        .from("companies")
+        .insert({
+          name: reg.company_name,
+          tax_number: reg.tax_number,
+          tax_regime: reg.tax_regime,
+          alanyi_mentes: reg.alanyi_mentes,
+          owner_user_id: reg.user_id,
+          nav_login_encrypted: reg.nav_login_encrypted,
+          nav_password_encrypted: reg.nav_password_encrypted,
+          nav_signing_key_encrypted: reg.nav_signing_key_encrypted,
+          nav_exchange_key_encrypted: reg.nav_exchange_key_encrypted,
+          opg_ap_number: reg.opg_ap_number,
+        })
+        .select("id")
+        .single();
       if (insertErr) {
         console.log(`⚠️  Hiba a cég létrehozásakor: ${insertErr.message}`);
         continue;
+      }
+      if (reg.opg_ap_number) {
+        const { error: registerErr } = await supabase
+          .from("cash_registers")
+          .insert({ company_id: newCompany.id, ap_number: reg.opg_ap_number });
+        if (registerErr) {
+          console.log(`⚠️  Hiba a pénztárgép felvételekor: ${registerErr.message}`);
+        }
       }
       await supabase
         .from("pending_registrations")
