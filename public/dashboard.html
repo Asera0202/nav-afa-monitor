@@ -362,32 +362,10 @@ async function renderThresholdSection(company) {
 }
 
 // --- PDF-jelentés ---
-// Az alap PDF-betűtípusok (helvetica stb.) nem tartalmazzák a magyar ő/ű
-// karaktereket, ezért egy Inter TTF-et töltünk be külön (ugyanaz a betűtípus,
-// amit az oldal is használ). Ha ez bármiért nem sikerül, simán visszaesünk az
-// alap betűtípusra — a PDF akkor is elkészül, csak az ő/ű nem lesz pontos.
-let pdfFontPromise = null;
-function loadPdfFont() {
-  if (!pdfFontPromise) {
-    const toBase64 = (buf) => {
-      let binary = "";
-      const bytes = new Uint8Array(buf);
-      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-      return btoa(binary);
-    };
-    pdfFontPromise = Promise.all([
-      fetch("https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-ext-400-normal.ttf").then((r) => r.arrayBuffer()),
-      fetch("https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-ext-700-normal.ttf").then((r) => r.arrayBuffer()),
-    ])
-      .then(([regular, bold]) => ({ regular: toBase64(regular), bold: toBase64(bold) }))
-      .catch((err) => {
-        console.warn("Egyedi PDF-betűtípus nem tölthető be, alap betűtípusra váltunk:", err);
-        return null;
-      });
-  }
-  return pdfFontPromise;
-}
-
+// Próbáltunk egyedi Inter TTF-et beágyazni a magyar ő/ű miatt, de a jsPDF
+// nem tudta vele helyesen kirajzolni a szöveget (üres karakterek lettek) —
+// ezért a beépített, megbízható alap betűtípust használjuk. Ennek ára, hogy
+// az ő/ű néhány szóban pontatlanul jelenik meg, cserébe minden szöveg látszik.
 function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, paymentSummary, thresholdChecks }) {
   const marginX = 18;
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -529,17 +507,7 @@ async function buildReportPdf(data) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "mm", format: "a4" });
 
-  const fontData = await loadPdfFont();
-  let fontFamily = "helvetica";
-  if (fontData) {
-    doc.addFileToVFS("Inter-Regular.ttf", fontData.regular);
-    doc.addFont("Inter-Regular.ttf", "Inter", "normal");
-    doc.addFileToVFS("Inter-Bold.ttf", fontData.bold);
-    doc.addFont("Inter-Bold.ttf", "Inter", "bold");
-    fontFamily = "Inter";
-  }
-
-  drawReportPdf(doc, fontFamily, data);
+  drawReportPdf(doc, "helvetica", data);
 
   const safeFrom = data.from.replaceAll("-", "");
   const safeTo = data.to.replaceAll("-", "");
