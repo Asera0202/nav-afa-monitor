@@ -93,3 +93,53 @@ export function aggregateByVatRate(items: NynItem[]): Record<string, VatAggregat
   }
   return aggregate;
 }
+
+
+export interface NynPayment {
+  receiptNumber: string | null;
+  timestamp: string | null;
+  paymentType: string;
+  amount: number;
+}
+
+/**
+ * A nyugtán belüli fizetési mód(ok) kinyerése a <DRC> blokkból.
+ * FE1 = készpénz (közvetlen összeg), FE2 = bankkártya (közvetlen összeg),
+ * FE3+ = egyéb fizetőeszköz, <FEN> névvel és <FES> összeggel jelölve.
+ * Egy nyugta akár TÖBB fizetési módot is tartalmazhat (megosztott fizetés).
+ */
+export function parseNynPayments(xml: string): NynPayment[] {
+  const payments: NynPayment[] = [];
+  const nynBlocks = xml.match(/<NYN>[\s\S]*?<\/NYN>/g) ?? [];
+
+  for (const nyn of nynBlocks) {
+    const cncMatch = nyn.match(/<CNC>(\d+)<\/CNC>/);
+    if (cncMatch && cncMatch[1] !== "0") continue;
+
+    const dtsMatch = nyn.match(/<DTS>([^<]+)<\/DTS>/);
+    const nszMatch = nyn.match(/<NSZ>([^<]+)<\/NSZ>/);
+    const drcMatch = nyn.match(/<DRC>([\s\S]*?)<\/DRC>/);
+    if (!drcMatch) continue;
+
+    const drc = drcMatch[1];
+    const receiptNumber = nszMatch ? nszMatch[1] : null;
+    const timestamp = dtsMatch ? dtsMatch[1] : null;
+
+    const fe1Match = drc.match(/<FE1>([-\d.,]+)<\/FE1>/);
+    if (fe1Match) {
+      payments.push({ receiptNumber, timestamp, paymentType: "Készpénz", amount: parseFloat(fe1Match[1].replace(",", ".")) });
+    }
+
+    const fe2Match = drc.match(/<FE2>([-\d.,]+)<\/FE2>/);
+    if (fe2Match) {
+      payments.push({ receiptNumber, timestamp, paymentType: "Bankkártya", amount: parseFloat(fe2Match[1].replace(",", ".")) });
+    }
+
+    const otherMatches = [...drc.matchAll(/<FE\d+>\s*<FEN>([^<]*)<\/FEN>\s*<FES>([-\d.,]+)<\/FES>\s*<\/FE\d+>/g)];
+    for (const m of otherMatches) {
+      payments.push({ receiptNumber, timestamp, paymentType: m[1] || "Egyéb", amount: parseFloat(m[2].replace(",", ".")) });
+    }
+  }
+
+  return payments;
+}

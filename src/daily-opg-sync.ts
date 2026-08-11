@@ -2,7 +2,7 @@ import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { queryCashRegisterStatus, queryCashRegisterFile } from "./opf-client.js";
 import { unzipSingleEntry } from "./zip-utils.js";
-import { extractXmlFromP7b, parseNynEntries, VAT_RATES, type NynItem } from "./opg-parser.js";
+import { extractXmlFromP7b, parseNynEntries, parseNynPayments, VAT_RATES, type NynItem, type NynPayment } from "./opg-parser.js";
 import { decryptField } from "./crypto-utils.js";
 import { buildSoftwareId, type NavCredentials } from "./config.js";
 
@@ -69,6 +69,7 @@ async function syncSingleRegister(companyId: string, apNumber: string, creds: Na
   const { files } = await queryCashRegisterFile(apNumber, minFile, maxFile, creds);
 
   const allItems: NynItem[] = [];
+  const allPayments: NynPayment[] = [];
   let failedFiles = 0;
 
   for (const f of files) {
@@ -84,6 +85,7 @@ async function syncSingleRegister(companyId: string, apNumber: string, creds: Na
         continue;
       }
       allItems.push(...parseNynEntries(xml));
+      allPayments.push(...parseNynPayments(xml));
     } catch {
       failedFiles++;
     }
@@ -127,6 +129,29 @@ async function syncSingleRegister(companyId: string, apNumber: string, creds: Na
     }
   }
   console.log(`  [${apNumber}] Supabase: ${uploaded} sor feltöltve, ${uploadFailed} hibás.`);
+
+  const paymentRows = allPayments.map((p) => ({
+    company_id: companyId,
+    ap_number: apNumber,
+    receipt_number: p.receiptNumber,
+    transaction_at: p.timestamp,
+    payment_type: p.paymentType,
+    amount: p.amount,
+  }));
+
+  let paymentsUploaded = 0;
+  for (let i = 0; i < paymentRows.length; i += CHUNK_SIZE) {
+    const chunk = paymentRows.slice(i, i + CHUNK_SIZE);
+    const { error } = await supabase
+      .from("opg_receipt_payments")
+      .upsert(chunk, { onConflict: "company_id,ap_number,receipt_number,payment_type" });
+    if (error) {
+      console.error(`  [${apNumber}] Fizetési mód feltöltési hiba: ${error.message}`);
+    } else {
+      paymentsUploaded += chunk.length;
+    }
+  }
+  console.log(`  [${apNumber}] Fizetési módok: ${paymentsUploaded} sor feltöltve.`);
 
   return {
     itemsFound: allItems.length,
