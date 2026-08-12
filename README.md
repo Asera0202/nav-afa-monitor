@@ -14,7 +14,8 @@ Billingo / Számlázz.hu típusú rendszerek fölé.
 
 - **Supabase** — adatbázis, hitelesítés (Auth), jogosultságkezelés (RLS —
   cégenkénti adatelkülönítés adatbázis-szinten, nem csak kódszinten)
-- **Vercel** — a `public/` mappát szolgálja ki éles környezetben
+- **Vercel** — a `public/` mappát szolgálja ki éles környezetben, az `api/`
+  mappában pedig egy szerver-oldali függvényt (lásd lent)
 - **GitHub Actions** — 4 ütemezett automatizált feladat (lásd lent)
 - **Brevo** — SMTP e-mail küldés (Supabase Auth-emailek + havi összefoglaló)
 - **Telegram-bot** (`@Afa_monitor_bot`) — értesítések
@@ -30,6 +31,8 @@ kulccsal (`REGISTRATION_PRIVATE_KEY`) olvassa vissza, cégenként külön.
   `npx tsx src/fájlnév.ts`
 - `public/` — a tényleges éles weboldal (statikus HTML+JS): regisztráció,
   bejelentkezés, irányítópult, adataim, beállítások, admin állapot-oldalak
+- `api/` — egyetlen Vercel szerver-oldali függvény (`trigger-sync.ts`): ez
+  szolgálja ki a dashboard "Adatok frissítése" gombját (lásd lent)
 - `.github/workflows/` — a 4 ütemezett automatizálás
 - `backups/` — napi adatbázis-mentések. Szándékosan git-tracked: a mentés-
   workflow magába a repóba commitolja a napi `pg_dump`-ot, ez maga a mentési
@@ -45,6 +48,26 @@ kulccsal (`REGISTRATION_PRIVATE_KEY`) olvassa vissza, cégenként külön.
 | Napi adatbázis-mentés | minden nap 06:00 | `pg_dump`-ol és bekommitol egy `backups/backup-ÉÉÉÉ-HH-NN.sql` fájlt |
 | Kétheti könyvelői emlékeztető | havonta 1. és 15. 08:00 | Emlékeztetőt küld minden cégnek a könyvelői analitika összeállításáról |
 | Havi összefoglaló e-mail | havonta 1. 07:00 | Elküldi minden cégnek az előző havi ÁFA-pozíciót és fizetésimód-bontást |
+
+## Manuális "Adatok frissítése" gomb
+
+A dashboardon lévő gomb egy GitHub Actions workflow_dispatch hívást indít
+(`api/trigger-sync.ts` Vercel-függvényen keresztül), ami csak a bejelentkezett
+felhasználó saját cégére futtatja le a napi szinkron szkripteket — a NAV-
+hitelesítő adatok visszafejtéséhez szükséges titkos kulcsok soha nem kerülnek
+a böngészőbe. 3 perces cooldown védi a NAV API-t a túl gyakori újraindítástól.
+
+Ehhez a Vercel projekt beállításaiban (Environment Variables) be kell állítani:
+
+    GITHUB_DISPATCH_TOKEN=
+
+Ez egy GitHub **fine-grained personal access token**, amit a
+`github.com/settings/tokens` oldalon kell létrehozni, kizárólag ehhez a
+repóhoz (`Asera0202/nav-afa-monitor`) hozzáférve, **"Actions" jogosultsággal:
+Read and write** — ez engedélyezi a workflow_dispatch hívást, de semmi mást
+(pl. nem tud kódot módosítani vagy más titkokat olvasni). A `SUPABASE_URL` és
+`SUPABASE_SERVICE_ROLE_KEY` környezeti változóknak is be kell lenniük állítva
+a Vercel projektben (ugyanazok az értékek, mint a GitHub Actions secrets-ben).
 
 ## Fejlesztés
 

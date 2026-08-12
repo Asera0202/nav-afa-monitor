@@ -3,7 +3,12 @@ name: Napi NAV-szinkron (számlák + pénztárgép)
 on:
   schedule:
     - cron: "0 5 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      company_id:
+        description: "Ha meg van adva, csak ennek a cégnek a szinkronját futtatja (manuális 'Frissítés' gombhoz). Üresen hagyva minden céget feldolgoz."
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -32,6 +37,7 @@ jobs:
           SOFTWARE_NAME: Cégfókusz
           SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
           SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+          COMPANY_ID: ${{ inputs.company_id }}
 
       - name: Napi számla (bejövő + kimenő) szinkron futtatása
         run: npx tsx src/daily-invoice-sync.ts
@@ -42,6 +48,7 @@ jobs:
           SOFTWARE_NAME: Cégfókusz
           SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
           SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+          COMPANY_ID: ${{ inputs.company_id }}
 
       - name: Állapot-oldal generálása
         run: npx tsx src/generate-status-page.ts

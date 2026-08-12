@@ -206,16 +206,22 @@ async function syncCompany(company: CompanyRow) {
 }
 
 async function main() {
-  console.log(`[${new Date().toISOString()}] Napi számla-szinkron indul (minden cégre)`);
+  const singleCompanyId = process.env.COMPANY_ID?.trim() || null;
+  console.log(
+    `[${new Date().toISOString()}] Számla-szinkron indul (${singleCompanyId ? `csak: ${singleCompanyId}` : "minden cégre"})`
+  );
 
-  const { data: companies, error } = await supabase
+  let query = supabase
     .from("companies")
     .select("id, name, tax_number, nav_login_encrypted, nav_password_encrypted, nav_signing_key_encrypted, nav_exchange_key_encrypted");
+  if (singleCompanyId) query = query.eq("id", singleCompanyId);
+
+  const { data: companies, error } = await query;
 
   if (error) throw error;
 
   if (!companies || companies.length === 0) {
-    console.log("Nincs egyetlen cég sem az adatbázisban.");
+    console.log("Nincs feldolgozandó cég.");
     return;
   }
 
