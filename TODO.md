@@ -43,7 +43,14 @@
     kész és piacra lépnétek
 17. Piac-tágító ötletek: banki egyenleg/cash-flow összekötés, webshop-integráció
     (Shoprenter/UNAS), ingyenes kezdő szint, angol nyelvű verzió
-18. NAV adószámla-lekérdezés egy gombbal
+18. ⛔ NAV adószámla-lekérdezés egy gombbal — BLOKKOLVA, nincs rá céges technikai
+    felhasználós NAV API (ellentétben az Online Számla/Pénztárgép API-kkal),
+    csak személyes Ügyfélkapus bejelentkezéssel érhető el a NAV Ügyfélportálon.
+    Az Ügyfélkapu-automatizálás (scraping) aránytalanul nagy biztonsági/jogi
+    kockázat lenne. Helyette a dashboardra egy egyszerű "Adószámla megnyitása
+    a NAV oldalán" link-kártya készült (kész, élesítve) — ez nem automatizál,
+    csak egy kattintással odavisz. Ha a NAV valaha kiad hivatalos API-t erre,
+    érdemes újranézni.
 19. ✅ Manuális "Adatok frissítése" gomb a dashboardon — kész
     (`supabase/functions/trigger-sync/` Supabase Edge Function indítja a
     GitHub Actions szinkront, csak az adott cégre). Áttéve Vercel-ről
