@@ -810,20 +810,6 @@ async function main() {
       <div class="section-title">E-nyugta felkészültség (2026.09.01)</div>
       ${enyugtaHtml}
 
-      <div class="section-title">NAV adószámla</div>
-      <div class="card enyugta-card">
-        <div class="enyugta-icon">🏦</div>
-        <div>
-          <div class="enyugta-title" style="color:var(--ink);">Adószámla-egyenleg megtekintése</div>
-          <div class="enyugta-text">
-            Az adószámla-egyenleget biztonsági okból nem tudjuk automatikusan lekérni — ehhez a NAV nem biztosít
-            céges technikai felhasználós API-t, csak személyes Ügyfélkapus bejelentkezést kér. Az alábbi gombbal
-            egy kattintással eljutsz a NAV Ügyfélportál adószámla-lekérdező oldalára.
-          </div>
-          <a class="pdf-filter-btn" style="display:inline-block;margin-top:0.7rem;text-decoration:none;" href="https://ugyfelportal.nav.gov.hu/adoszamla/lekerdezes" target="_blank" rel="noopener">Adószámla megnyitása a NAV oldalán</a>
-        </div>
-      </div>
-
       <div class="section-title">Bevételi küszöbök (${new Date().getFullYear()})</div>
       ${thresholdHtml}
     `;
