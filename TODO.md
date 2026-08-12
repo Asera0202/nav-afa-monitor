@@ -47,9 +47,9 @@
     felhasználós NAV API (ellentétben az Online Számla/Pénztárgép API-kkal),
     csak személyes Ügyfélkapus bejelentkezéssel érhető el a NAV Ügyfélportálon.
     Az Ügyfélkapu-automatizálás (scraping) aránytalanul nagy biztonsági/jogi
-    kockázat lenne. Helyette a dashboardra egy egyszerű "Adószámla megnyitása
-    a NAV oldalán" link-kártya készült (kész, élesítve) — ez nem automatizál,
-    csak egy kattintással odavisz. Ha a NAV valaha kiad hivatalos API-t erre,
+    kockázat lenne. Helyette a Beállítások oldalra egy egyszerű "Hasznos linkek"
+    kártya készült (kész, élesítve) — ez nem automatizál, csak egy kattintással
+    a NAV Ügyfélportál adószámla-oldalára visz. Ha a NAV valaha kiad hivatalos API-t erre,
     érdemes újranézni.
 19. ✅ Manuális "Adatok frissítése" gomb a dashboardon — kész
     (`supabase/functions/trigger-sync/` Supabase Edge Function indítja a
