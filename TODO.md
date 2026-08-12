@@ -15,7 +15,8 @@
 ## Tételek
 
 1. Házipénztár-egyeztetés (készpénz-eltérés jelzése)
-2. E-nyugta felkészültség-jelző (2026.09.01-i kötelezettség)
+2. ✅ E-nyugta felkészültség-jelző (2026.09.01-i kötelezettség) — kész (dashboard,
+   a `cash_registers` tábla alapján személyre szabott zöld/sárga jelzés)
 3. KOBAK-import (kell hozzá minta-fájl)
 4. Könyvelői egyeztetés-feltöltés (főkönyvi kivonat, "lekönyveletlen tétel" felismerés)
 5. Anomália-jelzés (szokatlan ÁFA-kulcs arányok)
