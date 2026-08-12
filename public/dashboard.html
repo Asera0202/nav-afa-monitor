@@ -65,6 +65,14 @@
   .bar-over { background: var(--error); }
   .no-threshold { font-size: 0.82rem; color: var(--ink-soft); }
 
+  .enyugta-card { display: flex; gap: 0.7rem; align-items: flex-start; }
+  .enyugta-icon { font-size: 1.3rem; line-height: 1; flex-shrink: 0; }
+  .enyugta-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .enyugta-text { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; }
+  .enyugta-text a { color: var(--primary); }
+  .enyugta-ok .enyugta-title { color: var(--ok); }
+  .enyugta-warn .enyugta-title { color: var(--warn); }
+
   .vat-hero { border-radius: 20px; padding: 1.6rem 1.7rem; margin-bottom: 1.6rem; color: #fff; }
   .vat-payable { background: linear-gradient(135deg, #4338ca, #6d28d9); }
   .vat-refund { background: linear-gradient(135deg, #059669, #16a34a); }
@@ -211,6 +219,53 @@ async function renderStatusSection(companyId) {
     .join("");
 
   return `<div class="card">${rows}</div>`;
+}
+
+// 2026.09.01-től minden nyugtaadatot elektronikusan kell jelenteni a NAV
+// felé, akik nem online/e-pénztárgéppel adnak nyugtát. Akinek már van
+// regisztrált online pénztárgépe (cash_registers), arra ez a konkrét
+// határidő nem vonatkozik közvetlenül (2028.07.01-ig térhet át e-pénztárgépre)
+// — ezért a cash_registers tartalma alapján adunk személyre szabott jelzést,
+// nem egy általános, mindenkinek egyforma figyelmeztetést.
+async function renderENyugtaSection(companyId) {
+  const { data: registers, error } = await sb
+    .from("cash_registers")
+    .select("ap_number")
+    .eq("company_id", companyId);
+  if (error) throw error;
+
+  const hasRegisters = (registers ?? []).length > 0;
+
+  if (hasRegisters) {
+    const apList = registers.map((r) => r.ap_number).join(", ");
+    return `
+    <div class="card enyugta-card enyugta-ok">
+      <div class="enyugta-icon">✅</div>
+      <div>
+        <div class="enyugta-title">Rendben — 2028.07.01-ig van időd</div>
+        <div class="enyugta-text">
+          Van regisztrált online pénztárgéped a rendszerben (${apList}). A 2026.09.01-től hatályos új
+          nyugtaadat-jelentési kötelezettség elsősorban azokat érinti, akik nem online/e-pénztárgéppel adnak
+          nyugtát — rád ez közvetlenül nem vonatkozik. Online pénztárgéped használata mellett 2028.07.01-ig
+          kell majd áttérned e-pénztárgépre.
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return `
+  <div class="card enyugta-card enyugta-warn">
+    <div class="enyugta-icon">⚠️</div>
+    <div>
+      <div class="enyugta-title">Nincs regisztrált online pénztárgéped</div>
+      <div class="enyugta-text">
+        Ha kézzel írt vagy nem gépi (pl. számítógépes, de nem pénztárgépes) nyugtát adsz, 2026.09.01-től
+        minden nyugtaadatot 3 naptári napon belül elektronikusan kell jelentened a NAV felé. Ha ez rád
+        vonatkozik, érdemes lehet a NAV ingyenes e-Nyugta/e-Pénztárgép alkalmazására áttérni —
+        <a href="https://nav.gov.hu/e-nyugta" target="_blank" rel="noopener">bővebben a NAV oldalán</a>.
+      </div>
+    </div>
+  </div>`;
 }
 
 async function computeVatSummary(companyId, fromIso, toIso) {
@@ -550,11 +605,12 @@ async function main() {
 
   try {
     const { from: defFrom, to: defTo } = defaultVatDates();
-    const [statusHtml, thresholdHtml, vatSummary, paymentSummary] = await Promise.all([
+    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
       computeVatSummary(company.id, defFrom, defTo),
       computePaymentSummary(company.id, defFrom, defTo),
+      renderENyugtaSection(company.id),
     ]);
 
     content.innerHTML = `
@@ -579,6 +635,9 @@ async function main() {
 
       <div class="section-title">Napi szinkron állapota</div>
       ${statusHtml}
+
+      <div class="section-title">E-nyugta felkészültség (2026.09.01)</div>
+      ${enyugtaHtml}
 
       <div class="section-title">Bevételi küszöbök (${new Date().getFullYear()})</div>
       ${thresholdHtml}
