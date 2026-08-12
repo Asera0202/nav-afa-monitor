@@ -9,31 +9,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f3f4fb; --surface: #ffffff; --ink: #1a1b2e; --ink-soft: #6b7089;
-    --line: #eaeaf3; --primary: #4f46e5; --primary-soft: #eef0fe;
-    --danger: #dc2626; --danger-soft: #fef2f2; --ok: #16a34a; --ok-soft: #f0fdf4;
-    --shadow: 0 1px 2px rgba(23,23,60,0.04), 0 6px 20px rgba(23,23,60,0.06);
+    --ground: #f5f5fa; --surface: #ffffff; --ink: #12172b; --ink-soft: #5a6178; --ink-faint: #9297ab;
+    --line: #e6e8f0; --accent: #1f3a7a; --accent-soft: #e9edf7;
+    --danger: #b3261e; --danger-soft: #fbeceb; --ok: #1a7f4e; --ok-soft: #e8f5ee;
+    --shadow: 0 1px 2px rgba(20,21,42,0.04), 0 8px 24px rgba(20,21,42,0.05);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   .wrap { max-width: 620px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
-  .masthead { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 1.75rem; }
-  .masthead .logo { width: 52px; height: 52px; flex-shrink: 0; }
-  .masthead .title { font-size: 1.05rem; font-weight: 700; }
+  .masthead { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.75rem; }
+  .masthead .logo-mark { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .masthead .logo-mark img { width: 28px; height: 28px; }
+  .masthead .title { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 0.01em; }
   .masthead .sub { font-size: 0.8rem; color: var(--ink-soft); }
 
-  .card { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 1.6rem 1.6rem; margin-bottom: 1.25rem; }
-  .card h2 { font-size: 0.95rem; margin: 0 0 0.3rem; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 1.6rem 1.6rem; margin-bottom: 1.25rem; }
+  .card h2 { font-size: 0.92rem; margin: 0 0 0.3rem; }
   .card .desc { font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 1.1rem; line-height: 1.5; }
 
   label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.9rem; }
   label:first-of-type { margin-top: 0; }
-  .field-help { font-size: 0.76rem; color: var(--ink-soft); margin-top: 0.25rem; line-height: 1.45; }
+  .field-help { font-size: 0.76rem; color: var(--ink-faint); margin-top: 0.25rem; line-height: 1.45; }
   input[type="text"], input[type="email"], input[type="password"] {
-    width: 100%; font-family: "Inter", sans-serif; font-size: 0.9rem; padding: 0.6rem 0.75rem;
-    border: 1.5px solid var(--line); border-radius: 10px; background: #fafafe; color: var(--ink);
+    width: 100%; font-family: var(--sans); font-size: 0.9rem; padding: 0.6rem 0.75rem;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--ground); color: var(--ink);
   }
-  input:focus { outline: none; border-color: var(--primary); }
+  input:focus { outline: none; border-color: var(--accent); }
 
   .checkbox-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: 1rem; }
   .checkbox-row input { margin-top: 0.2rem; }
@@ -42,43 +45,43 @@
 
   .register-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-top: 1px solid var(--line); }
   .register-item:first-child { border-top: none; }
-  .register-item .ap-number { font-size: 0.88rem; font-weight: 600; }
+  .register-item .ap-number { font-size: 0.88rem; font-weight: 600; font-variant-numeric: tabular-nums; }
   .register-item .remove-btn { background: none; border: none; color: var(--danger); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
   .add-register-row { display: flex; gap: 0.5rem; margin-top: 0.3rem; }
   .add-register-row input { flex: 1; }
   .add-btn {
-    font-family: "Inter", sans-serif; font-size: 0.85rem; font-weight: 700; padding: 0.55rem 1rem;
-    border-radius: 10px; border: none; background: var(--primary); color: #fff; cursor: pointer; white-space: nowrap;
+    font-family: var(--sans); font-size: 0.85rem; font-weight: 600; padding: 0.55rem 1rem;
+    border-radius: 8px; border: none; background: var(--accent); color: #fff; cursor: pointer; white-space: nowrap;
   }
 
   .radio-group { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.4rem; }
   .radio-option { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 400; cursor: pointer; }
   .radio-option input { margin: 0; }
 
-  .telegram-box { display: none; background: var(--primary-soft); border-radius: 12px; padding: 0.9rem 1rem; margin-top: 0.7rem; font-size: 0.82rem; }
+  .telegram-box { display: none; background: var(--accent-soft); border-radius: 10px; padding: 0.9rem 1rem; margin-top: 0.7rem; font-size: 0.82rem; }
   .telegram-box.open { display: block; }
-  .telegram-box a.btn { display: inline-block; margin-top: 0.6rem; background: #229ED9; color: #fff; text-decoration: none; padding: 0.5rem 1rem; border-radius: 10px; font-weight: 600; font-size: 0.85rem; }
+  .telegram-box a.btn { display: inline-block; margin-top: 0.6rem; background: #229ED9; color: #fff; text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; }
 
   .submit-btn {
-    width: 100%; background: var(--primary); color: #fff; border: none; border-radius: 12px;
-    padding: 0.85rem; font-size: 0.95rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem;
+    width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 0.85rem; font-size: 0.92rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem;
   }
-  .submit-btn:hover { background: #4338ca; }
+  .submit-btn:hover { background: #17305f; }
   .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .status { display: none; border-radius: 12px; padding: 0.9rem 1.1rem; font-size: 0.86rem; margin-bottom: 1.25rem; line-height: 1.55; }
-  .status.error { display: block; background: var(--danger-soft); color: #991b1b; }
-  .status.success { display: block; background: var(--ok-soft); color: #166534; }
+  .status { display: none; border-radius: 10px; padding: 0.9rem 1.1rem; font-size: 0.86rem; margin-bottom: 1.25rem; line-height: 1.55; }
+  .status.error { display: block; background: var(--danger-soft); color: #7a1c16; }
+  .status.success { display: block; background: var(--ok-soft); color: #135a37; }
 
   .login-link { text-align: center; font-size: 0.85rem; color: var(--ink-soft); margin-top: 1rem; }
-  .login-link a { color: var(--primary); font-weight: 600; text-decoration: none; }
+  .login-link a { color: var(--accent); font-weight: 600; text-decoration: none; }
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
   <div class="wrap">
     <div class="masthead">
-      <img src="favicon.svg" alt="Cégfókusz" class="logo">
+      <div class="logo-mark"><img src="favicon.svg" alt=""></div>
       <div>
         <div class="title">Cégfókusz</div>
         <div class="sub">Regisztráció</div>
