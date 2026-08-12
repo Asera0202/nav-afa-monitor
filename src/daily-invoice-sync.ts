@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { XMLParser } from "fast-xml-parser";
 import { queryInvoiceDigest, queryInvoiceData } from "./nav-client.js";
 import { decryptField } from "./crypto-utils.js";
-import { buildSoftwareId, type NavCredentials } from "./config.js";
+import { buildSoftwareId, describeError, type NavCredentials } from "./config.js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -106,7 +106,7 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND", creds: NavCreden
       }
       processed++;
     } catch (err) {
-      console.error(`    Hiba (${invoiceNumber}): ${(err as Error).message.split("\n")[0]}`);
+      console.error(`    Hiba (${invoiceNumber}): ${describeError(err).split("\n")[0]}`);
       failed++;
     }
     await new Promise((r) => setTimeout(r, 150));
@@ -146,13 +146,14 @@ async function syncCompany(company: CompanyRow) {
   try {
     creds = buildCredentials(company);
   } catch (err) {
-    console.error(`  Hiba a hitelesítő adatok visszafejtésekor: ${(err as Error).message}`);
+    const detail = describeError(err);
+    console.error(`  Hiba a hitelesítő adatok visszafejtésekor: ${detail}`);
     await supabase.from("sync_runs").insert({
       company_id: company.id,
       source: "invoice_inbound",
       items_found: 0,
       items_failed: 0,
-      error_message: `Visszafejtési hiba: ${(err as Error).message}`,
+      error_message: `Visszafejtési hiba: ${detail}`,
     });
     return;
   }
@@ -192,13 +193,14 @@ async function syncCompany(company: CompanyRow) {
       },
     ]);
   } catch (err) {
-    console.error(`  Hiba a(z) ${company.name} feldolgozásakor: ${(err as Error).message}`);
+    const detail = describeError(err);
+    console.error(`  Hiba a(z) ${company.name} feldolgozásakor: ${detail}`);
     await supabase.from("sync_runs").insert({
       company_id: company.id,
       source: "invoice_inbound",
       items_found: 0,
       items_failed: 0,
-      error_message: (err as Error).message,
+      error_message: detail,
     });
   }
 }

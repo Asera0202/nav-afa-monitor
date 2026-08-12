@@ -4,7 +4,7 @@ import { queryCashRegisterStatus, queryCashRegisterFile } from "./opf-client.js"
 import { unzipSingleEntry } from "./zip-utils.js";
 import { extractXmlFromP7b, parseNynEntries, parseNynPayments, VAT_RATES, type NynItem, type NynPayment } from "./opg-parser.js";
 import { decryptField } from "./crypto-utils.js";
-import { buildSoftwareId, type NavCredentials } from "./config.js";
+import { buildSoftwareId, describeError, type NavCredentials } from "./config.js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -174,13 +174,14 @@ async function syncCompany(company: CompanyRow, apNumbers: string[]) {
   try {
     creds = buildCredentials(company);
   } catch (err) {
-    console.error(`  Hiba a hitelesítő adatok visszafejtésekor: ${(err as Error).message}`);
+    const detail = describeError(err);
+    console.error(`  Hiba a hitelesítő adatok visszafejtésekor: ${detail}`);
     await supabase.from("sync_runs").insert({
       company_id: company.id,
       source: "opg",
       items_found: 0,
       items_failed: 0,
-      error_message: `Visszafejtési hiba: ${(err as Error).message}`,
+      error_message: `Visszafejtési hiba: ${detail}`,
     });
     return;
   }
@@ -200,8 +201,9 @@ async function syncCompany(company: CompanyRow, apNumbers: string[]) {
       allTimestamps.push(...result.timestamps);
       if (result.errorMessage) errorMessages.push(result.errorMessage);
     } catch (err) {
-      console.error(`  [${apNumber}] Hiba: ${(err as Error).message}`);
-      errorMessages.push(`${apNumber}: ${(err as Error).message}`);
+      const detail = describeError(err);
+      console.error(`  [${apNumber}] Hiba: ${detail}`);
+      errorMessages.push(`${apNumber}: ${detail}`);
     }
   }
 
