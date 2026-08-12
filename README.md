@@ -32,6 +32,9 @@ kulccsal (`REGISTRATION_PRIVATE_KEY`) olvassa vissza, cégenként külön.
   bejelentkezés, irányítópult, adataim, beállítások, admin állapot-oldalak
 - `supabase/functions/trigger-sync/` — egyetlen Supabase Edge Function: ez
   szolgálja ki a dashboard "Adatok frissítése" gombját (lásd lent)
+- `supabase/migrations/` — SQL migrációk az adatbázis-séma változásaihoz.
+  Ezeket a Supabase CLI-vel kell alkalmazni (`supabase db push`), vagy
+  kézzel, a Supabase dashboard SQL Editorjában lefuttatva
 - `.github/workflows/` — a 4 ütemezett automatizálás
 - `backups/` — napi adatbázis-mentések. Szándékosan git-tracked: a mentés-
   workflow magába a repóba commitolja a napi `pg_dump`-ot, ez maga a mentési
@@ -77,6 +80,24 @@ titkos kulcsot kell beállítani:
    `supabase secrets set GITHUB_DISPATCH_TOKEN=<a-github-tokened>`
 5. Telepítsd a függvényt:
    `supabase functions deploy trigger-sync`
+
+## Házipénztár
+
+A `public/hazipenztar.html` oldal egy egyszerű pénztárkönyv: a pénztárgépes
+készpénzes eladást automatikusan behúzza (`opg_receipt_payments`, `Készpénz`
+tételek), a kézi kiadásokat/bevételeket és az időszaki fizikai leltárakat a
+felhasználó rögzíti. A várható egyenleg mindig a legutóbbi leltártól számol
+előre — minden új leltár egyben új kiindulópont is.
+
+**Ehhez két új adatbázis-tábla kell** (`cash_movements`, `cash_counts`),
+amiket a `supabase/migrations/20260812000000_hazipenztar.sql` fájl hoz létre.
+Alkalmazáshoz:
+
+    supabase db push
+
+(vagy: nyisd meg a fájlt, másold be a tartalmát a Supabase dashboard SQL
+Editorjába, és futtasd le kézzel). Amíg ez nincs lefuttatva, a Házipénztár
+oldal hibát fog dobni betöltéskor.
 
 ## Fejlesztés
 
