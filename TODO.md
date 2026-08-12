@@ -22,3 +22,4 @@
     kész és piacra lépnétek
 17. Piac-tágító ötletek: banki egyenleg/cash-flow összekötés, webshop-integráció
     (Shoprenter/UNAS), ingyenes kezdő szint, angol nyelvű verzió
+18. NAV adószámla-lekérdezés egy gombbal
