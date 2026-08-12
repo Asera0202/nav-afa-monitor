@@ -19,7 +19,10 @@
    a `cash_registers` tábla alapján személyre szabott zöld/sárga jelzés)
 3. KOBAK-import (kell hozzá minta-fájl)
 4. Könyvelői egyeztetés-feltöltés (főkönyvi kivonat, "lekönyveletlen tétel" felismerés)
-5. Anomália-jelzés (szokatlan ÁFA-kulcs arányok)
+5. ✅ Anomália-jelzés — kész (dashboard). ÁFA-kulcsonként hasonlítja a beszerzést
+   (bejövő számla) és az értékesítést (kimenő számla + pénztárgép) a kiválasztott
+   időszakra; 2,5x-nél nagyobb arányú, min. 50 000 Ft-os eltérésnél jelez,
+   mindkét irányban (hiányzó bejövő számla / hiányzó értékesítési tétel gyanúja)
 6. Iparűzési adó-becslő — nettó árbevétel megvan automatikusan, de a levonható tételeket
    (anyagköltség, ELÁBÉ, alvállalkozói díj) kézzel kell majd megadni/kategorizálni
    (szállító-memória + kulcsszó-javaslat + AI-javaslat kombinációja tervezve)
