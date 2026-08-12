@@ -376,6 +376,86 @@ function renderVatSummaryHtml(summary) {
   </div>`;
 }
 
+// Anomália-jelzés: ÁFA-kulcsonként összehasonlítja a beszerzést (bejövő
+// számla nettó) és az értékesítést (kimenő számla + pénztárgép nettó) a
+// kiválasztott időszakra. Ha az egyik oldal aránytalanul (ANOMALY_MULTIPLIER-
+// szeresnél jobban) meghaladja a másikat, és az eltérés összege is számottevő
+// (ANOMALY_MIN_DIFF fölött van, hogy ne jelezzen apró, zajszintű eltéréseket),
+// az valószínűleg hiányzó számlára, tévesen rögzített ÁFA-kulcsra, vagy
+// szokatlan készletmozgásra utal — ezt jelezzük.
+const ANOMALY_MULTIPLIER = 2.5;
+const ANOMALY_MIN_DIFF = 50000;
+
+function formatVatRate(rate) {
+  const pct = Math.round((rate ?? 0) * 100);
+  return pct === 0 ? "0% / AJT" : `${pct}%`;
+}
+
+async function computeAnomalies(companyId, fromIso, toIso) {
+  const [{ data: inboundRows, error: e1 }, { data: outboundRows, error: e2 }, { data: opgRows, error: e3 }] = await Promise.all([
+    sb.from("invoice_vat_lines").select("net_amount, vat_percentage").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
+    sb.from("invoice_vat_lines").select("net_amount, vat_percentage").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
+    sb.from("opg_receipt_items").select("net_amount, vat_percentage").eq("company_id", companyId).gte("transaction_at", fromIso).lte("transaction_at", toIso + "T23:59:59"),
+  ]);
+  if (e1 || e2 || e3) throw (e1 || e2 || e3);
+
+  const purchasesByRate = new Map();
+  const salesByRate = new Map();
+  const addTo = (map, rate, amount) => map.set(rate, (map.get(rate) ?? 0) + Number(amount ?? 0));
+
+  for (const r of inboundRows ?? []) addTo(purchasesByRate, r.vat_percentage ?? 0, r.net_amount);
+  for (const r of outboundRows ?? []) addTo(salesByRate, r.vat_percentage ?? 0, r.net_amount);
+  for (const r of opgRows ?? []) addTo(salesByRate, r.vat_percentage ?? 0, r.net_amount);
+
+  const allRates = new Set([...purchasesByRate.keys(), ...salesByRate.keys()]);
+  const anomalies = [];
+
+  for (const rate of allRates) {
+    const purchases = purchasesByRate.get(rate) ?? 0;
+    const sales = salesByRate.get(rate) ?? 0;
+    const diff = Math.abs(sales - purchases);
+    if (diff < ANOMALY_MIN_DIFF) continue;
+
+    const higher = Math.max(sales, purchases);
+    const lower = Math.min(sales, purchases);
+    const ratio = lower === 0 ? Infinity : higher / lower;
+    if (ratio < ANOMALY_MULTIPLIER) continue;
+
+    anomalies.push({
+      rate,
+      purchases,
+      sales,
+      direction: sales > purchases ? "sales" : "purchases",
+    });
+  }
+
+  anomalies.sort((a, b) => Math.abs(b.sales - b.purchases) - Math.abs(a.sales - a.purchases));
+  return anomalies;
+}
+
+function renderAnomaliesHtml(anomalies) {
+  if (anomalies.length === 0) {
+    return `<div class="card"><div class="no-threshold">Nincs kiugró eltérés a beszerzés és az értékesítés ÁFA-kulcsonkénti aránya között ebben az időszakban.</div></div>`;
+  }
+  const rows = anomalies
+    .map((a) => {
+      const label =
+        a.direction === "sales"
+          ? `Az értékesítés (${formatFt(a.sales)}) jelentősen meghaladja a beszerzést (${formatFt(a.purchases)}) — lehet, hogy hiányzik egy bejövő számla, vagy tévesen van rögzítve az ÁFA-kulcs.`
+          : `A beszerzés (${formatFt(a.purchases)}) jelentősen meghaladja az értékesítést (${formatFt(a.sales)}) — lehet, hogy készletet halmozol, vagy hiányzik egy értékesítési tétel.`;
+      return `
+      <div class="card enyugta-card enyugta-warn" style="margin-bottom:0.7rem;">
+        <div class="enyugta-icon">⚠️</div>
+        <div>
+          <div class="enyugta-title">${formatVatRate(a.rate)} ÁFA-kulcs</div>
+          <div class="enyugta-text">${label}</div>
+        </div>
+      </div>`;
+    })
+    .join("");
+  return rows;
+}
+
 function defaultVatDates() {
   const now = new Date();
   const from = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString().slice(0, 10);
@@ -685,12 +765,13 @@ async function main() {
 
   try {
     const { from: defFrom, to: defTo } = defaultVatDates();
-    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml] = await Promise.all([
+    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml, anomalies] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
       computeVatSummary(company.id, defFrom, defTo),
       computePaymentSummary(company.id, defFrom, defTo),
       renderENyugtaSection(company.id),
+      computeAnomalies(company.id, defFrom, defTo),
     ]);
 
     content.innerHTML = `
@@ -712,6 +793,9 @@ async function main() {
         <button class="pdf-filter-btn" id="pdfBtn">PDF-jelentés letöltése</button>
       </div>
       <div id="vatHeroContainer">${renderVatSummaryHtml(vatSummary)}</div>\n      <div id="paymentContainer">${renderPaymentSummaryHtml(paymentSummary)}</div>
+
+      <div class="section-title">Anomália-jelzés</div>
+      <div id="anomaliesContainer">${renderAnomaliesHtml(anomalies)}</div>
 
       <div class="section-title-row">
         <div class="section-title">Napi szinkron állapota</div>
@@ -762,13 +846,17 @@ async function main() {
       const to = document.getElementById("vatTo").value;
       const container = document.getElementById("vatHeroContainer");
       const paymentContainer = document.getElementById("paymentContainer");
+      const anomaliesContainer = document.getElementById("anomaliesContainer");
       container.innerHTML = `<div class="loading">Számolás...</div>`;
       paymentContainer.innerHTML = `<div class="loading">Számolás...</div>`;
+      anomaliesContainer.innerHTML = `<div class="loading">Számolás...</div>`;
       try {
         const summary = await computeVatSummary(company.id, from, to);
         container.innerHTML = renderVatSummaryHtml(summary);
         const paymentSummary = await computePaymentSummary(company.id, from, to);
         paymentContainer.innerHTML = renderPaymentSummaryHtml(paymentSummary);
+        const anomalies = await computeAnomalies(company.id, from, to);
+        anomaliesContainer.innerHTML = renderAnomaliesHtml(anomalies);
       } catch (err) {
         container.innerHTML = `<div class="empty-state">Hiba: ${err.message}</div>`;
       }
