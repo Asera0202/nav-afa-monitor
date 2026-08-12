@@ -40,3 +40,8 @@
 17. Piac-tágító ötletek: banki egyenleg/cash-flow összekötés, webshop-integráció
     (Shoprenter/UNAS), ingyenes kezdő szint, angol nyelvű verzió
 18. NAV adószámla-lekérdezés egy gombbal
+19. ✅ Manuális "Adatok frissítése" gomb a dashboardon — kész (`api/trigger-sync.ts`
+    Vercel-függvény indítja a GitHub Actions szinkront, csak az adott cégre).
+    **TEENDŐ nálad:** a Vercel projektben be kell állítani a `GITHUB_DISPATCH_TOKEN`
+    környezeti változót (lásd README "Manuális 'Adatok frissítése' gomb" szakasz)
+    — enélkül a gomb hibát fog dobni.
