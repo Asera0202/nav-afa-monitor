@@ -14,7 +14,14 @@
 
 ## Tételek
 
-1. Házipénztár-egyeztetés (készpénz-eltérés jelzése)
+1. ✅ Házipénztár-egyeztetés — kész ("A" szint: teljes pénztárkönyv). Új
+   `public/hazipenztar.html` oldal + `cash_movements`/`cash_counts` táblák.
+   Automatikusan behúzza a pénztárgépes készpénzes eladást, a kiadásokat/
+   bevételeket és az időszaki fizikai leltárt a felhasználó rögzíti kézzel
+   (ezt a NAV nem látja). Minden leltár új kiindulópont, eltérés-számítással.
+   **TEENDŐ nálad:** a migrációt (`supabase/migrations/20260812000000_hazipenztar.sql`)
+   alkalmazni kell Supabase-ben (`supabase db push`, lásd README) — enélkül
+   az oldal hibát dob.
 2. ✅ E-nyugta felkészültség-jelző (2026.09.01-i kötelezettség) — kész (dashboard,
    a `cash_registers` tábla alapján személyre szabott zöld/sárga jelzés)
 3. KOBAK-import (kell hozzá minta-fájl)
