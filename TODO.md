@@ -25,7 +25,8 @@
    (szállító-memória + kulcsszó-javaslat + AI-javaslat kombinációja tervezve)
 7. Beépített AI-chat asszisztens (cég-specifikus adatra korlátozva + friss adózási hírek)
 8. NAV-határidő-naptár
-9. Export PDF/Excel
+9. ✅ Export PDF/Excel — kész (PDF: dashboard "PDF-jelentés" gomb; Excel: Adataim
+   oldal "Excel exportálása" gomb, a szűrt tételes adatokat exportálja .xlsx-be)
 10. ✅ Profi, menüsoros/kártyás vizuális redesign — kész, élesítve mind a 6 oldalon
     (dashboard, adataim, beallitasok: teljes sidebar-váltás; login, register,
     reset-password: szín- és tipográfiai frissítés). Bankos irányba tolva:
