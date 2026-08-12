@@ -124,6 +124,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="config.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -362,159 +363,167 @@ async function renderThresholdSection(company) {
 }
 
 // --- PDF-jelentés ---
-// A jsPDF beépített (helvetica) betűtípusa WinAnsi kódlapú: az ö/ü megvan,
-// de az ő/ű nincs benne — helyettük törött glifa jelenne meg. Mivel egyedi
-// TTF beágyazása korábban nem működött megbízhatóan a jsPDF-ben, a hosszú
-// kalapos ő/ű-t vizuálisan legközelebbi ö/ü-re cseréljük a PDF szövegében.
-function huSafe(str) {
-  return String(str).replace(/ő/g, "ö").replace(/Ő/g, "Ö").replace(/ű/g, "ü").replace(/Ű/g, "Ü");
-}
-
-function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, paymentSummary, thresholdChecks }) {
-  const marginX = 18;
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const contentWidth = pageWidth - marginX * 2;
-  let y = 22;
-
-  const primary = [79, 70, 229];
-  const ink = [26, 27, 46];
-  const inkSoft = [107, 112, 137];
-  const lineColor = [234, 234, 243];
-  const white = [255, 255, 255];
-
-  const setFont = (weight, size, color) => {
-    doc.setFont(fontFamily, fontFamily === "Inter" ? weight : (weight === "bold" ? "bold" : "normal"));
-    doc.setFontSize(size);
-    doc.setTextColor(color[0], color[1], color[2]);
-  };
-  const hr = () => {
-    doc.setDrawColor(lineColor[0], lineColor[1], lineColor[2]);
-    doc.line(marginX, y, marginX + contentWidth, y);
-    y += 10;
-  };
-  // Sortördeléssel és lap-szélesség-korláttal ír ki szöveget, a magyar
-  // ő/ű-t is lecserélve — ez akadályozza meg, hogy a szöveg kilógjon a lapról.
-  const text = (str, x, maxWidth, lineHeight = 5) => {
-    const lines = doc.splitTextToSize(huSafe(str), maxWidth ?? contentWidth - (x - marginX));
-    doc.text(lines, x, y);
-    y += lines.length * lineHeight;
-  };
-
-  setFont("bold", 18, primary);
-  text("Cégfókusz — pénzügyi jelentés", marginX, contentWidth, 7);
-  y += 2;
-
-  setFont("normal", 10.5, ink);
-  text(company.name, marginX, contentWidth, 5.4);
-  setFont("normal", 9, inkSoft);
-  text(`Adószám: ${company.tax_number}`, marginX, contentWidth, 5.2);
-  text(`Időszak: ${from} – ${to}`, marginX, contentWidth, 5.2);
-  text(`Készült: ${new Date().toLocaleString("hu-HU", { dateStyle: "long", timeStyle: "short" })}`, marginX, contentWidth, 5.2);
-  y += 3;
-  hr();
-
-  // ÁFA-pozíció
-  setFont("bold", 13, ink);
-  text("ÁFA-pozíció", marginX, contentWidth, 6);
-  y += 2;
-
+// A korábbi próbálkozások (jsPDF beépített helvetica betűtípusa, majd egyedi
+// Inter TTF beágyazása) mindkettő a jsPDF saját, korlátozott szövegrenderelő
+// motorján futottak: az egyik nem ismerte a magyar ő/ű-t, a másiknál a TTF
+// glifák nem rajzolódtak ki helyesen. Ehelyett most a böngésző saját, valódi
+// szövegrenderelését használjuk (doc.html() + html2canvas): egy, az oldallal
+// megegyező stílusú, Inter betűtípusú HTML-sablont építünk fel, majd ezt a
+// jsPDF pixelre pontosan PDF-be rendereli — így minden karakter és a
+// betűköz is pontosan úgy néz ki, mint a képernyőn.
+function renderReportHtml({ company, from, to, vatSummary, paymentSummary, thresholdChecks }) {
   const isPayable = vatSummary.net >= 0;
-  const heroColor = isPayable ? [67, 56, 202] : [5, 150, 105];
-  doc.setFillColor(heroColor[0], heroColor[1], heroColor[2]);
-  doc.roundedRect(marginX, y, contentWidth, 26, 3, 3, "F");
-  setFont("normal", 9.5, white);
-  doc.text(doc.splitTextToSize(huSafe(isPayable ? "Befizetendő ÁFA a kiválasztott időszakban" : "Visszaigényelhető ÁFA a kiválasztott időszakban"), contentWidth - 12), marginX + 6, y + 9);
-  setFont("bold", 16, white);
-  doc.text(huSafe(formatFt(Math.abs(vatSummary.net))), marginX + 6, y + 19);
-  y += 33;
-
-  setFont("normal", 9.5, ink);
-  [
-    `Kimenő számla ÁFA: ${formatFt(vatSummary.outboundVat)}`,
-    `Pénztárgép ÁFA: ${formatFt(vatSummary.opgVat)}`,
-    `Levonható (bejövő) ÁFA: ${formatFt(vatSummary.inboundVat)}`,
-  ].forEach((l) => text(l, marginX, contentWidth, 5.6));
-  y += 5;
-  hr();
-
-  // Fizetési mód megoszlása
-  setFont("bold", 13, ink);
-  text("Fizetési mód megoszlása", marginX, contentWidth, 6);
-  y += 2;
-
+  const heroGradient = isPayable ? "linear-gradient(135deg,#4338ca,#6d28d9)" : "linear-gradient(135deg,#059669,#16a34a)";
   const grandTotal = paymentSummary["Bankkártya"] + paymentSummary["Készpénz"] + paymentSummary["Egyéb"];
-  if (grandTotal === 0) {
-    setFont("normal", 9.5, inkSoft);
-    text("Nincs pénztárgépes forgalom a kiválasztott időszakban.", marginX, contentWidth, 5);
-  } else {
-    const paymentColors = { "Bankkártya": [67, 56, 202], "Készpénz": [22, 163, 74], "Egyéb": [217, 119, 6] };
-    let barX = marginX;
-    const barH = 5;
-    for (const k of ["Bankkártya", "Készpénz", "Egyéb"]) {
-      const v = paymentSummary[k];
-      if (v <= 0) continue;
-      const segW = (v / grandTotal) * contentWidth;
-      doc.setFillColor(paymentColors[k][0], paymentColors[k][1], paymentColors[k][2]);
-      doc.rect(barX, y, segW, barH, "F");
-      barX += segW;
-    }
-    y += barH + 6;
+  const paymentColors = { "Bankkártya": "#4338ca", "Készpénz": "#16a34a", "Egyéb": "#d97706" };
+  const paymentKeys = ["Bankkártya", "Készpénz", "Egyéb"].filter((k) => paymentSummary[k] > 0);
 
-    setFont("normal", 9.5, ink);
-    for (const k of ["Bankkártya", "Készpénz", "Egyéb"]) {
-      const v = paymentSummary[k];
-      if (v <= 0) continue;
-      const pct = Math.round((v / grandTotal) * 100);
-      text(`${k}: ${formatFt(v)} (${pct}%)`, marginX, contentWidth, 5.6);
-    }
-    y += 4;
-  }
-  hr();
+  const paymentHtml = grandTotal === 0
+    ? `<div style="font-size:13px;color:#6b7089;">Nincs pénztárgépes forgalom a kiválasztott időszakban.</div>`
+    : `
+      <div style="display:flex;height:12px;border-radius:999px;overflow:hidden;margin:10px 0 10px;">
+        ${paymentKeys.map((k) => `<div style="width:${(paymentSummary[k] / grandTotal) * 100}%;background:${paymentColors[k]};"></div>`).join("")}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;font-size:13px;">
+        ${paymentKeys.map((k) => `
+          <div style="display:flex;justify-content:space-between;">
+            <span><span style="display:inline-block;width:8px;height:8px;border-radius:999px;background:${paymentColors[k]};margin-right:6px;"></span>${k}</span>
+            <span>${formatFt(paymentSummary[k])} (${Math.round((paymentSummary[k] / grandTotal) * 100)}%)</span>
+          </div>`).join("")}
+      </div>`;
 
-  // Bevételi küszöbök
-  setFont("bold", 13, ink);
-  text(`Bevételi küszöbök (${new Date().getFullYear()})`, marginX, contentWidth, 6);
-  y += 2;
+  const thresholdRowHtml = (c) => {
+    const percent = (c.revenue / c.limit) * 100;
+    const pct = Math.min(percent, 100);
+    const barColor = percent >= 100 ? "#dc2626" : percent >= 80 ? "#d97706" : "#16a34a";
+    return `
+      <div style="font-size:13px;font-weight:600;margin-bottom:3px;">${c.label}</div>
+      <div style="font-size:12px;color:#6b7089;margin-bottom:6px;">${formatFt(c.revenue)} / ${formatFt(c.limit)} (${percent.toFixed(1)}%)</div>
+      <div style="height:6px;border-radius:999px;background:#eaeaf3;overflow:hidden;"><div style="height:100%;width:${pct}%;background:${barColor};"></div></div>`;
+  };
 
-  if (thresholdChecks.length === 0) {
-    setFont("normal", 9.5, inkSoft);
-    text("Nincs beállított figyelendő bevételi küszöb (normál adózás, nem alanyi mentes).", marginX, contentWidth, 5);
-  } else {
-    for (const c of thresholdChecks) {
-      const percent = (c.revenue / c.limit) * 100;
-      setFont("normal", 9.5, ink);
-      text(c.label, marginX, contentWidth, 5);
-      setFont("normal", 8.5, inkSoft);
-      text(`${formatFt(c.revenue)} / ${formatFt(c.limit)} (${percent.toFixed(1)}%)`, marginX, contentWidth, 4.5);
+  // Minden szakasz (és minden küszöb-sor) egy-egy `data-pdf-block`
+  // csomagolóban van — a PDF-tördelés csak blokk-határon vághat lapot,
+  // így egy sor vagy szakasz sosem szakad ketté, és sosem duplázódik.
+  const thresholdBlocksHtml = thresholdChecks.length === 0
+    ? `<div data-pdf-block style="margin-bottom:14px;"><div style="font-size:13px;color:#6b7089;">Nincs beállított figyelendő bevételi küszöb (normál adózás, nem alanyi mentes).</div></div>`
+    : thresholdChecks.map((c) => `<div data-pdf-block style="margin-bottom:14px;">${thresholdRowHtml(c)}</div>`).join("");
 
-      doc.setFillColor(lineColor[0], lineColor[1], lineColor[2]);
-      doc.rect(marginX, y, contentWidth, 3, "F");
-      let barColor = [22, 163, 74];
-      if (percent >= 100) barColor = [220, 38, 38];
-      else if (percent >= 80) barColor = [217, 119, 6];
-      doc.setFillColor(barColor[0], barColor[1], barColor[2]);
-      doc.rect(marginX, y, Math.min(percent, 100) / 100 * contentWidth, 3, "F");
-      y += 10;
-    }
-  }
+  return `
+    <div style="font-family:'Inter',sans-serif;color:#1a1b2e;-webkit-font-smoothing:antialiased;">
+      <div data-pdf-block>
+        <div style="font-size:22px;font-weight:800;color:#4f46e5;margin-bottom:16px;">Cégfókusz — pénzügyi jelentés</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:4px;">${company.name}</div>
+        <div style="font-size:12px;color:#6b7089;line-height:1.7;margin-bottom:20px;">
+          Adószám: ${company.tax_number}<br>
+          Időszak: ${from} – ${to}<br>
+          Készült: ${new Date().toLocaleString("hu-HU", { dateStyle: "long", timeStyle: "short" })}
+        </div>
+        <div style="border-top:1px solid #eaeaf3;margin-bottom:20px;"></div>
+      </div>
 
-  y += 3;
-  setFont("normal", 8, inkSoft);
-  text(
-    "Ez a jelentés tájékoztató jellegű, a Cégfókusz által szinkronizált NAV-adatok alapján készült — nem helyettesíti a könyvelői egyeztetést.",
-    marginX, contentWidth, 4
-  );
+      <div data-pdf-block>
+        <div style="font-size:16px;font-weight:700;margin-bottom:12px;">ÁFA-pozíció</div>
+        <div style="border-radius:14px;padding:18px 20px;margin-bottom:16px;color:#fff;background:${heroGradient};">
+          <div style="font-size:12px;opacity:0.92;margin-bottom:6px;">${isPayable ? "Befizetendő ÁFA a kiválasztott időszakban" : "Visszaigényelhető ÁFA a kiválasztott időszakban"}</div>
+          <div style="font-size:24px;font-weight:800;">${formatFt(Math.abs(vatSummary.net))}</div>
+        </div>
+        <div style="font-size:13px;line-height:2;margin-bottom:20px;">
+          Kimenő számla ÁFA: ${formatFt(vatSummary.outboundVat)}<br>
+          Pénztárgép ÁFA: ${formatFt(vatSummary.opgVat)}<br>
+          Levonható (bejövő) ÁFA: ${formatFt(vatSummary.inboundVat)}
+        </div>
+        <div style="border-top:1px solid #eaeaf3;margin-bottom:20px;"></div>
+      </div>
+
+      <div data-pdf-block>
+        <div style="font-size:16px;font-weight:700;margin-bottom:12px;">Fizetési mód megoszlása</div>
+        ${paymentHtml}
+        <div style="border-top:1px solid #eaeaf3;margin:20px 0;"></div>
+      </div>
+
+      <div data-pdf-block style="margin-bottom:2px;">
+        <div style="font-size:16px;font-weight:700;">Bevételi küszöbök (${new Date().getFullYear()})</div>
+      </div>
+      ${thresholdBlocksHtml}
+
+      <div data-pdf-block>
+        <div style="border-top:1px solid #eaeaf3;margin:8px 0 12px;"></div>
+        <div style="font-size:11px;color:#6b7089;line-height:1.6;">
+          Ez a jelentés tájékoztató jellegű, a Cégfókusz által szinkronizált NAV-adatok alapján készült — nem helyettesíti a könyvelői egyeztetést.
+        </div>
+      </div>
+    </div>`;
 }
 
 async function buildReportPdf(data) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  await document.fonts.ready;
 
-  drawReportPdf(doc, "helvetica", data);
+  const container = document.createElement("div");
+  container.style.cssText = "position:fixed; left:-10000px; top:0; width:686px; background:#ffffff; padding:32px;";
+  container.innerHTML = renderReportHtml(data);
+  document.body.appendChild(container);
 
-  const safeFrom = data.from.replaceAll("-", "");
-  const safeTo = data.to.replaceAll("-", "");
-  doc.save(`cegfokusz-jelentes_${data.company.tax_number}_${safeFrom}-${safeTo}.pdf`);
+  try {
+    // Közvetlenül a html2canvas-t hívjuk, és a kapott raszterképet tesszük
+    // be a PDF-be — a jsPDF saját .html() metódusa a szöveget a jsPDF
+    // korlátozott, WinAnsi-kódolású betűtípusával próbálná "vektorosan"
+    // újrarajzolni, ami visszahozná a magyar ő/ű hiányát. Így viszont
+    // pixelpontosan azt kapjuk, amit a böngésző valóban megrajzolt.
+    const blockOffsetsPx = Array.from(container.querySelectorAll("[data-pdf-block]")).map((el) => el.offsetTop);
+
+    const canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+    const canvasScale = canvas.width / container.offsetWidth;
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const margin = 40;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const imgWidth = pageWidth - margin * 2;
+    const pxToPt = imgWidth / canvas.width;
+    const pageContentHeightPx = (pageHeight - margin * 2) / pxToPt;
+
+    // A blokkhatárok (canvas-pixelben) jelölik ki, hol szabad lapot váltani —
+    // soha nem egy sor vagy szakasz közepén, mindig a blokkok között.
+    const breakPointsPx = blockOffsetsPx.map((top) => top * canvasScale);
+    breakPointsPx.push(canvas.height);
+
+    let sy = 0;
+    let first = true;
+    while (sy < canvas.height - 0.5) {
+      let sliceEnd = canvas.height;
+      for (const bp of breakPointsPx) {
+        if (bp <= sy + 0.5) continue;
+        if (bp - sy <= pageContentHeightPx) {
+          sliceEnd = bp;
+        } else {
+          break;
+        }
+      }
+      // Ha egyetlen blokk sem fér ki egy oldalon (nagyon magas blokk),
+      // biztonságból egyszerűen levágjuk az oldal magasságánál.
+      if (sliceEnd <= sy) sliceEnd = Math.min(sy + pageContentHeightPx, canvas.height);
+
+      const sliceHeightPx = sliceEnd - sy;
+      const pageCanvas = document.createElement("canvas");
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = sliceHeightPx;
+      pageCanvas.getContext("2d").drawImage(canvas, 0, sy, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
+
+      if (!first) doc.addPage();
+      first = false;
+      doc.addImage(pageCanvas.toDataURL("image/png"), "PNG", margin, margin, imgWidth, sliceHeightPx * pxToPt);
+
+      sy = sliceEnd;
+    }
+
+    const safeFrom = data.from.replaceAll("-", "");
+    const safeTo = data.to.replaceAll("-", "");
+    doc.save(`cegfokusz-jelentes_${data.company.tax_number}_${safeFrom}-${safeTo}.pdf`);
+  } finally {
+    container.remove();
+  }
 }
 
 async function main() {
