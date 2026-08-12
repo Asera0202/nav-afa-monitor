@@ -362,10 +362,14 @@ async function renderThresholdSection(company) {
 }
 
 // --- PDF-jelentés ---
-// Próbáltunk egyedi Inter TTF-et beágyazni a magyar ő/ű miatt, de a jsPDF
-// nem tudta vele helyesen kirajzolni a szöveget (üres karakterek lettek) —
-// ezért a beépített, megbízható alap betűtípust használjuk. Ennek ára, hogy
-// az ő/ű néhány szóban pontatlanul jelenik meg, cserébe minden szöveg látszik.
+// A jsPDF beépített (helvetica) betűtípusa WinAnsi kódlapú: az ö/ü megvan,
+// de az ő/ű nincs benne — helyettük törött glifa jelenne meg. Mivel egyedi
+// TTF beágyazása korábban nem működött megbízhatóan a jsPDF-ben, a hosszú
+// kalapos ő/ű-t vizuálisan legközelebbi ö/ü-re cseréljük a PDF szövegében.
+function huSafe(str) {
+  return String(str).replace(/ő/g, "ö").replace(/Ő/g, "Ö").replace(/ű/g, "ü").replace(/Ű/g, "Ü");
+}
+
 function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, paymentSummary, thresholdChecks }) {
   const marginX = 18;
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -388,36 +392,40 @@ function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, payment
     doc.line(marginX, y, marginX + contentWidth, y);
     y += 10;
   };
+  // Sortördeléssel és lap-szélesség-korláttal ír ki szöveget, a magyar
+  // ő/ű-t is lecserélve — ez akadályozza meg, hogy a szöveg kilógjon a lapról.
+  const text = (str, x, maxWidth, lineHeight = 5) => {
+    const lines = doc.splitTextToSize(huSafe(str), maxWidth ?? contentWidth - (x - marginX));
+    doc.text(lines, x, y);
+    y += lines.length * lineHeight;
+  };
 
   setFont("bold", 18, primary);
-  doc.text("Cégfókusz — pénzügyi jelentés", marginX, y);
-  y += 9;
+  text("Cégfókusz — pénzügyi jelentés", marginX, contentWidth, 7);
+  y += 2;
 
   setFont("normal", 10.5, ink);
-  doc.text(company.name, marginX, y);
-  y += 5.4;
+  text(company.name, marginX, contentWidth, 5.4);
   setFont("normal", 9, inkSoft);
-  doc.text(`Adószám: ${company.tax_number}`, marginX, y);
-  y += 5.2;
-  doc.text(`Időszak: ${from} – ${to}`, marginX, y);
-  y += 5.2;
-  doc.text(`Készült: ${new Date().toLocaleString("hu-HU", { dateStyle: "long", timeStyle: "short" })}`, marginX, y);
-  y += 8;
+  text(`Adószám: ${company.tax_number}`, marginX, contentWidth, 5.2);
+  text(`Időszak: ${from} – ${to}`, marginX, contentWidth, 5.2);
+  text(`Készült: ${new Date().toLocaleString("hu-HU", { dateStyle: "long", timeStyle: "short" })}`, marginX, contentWidth, 5.2);
+  y += 3;
   hr();
 
   // ÁFA-pozíció
   setFont("bold", 13, ink);
-  doc.text("ÁFA-pozíció", marginX, y);
-  y += 8;
+  text("ÁFA-pozíció", marginX, contentWidth, 6);
+  y += 2;
 
   const isPayable = vatSummary.net >= 0;
   const heroColor = isPayable ? [67, 56, 202] : [5, 150, 105];
   doc.setFillColor(heroColor[0], heroColor[1], heroColor[2]);
   doc.roundedRect(marginX, y, contentWidth, 26, 3, 3, "F");
   setFont("normal", 9.5, white);
-  doc.text(isPayable ? "Befizetendő ÁFA a kiválasztott időszakban" : "Visszaigényelhető ÁFA a kiválasztott időszakban", marginX + 6, y + 9);
+  doc.text(doc.splitTextToSize(huSafe(isPayable ? "Befizetendő ÁFA a kiválasztott időszakban" : "Visszaigényelhető ÁFA a kiválasztott időszakban"), contentWidth - 12), marginX + 6, y + 9);
   setFont("bold", 16, white);
-  doc.text(formatFt(Math.abs(vatSummary.net)), marginX + 6, y + 19);
+  doc.text(huSafe(formatFt(Math.abs(vatSummary.net))), marginX + 6, y + 19);
   y += 33;
 
   setFont("normal", 9.5, ink);
@@ -425,20 +433,19 @@ function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, payment
     `Kimenő számla ÁFA: ${formatFt(vatSummary.outboundVat)}`,
     `Pénztárgép ÁFA: ${formatFt(vatSummary.opgVat)}`,
     `Levonható (bejövő) ÁFA: ${formatFt(vatSummary.inboundVat)}`,
-  ].forEach((l) => { doc.text(l, marginX, y); y += 5.6; });
+  ].forEach((l) => text(l, marginX, contentWidth, 5.6));
   y += 5;
   hr();
 
   // Fizetési mód megoszlása
   setFont("bold", 13, ink);
-  doc.text("Fizetési mód megoszlása", marginX, y);
-  y += 8;
+  text("Fizetési mód megoszlása", marginX, contentWidth, 6);
+  y += 2;
 
   const grandTotal = paymentSummary["Bankkártya"] + paymentSummary["Készpénz"] + paymentSummary["Egyéb"];
   if (grandTotal === 0) {
     setFont("normal", 9.5, inkSoft);
-    doc.text("Nincs pénztárgépes forgalom a kiválasztott időszakban.", marginX, y);
-    y += 10;
+    text("Nincs pénztárgépes forgalom a kiválasztott időszakban.", marginX, contentWidth, 5);
   } else {
     const paymentColors = { "Bankkártya": [67, 56, 202], "Készpénz": [22, 163, 74], "Egyéb": [217, 119, 6] };
     let barX = marginX;
@@ -458,8 +465,7 @@ function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, payment
       const v = paymentSummary[k];
       if (v <= 0) continue;
       const pct = Math.round((v / grandTotal) * 100);
-      doc.text(`${k}: ${formatFt(v)} (${pct}%)`, marginX, y);
-      y += 5.6;
+      text(`${k}: ${formatFt(v)} (${pct}%)`, marginX, contentWidth, 5.6);
     }
     y += 4;
   }
@@ -467,22 +473,19 @@ function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, payment
 
   // Bevételi küszöbök
   setFont("bold", 13, ink);
-  doc.text(`Bevételi küszöbök (${new Date().getFullYear()})`, marginX, y);
-  y += 8;
+  text(`Bevételi küszöbök (${new Date().getFullYear()})`, marginX, contentWidth, 6);
+  y += 2;
 
   if (thresholdChecks.length === 0) {
     setFont("normal", 9.5, inkSoft);
-    doc.text("Nincs beállított figyelendő bevételi küszöb (normál adózás, nem alanyi mentes).", marginX, y);
-    y += 10;
+    text("Nincs beállított figyelendő bevételi küszöb (normál adózás, nem alanyi mentes).", marginX, contentWidth, 5);
   } else {
     for (const c of thresholdChecks) {
       const percent = (c.revenue / c.limit) * 100;
       setFont("normal", 9.5, ink);
-      doc.text(c.label, marginX, y);
-      y += 5;
+      text(c.label, marginX, contentWidth, 5);
       setFont("normal", 8.5, inkSoft);
-      doc.text(`${formatFt(c.revenue)} / ${formatFt(c.limit)} (${percent.toFixed(1)}%)`, marginX, y);
-      y += 4.5;
+      text(`${formatFt(c.revenue)} / ${formatFt(c.limit)} (${percent.toFixed(1)}%)`, marginX, contentWidth, 4.5);
 
       doc.setFillColor(lineColor[0], lineColor[1], lineColor[2]);
       doc.rect(marginX, y, contentWidth, 3, "F");
@@ -497,9 +500,9 @@ function drawReportPdf(doc, fontFamily, { company, from, to, vatSummary, payment
 
   y += 3;
   setFont("normal", 8, inkSoft);
-  doc.text(
+  text(
     "Ez a jelentés tájékoztató jellegű, a Cégfókusz által szinkronizált NAV-adatok alapján készült — nem helyettesíti a könyvelői egyeztetést.",
-    marginX, y, { maxWidth: contentWidth }
+    marginX, contentWidth, 4
   );
 }
 
