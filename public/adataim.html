@@ -79,6 +79,11 @@
     font-family: var(--sans); font-size: 0.85rem; font-weight: 600; padding: 0.5rem 1.1rem;
     border-radius: 8px; border: none; background: var(--accent); color: #fff; cursor: pointer;
   }
+  .export-btn {
+    font-family: var(--sans); font-size: 0.85rem; font-weight: 600; padding: 0.5rem 1.1rem;
+    border-radius: 8px; border: 1px solid var(--accent); background: var(--surface); color: var(--accent); cursor: pointer;
+  }
+  .export-btn:disabled { opacity: 0.55; cursor: default; }
 
   .breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 1rem; flex-wrap: wrap; }
   .breadcrumb button { font-family: var(--sans); background: none; border: none; color: var(--accent); font-weight: 600; cursor: pointer; padding: 0; font-size: 0.85rem; }
@@ -190,6 +195,7 @@
           <input type="date" id="toDate">
         </div>
         <button class="filter-btn" id="applyFilter">Szűrés</button>
+        <button class="export-btn" id="exportExcelBtn">Excel exportálása</button>
       </div>
 
       <div id="content" class="loading">Betöltés...</div>
@@ -197,6 +203,7 @@
   </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="config.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -247,6 +254,51 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
 });
 
 document.getElementById("applyFilter").addEventListener("click", loadData);
+
+function exportToExcel() {
+  if (allRows.length === 0) {
+    alert("Nincs exportálható adat a kiválasztott időszakban.");
+    return;
+  }
+
+  let headers, rows;
+  if (currentType === "opg") {
+    headers = ["Dátum", "Nyugtaszám", "Tétel sorszám", "Pénztárgép", "ÁFA-kulcs", "ÁFA%", "Nettó", "ÁFA", "Bruttó"];
+    rows = allRows.map((r) => [
+      formatDate(r.transaction_at),
+      r.receipt_number,
+      r.item_index,
+      r.ap_number,
+      r.vat_letter,
+      Math.round((r.vat_percentage ?? 0) * 100) / 100,
+      r.net_amount,
+      r.vat_amount,
+      r.gross_amount,
+    ]);
+  } else {
+    headers = ["Dátum", "Számlaszám", "Partner", "ÁFA%", "Nettó", "ÁFA", "Bruttó"];
+    rows = allRows.map((r) => [
+      formatDate(r.issue_date),
+      r.invoice_number,
+      r.partner_name ?? "",
+      Math.round((r.vat_percentage ?? 0) * 100) / 100,
+      r.net_amount,
+      r.vat_amount,
+      r.gross_amount,
+    ]);
+  }
+
+  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+  const workbook = XLSX.utils.book_new();
+  const sheetName = currentType === "opg" ? "Pénztárgép" : currentType === "inbound" ? "Bejövő számlák" : "Kimenő számlák";
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+
+  const from = document.getElementById("fromDate").value;
+  const to = document.getElementById("toDate").value;
+  XLSX.writeFile(workbook, `cegfokusz-${currentType}_${from}_${to}.xlsx`);
+}
+
+document.getElementById("exportExcelBtn").addEventListener("click", exportToExcel);
 
 async function loadData() {
   const content = document.getElementById("content");
