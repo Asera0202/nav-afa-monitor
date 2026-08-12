@@ -14,8 +14,7 @@ Billingo / Számlázz.hu típusú rendszerek fölé.
 
 - **Supabase** — adatbázis, hitelesítés (Auth), jogosultságkezelés (RLS —
   cégenkénti adatelkülönítés adatbázis-szinten, nem csak kódszinten)
-- **Vercel** — a `public/` mappát szolgálja ki éles környezetben, az `api/`
-  mappában pedig egy szerver-oldali függvényt (lásd lent)
+- **Vercel** — a `public/` mappát szolgálja ki éles környezetben (statikus site)
 - **GitHub Actions** — 4 ütemezett automatizált feladat (lásd lent)
 - **Brevo** — SMTP e-mail küldés (Supabase Auth-emailek + havi összefoglaló)
 - **Telegram-bot** (`@Afa_monitor_bot`) — értesítések
@@ -31,7 +30,7 @@ kulccsal (`REGISTRATION_PRIVATE_KEY`) olvassa vissza, cégenként külön.
   `npx tsx src/fájlnév.ts`
 - `public/` — a tényleges éles weboldal (statikus HTML+JS): regisztráció,
   bejelentkezés, irányítópult, adataim, beállítások, admin állapot-oldalak
-- `api/` — egyetlen Vercel szerver-oldali függvény (`trigger-sync.ts`): ez
+- `supabase/functions/trigger-sync/` — egyetlen Supabase Edge Function: ez
   szolgálja ki a dashboard "Adatok frissítése" gombját (lásd lent)
 - `.github/workflows/` — a 4 ütemezett automatizálás
 - `backups/` — napi adatbázis-mentések. Szándékosan git-tracked: a mentés-
@@ -51,23 +50,33 @@ kulccsal (`REGISTRATION_PRIVATE_KEY`) olvassa vissza, cégenként külön.
 
 ## Manuális "Adatok frissítése" gomb
 
-A dashboardon lévő gomb egy GitHub Actions workflow_dispatch hívást indít
-(`api/trigger-sync.ts` Vercel-függvényen keresztül), ami csak a bejelentkezett
-felhasználó saját cégére futtatja le a napi szinkron szkripteket — a NAV-
+A dashboardon lévő gomb egy Supabase Edge Function-t hív
+(`supabase/functions/trigger-sync/`), ami ellenőrzi a bejelentkezett
+felhasználó munkamenetét, majd egy GitHub Actions workflow_dispatch hívással
+elindítja a MEGLÉVŐ szinkron-szkripteket, csak az ő cégére szűkítve — a NAV-
 hitelesítő adatok visszafejtéséhez szükséges titkos kulcsok soha nem kerülnek
 a böngészőbe. 3 perces cooldown védi a NAV API-t a túl gyakori újraindítástól.
 
-Ehhez a Vercel projekt beállításaiban (Environment Variables) be kell állítani:
+**Beállítás (egyszeri, a Supabase ingyenes csomagján is elérhető):**
 
-    GITHUB_DISPATCH_TOKEN=
+A `SUPABASE_URL` és `SUPABASE_SERVICE_ROLE_KEY` minden Supabase Edge
+Function-ben automatikusan elérhető — ezekkel nincs teendő. Csak egyetlen
+titkos kulcsot kell beállítani:
 
-Ez egy GitHub **fine-grained personal access token**, amit a
-`github.com/settings/tokens` oldalon kell létrehozni, kizárólag ehhez a
-repóhoz (`Asera0202/nav-afa-monitor`) hozzáférve, **"Actions" jogosultsággal:
-Read and write** — ez engedélyezi a workflow_dispatch hívást, de semmi mást
-(pl. nem tud kódot módosítani vagy más titkokat olvasni). A `SUPABASE_URL` és
-`SUPABASE_SERVICE_ROLE_KEY` környezeti változóknak is be kell lenniük állítva
-a Vercel projektben (ugyanazok az értékek, mint a GitHub Actions secrets-ben).
+1. Hozz létre egy GitHub **fine-grained personal access token**-t a
+   `github.com/settings/personal-access-tokens/new` oldalon: "Only select
+   repositories" → `nav-afa-monitor`, majd a "Repository permissions" alatt
+   **"Actions": Read and write** (minden más maradjon "No access"). Ez
+   engedélyezi a workflow_dispatch hívást, de semmi mást.
+2. Telepítsd a Supabase CLI-t (`npm install -g supabase` vagy
+   `brew install supabase/tap/supabase`), majd lépj be: `supabase login`
+3. Kösd össze a projekttel: `supabase link --project-ref <a-te-project-ref-ed>`
+   (a project-ref a Supabase dashboard URL-jében, vagy Settings → General
+   alatt található)
+4. Állítsd be a titkos kulcsot:
+   `supabase secrets set GITHUB_DISPATCH_TOKEN=<a-github-tokened>`
+5. Telepítsd a függvényt:
+   `supabase functions deploy trigger-sync`
 
 ## Fejlesztés
 

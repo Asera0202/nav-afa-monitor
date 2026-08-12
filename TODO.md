@@ -40,8 +40,12 @@
 17. Piac-tágító ötletek: banki egyenleg/cash-flow összekötés, webshop-integráció
     (Shoprenter/UNAS), ingyenes kezdő szint, angol nyelvű verzió
 18. NAV adószámla-lekérdezés egy gombbal
-19. ✅ Manuális "Adatok frissítése" gomb a dashboardon — kész (`api/trigger-sync.ts`
-    Vercel-függvény indítja a GitHub Actions szinkront, csak az adott cégre).
-    **TEENDŐ nálad:** a Vercel projektben be kell állítani a `GITHUB_DISPATCH_TOKEN`
-    környezeti változót (lásd README "Manuális 'Adatok frissítése' gomb" szakasz)
-    — enélkül a gomb hibát fog dobni.
+19. ✅ Manuális "Adatok frissítése" gomb a dashboardon — kész
+    (`supabase/functions/trigger-sync/` Supabase Edge Function indítja a
+    GitHub Actions szinkront, csak az adott cégre). Áttéve Vercel-ről
+    Supabase-re, mert a Vercel Custom Environments Pro-only, de ez nem
+    kell hozzá — a sima Environment Variables (amit itt használtunk volna)
+    ingyenes is lett volna, csak Supabase-re egyszerűbb volt átállni.
+    **TEENDŐ nálad:** Supabase CLI-vel be kell állítani a `GITHUB_DISPATCH_TOKEN`
+    titkos kulcsot és deployolni a függvényt (lásd README "Manuális 'Adatok
+    frissítése' gomb" szakasz) — enélkül a gomb hibát fog dobni.

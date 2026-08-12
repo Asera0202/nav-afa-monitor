@@ -739,7 +739,7 @@ async function main() {
       note.style.display = "none";
       try {
         const { data: { session } } = await sb.auth.getSession();
-        const res = await fetch("/api/trigger-sync", {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/trigger-sync`, {
           method: "POST",
           headers: { Authorization: `Bearer ${session.access_token}` },
         });
