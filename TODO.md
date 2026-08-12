@@ -26,8 +26,10 @@
 7. Beépített AI-chat asszisztens (cég-specifikus adatra korlátozva + friss adózási hírek)
 8. NAV-határidő-naptár
 9. Export PDF/Excel
-10. Profi, menüsoros/kártyás vizuális redesign mind az 5 oldalon — koncepció már bemutatva
-    (bal oldali sidebar-menü, ikonos kártyák), jóváhagyásra vár, még nincs megépítve
+10. ✅ Profi, menüsoros/kártyás vizuális redesign — kész, élesítve mind a 6 oldalon
+    (dashboard, adataim, beallitasok: teljes sidebar-váltás; login, register,
+    reset-password: szín- és tipográfiai frissítés). Bankos irányba tolva:
+    mélyebb intézményi kék, bankkártya-szerű cégazonosító, talpas számtipó.
 11. Fizetési/előfizetési rendszer
 12. Skálázási előkészítés (ha a cégszám tucat/száz fölé nő)
 13. WellData cégadat-automatizálás (most még nem éri meg a költsége: 15.990-37.990 Ft+ÁFA/hó)
