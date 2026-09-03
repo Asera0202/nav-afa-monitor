@@ -19,10 +19,10 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
   .wrap { max-width: 620px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
-  .masthead { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.75rem; }
+  .masthead { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.75rem; text-decoration: none; }
   .masthead .logo-mark { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .masthead .logo-mark img { width: 28px; height: 28px; }
-  .masthead .title { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 0.01em; }
+  .masthead .title { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 0.01em; color: var(--ink); }
   .masthead .sub { font-size: 0.8rem; color: var(--ink-soft); }
 
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 1.6rem 1.6rem; margin-bottom: 1.25rem; }
@@ -80,13 +80,13 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="masthead">
+    <a class="masthead" href="index.html">
       <div class="logo-mark"><img src="favicon.svg" alt=""></div>
       <div>
         <div class="title">Cégfókusz</div>
         <div class="sub">Regisztráció</div>
       </div>
-    </div>
+    </a>
 
     <div id="statusBox" class="status"></div>
 
