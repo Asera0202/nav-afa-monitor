@@ -50,6 +50,18 @@
     kész és piacra lépnétek
 17. Piac-tágító ötletek: banki egyenleg/cash-flow összekötés, webshop-integráció
     (Shoprenter/UNAS), ingyenes kezdő szint, angol nyelvű verzió
+    **Konkrét igény merült fel (2026.09.03):**
+    - Meglévő adatok teljesebb kihasználása: szállító neve, fizetési mód
+      (kp/kártya), beérkezés dátuma, érték, ÁFA% tételenként — ez részben
+      már megvan (`invoice_vat_lines.partner_name`,
+      `opg_receipt_payments.payment_type`), de átfogóbb megjelenítés kell.
+    - Banki hozzáférés/integráció, hogy a kasszába beütött kártyás összeg
+      egyeztethető legyen a tényleges banki kártya-jóváírással (van, hogy
+      eltérés van a kettő között).
+    - SZÉP-kártyás fizetések külön nyilvántartása — ez csak a bankszámla-
+      kivonaton látszik, nincs benne sem a pénztárgép-, sem a
+      számla-adatokban, tehát ugyanaz a banki integráció kellene hozzá.
+    Egyik sincs még kidolgozva/megbeszélve részletesen a felhasználóval.
 18. ⛔ NAV adószámla-lekérdezés egy gombbal — BLOKKOLVA, nincs rá céges technikai
     felhasználós NAV API (ellentétben az Online Számla/Pénztárgép API-kkal),
     csak személyes Ügyfélkapus bejelentkezéssel érhető el a NAV Ügyfélportálon.
@@ -68,3 +80,13 @@
     **TEENDŐ nálad:** Supabase CLI-vel be kell állítani a `GITHUB_DISPATCH_TOKEN`
     titkos kulcsot és deployolni a függvényt (lásd README "Manuális 'Adatok
     frissítése' gomb" szakasz) — enélkül a gomb hibát fog dobni.
+    **Még nincs végigtesztelve élesben** — ellenőrizni kell, hogy a titkos kulcs
+    tényleg elmentődött-e, és hogy a gomb ténylegesen elindítja-e a szinkront.
+20. ✅ Bejelentkezés-hiba javítva — a domain gyökere (`index.html`) korábban egy
+    statikus, elavult "Email cím megerősítve" placeholder volt, ami zsákutca
+    volt, ha valaki közvetlenül ide navigált. Mostantól teljes értékű, működő
+    bejelentkező oldal, és csak akkor mutat megerősítő üzenetet, ha az URL
+    ténylegesen `type=signup`/`type=email_change` paramétert tartalmaz. A
+    "Cégfókusz" fejléc a login/register/reset-password oldalakon mostantól
+    kattintható link a főoldalra (eddig nem volt az, ezért tűnt úgy, mintha
+    "visszadobna" egy dead-endre).
