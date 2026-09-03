@@ -9,35 +9,155 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f3f4fb; --surface: #ffffff; --ink: #1a1b2e; --ink-soft: #6b7089;
-    --line: #eaeaf3; --primary: #4f46e5; --ok: #16a34a; --ok-soft: #f0fdf4;
-    --shadow: 0 1px 2px rgba(23,23,60,0.04), 0 6px 20px rgba(23,23,60,0.06);
+    --ground: #f5f5fa; --surface: #ffffff; --ink: #12172b; --ink-soft: #5a6178; --ink-faint: #9297ab;
+    --line: #e6e8f0; --accent: #1f3a7a; --accent-soft: #e9edf7;
+    --danger: #b3261e; --danger-soft: #fbeceb; --ok: #1a7f4e; --ok-soft: #e8f5ee;
+    --shadow: 0 1px 2px rgba(20,21,42,0.04), 0 8px 24px rgba(20,21,42,0.05);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Inter", -apple-system, sans-serif; -webkit-font-smoothing: antialiased; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-  .wrap { max-width: 420px; width: 100%; padding: 1.25rem; text-align: center; }
-  .logo { width: 56px; height: 56px; margin: 0 auto 1.2rem; }
-  .card { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); padding: 2rem 1.6rem; }
-  h1 { font-size: 1.25rem; margin: 0 0 0.6rem; }
-  p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; margin: 0 0 1.4rem; }
-  .icon-ok { font-size: 2rem; margin-bottom: 0.8rem; }
-  a.btn {
-    display: inline-block; background: var(--primary); color: #fff; text-decoration: none;
-    padding: 0.7rem 1.6rem; border-radius: 12px; font-weight: 700; font-size: 0.9rem;
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .wrap { max-width: 400px; width: 100%; padding: 1.25rem; }
+  .masthead { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 1.5rem; justify-content: center; text-decoration: none; }
+  .masthead .logo-mark { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; }
+  .masthead .logo-mark img { width: 26px; height: 26px; }
+  .masthead .title { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 0.01em; color: var(--ink); }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 1.8rem 1.6rem; }
+  label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.9rem; }
+  label:first-of-type { margin-top: 0; }
+  input[type="email"], input[type="password"] {
+    width: 100%; font-family: var(--sans); font-size: 0.9rem; padding: 0.6rem 0.75rem;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--ground); color: var(--ink);
   }
-  a.btn:hover { background: #4338ca; }
+  input:focus { outline: none; border-color: var(--accent); }
+
+  .submit-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 1.2rem; }
+  .submit-btn:hover { background: #17305f; }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .forgot-link { text-align: center; margin-top: 0.9rem; }
+  .forgot-link button { background: none; border: none; color: var(--accent); font-size: 0.82rem; font-weight: 600; cursor: pointer; text-decoration: underline; font-family: var(--sans); }
+
+  .status { display: none; border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.84rem; margin-bottom: 1.1rem; line-height: 1.5; }
+  .status.error { display: block; background: var(--danger-soft); color: #7a1c16; }
+  .status.success { display: block; background: var(--ok-soft); color: #135a37; }
+
+  .register-link { text-align: center; font-size: 0.85rem; color: var(--ink-soft); margin-top: 1.2rem; }
+  .register-link a { color: var(--accent); font-weight: 600; text-decoration: none; }
+
+  .trust-note { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 1rem; font-size: 0.72rem; color: var(--ink-faint); }
+  .trust-note svg { width: 12px; height: 12px; flex-shrink: 0; }
 </style>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
   <div class="wrap">
-    <img src="favicon.svg" alt="Cégfókusz" class="logo">
+    <a class="masthead" href="index.html">
+      <div class="logo-mark"><img src="favicon.svg" alt=""></div>
+      <div class="title">Cégfókusz</div>
+    </a>
+
     <div class="card">
-      <div class="icon-ok">✅</div>
-      <h1>Email cím megerősítve</h1>
-      <p>Köszönjük, a fiókod aktív! Az adataidat hamarosan átnézzük és aktiváljuk a szolgáltatást — erről külön értesítünk.</p>
-      <a class="btn" href="login.html">Bejelentkezés</a>
+      <div id="statusBox" class="status"></div>
+
+      <form id="loginForm">
+        <label>Email cím</label>
+        <input type="email" id="email" required>
+        <label>Jelszó</label>
+        <input type="password" id="password" required>
+        <button type="submit" class="submit-btn" id="submitBtn">Bejelentkezés</button>
+      </form>
+
+      <div class="forgot-link"><button id="forgotBtn">Elfelejtett jelszó</button></div>
     </div>
+
+    <div class="trust-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      Biztonságos, titkosított kapcsolat
+    </div>
+
+    <div class="register-link">Még nincs fiókod? <a href="register.html">Regisztrálj</a></div>
   </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function translateError(message) {
+  const map = [
+    [/invalid login credentials/i, "Hibás email cím vagy jelszó."],
+    [/error sending recovery email/i, "Nem sikerült elküldeni a jelszó-visszaállító emailt — technikai hiba történt a küldő rendszerünkben. Próbáld újra pár perc múlva."],
+    [/error sending confirmation email/i, "Nem sikerült elküldeni a megerősítő emailt — technikai hiba történt a küldő rendszerünkben. Próbáld újra pár perc múlva."],
+    [/rate limit/i, "Túl sok próbálkozás történt rövid idő alatt — kérjük, várj egy percet, és próbáld újra."],
+    [/network|fetch/i, "Hálózati hiba történt — ellenőrizd az internetkapcsolatod, és próbáld újra."],
+    [/email not confirmed/i, "Az email címed még nincs megerősítve."],
+  ];
+  for (const [pattern, hu] of map) {
+    if (pattern.test(message)) return hu;
+  }
+  return "Hiba történt: " + message;
+}
+
+function showStatus(message, type) {
+  const box = document.getElementById("statusBox");
+  box.textContent = message;
+  box.className = "status " + type;
+}
+
+// Ha a NAV/Supabase email-megerősítő linkje ide (a domain gyökerére) irányít
+// vissza, azt az URL-ben lévő "type=signup" jelzi (query- vagy hash-részben,
+// Supabase verziótól függően) — ilyenkor egy rövid megerősítő üzenetet
+// mutatunk a bejelentkező form fölött, de maga a form mindig működik, sosem
+// zsákutca.
+(function showConfirmationBannerIfNeeded() {
+  const params = new URLSearchParams(window.location.search);
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const type = params.get("type") || hashParams.get("type");
+  if (type === "signup" || type === "email_change") {
+    showStatus("Email cím megerősítve! A fiókodat hamarosan átnézzük és aktiváljuk — addig is jelentkezz be nyugodtan.", "success");
+  }
+})();
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Bejelentkezés...";
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    showStatus(translateError(error.message), "error");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Bejelentkezés";
+    return;
+  }
+
+  showStatus("Sikeres bejelentkezés! Átirányítás...", "success");
+  window.location.href = "dashboard.html";
+});
+
+document.getElementById("forgotBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value.trim();
+  if (!email) {
+    showStatus("Először írd be az email címed a mezőbe, utána kattints ide.", "error");
+    return;
+  }
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + "/reset-password.html",
+  });
+  if (error) {
+    showStatus(translateError(error.message), "error");
+  } else {
+    showStatus("Ha ez az email cím regisztrálva van nálunk, elküldtük a jelszó-visszaállító linket — nézd meg a postaládád.", "success");
+  }
+});
+</script>
 </body>
 </html>
