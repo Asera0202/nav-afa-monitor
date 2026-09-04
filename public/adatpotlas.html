@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Beállítások — Cégfókusz</title>
+<title>Adatpótlás — Cégfókusz</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +59,8 @@
   /* ---------- Main ---------- */
   main { flex: 1; min-width: 0; }
   .wrap { max-width: 680px; padding: 1.8rem 2.2rem 4rem; }
-  h1 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin: 0 0 1.2rem; }
+  h1 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin: 0 0 0.3rem; }
+  .page-desc { font-size: 0.85rem; color: var(--ink-soft); margin: 0 0 1.4rem; line-height: 1.5; }
 
   .status { display: none; border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.84rem; margin-bottom: 1.2rem; line-height: 1.5; }
   .status.error { display: block; background: var(--danger-soft); color: #7a1c16; }
@@ -72,25 +73,15 @@
   label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.85rem; }
   label:first-of-type { margin-top: 0; }
   .field-help { font-size: 0.74rem; color: var(--ink-faint); margin-top: 0.2rem; line-height: 1.4; }
-  input[type="text"], input[type="password"] {
+  input[type="text"], input[type="file"] {
     width: 100%; font-family: var(--sans); font-size: 0.88rem; padding: 0.55rem 0.7rem;
     border: 1px solid var(--line); border-radius: 8px; background: var(--ground); color: var(--ink);
   }
   input:focus { outline: none; border-color: var(--accent); }
-  input[disabled] { background: var(--accent-soft); color: var(--ink-faint); }
 
   .radio-group { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.4rem; }
   .radio-option { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 400; cursor: pointer; }
   .radio-option input { margin: 0; }
-
-  .checkbox-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: 0.9rem; }
-  .checkbox-row input { margin-top: 0.2rem; }
-  .checkbox-row .label-text { font-size: 0.85rem; }
-
-  .telegram-status { display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 0.9rem; border-radius: 8px; font-size: 0.85rem; }
-  .telegram-status.connected { background: var(--ok-soft); color: #135a37; }
-  .telegram-status.disconnected { background: var(--ground); color: var(--ink-soft); border: 1px solid var(--line); }
-  a.telegram-btn { display: inline-block; margin-top: 0.7rem; background: #229ED9; color: #fff; text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; }
 
   .save-btn {
     width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px;
@@ -103,15 +94,7 @@
 
   .register-item { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0; border-top: 1px solid var(--line); }
   .register-item:first-child { border-top: none; }
-  .register-item .ap-number { font-size: 0.88rem; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .register-item .remove-btn { background: none; border: none; color: var(--danger); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
-  .no-registers { font-size: 0.82rem; color: var(--ink-faint); padding: 0.5rem 0; }
-  .add-register-row { display: flex; gap: 0.5rem; margin-top: 0.9rem; }
-  .add-register-row input { flex: 1; }
-  .add-btn {
-    font-family: var(--sans); font-size: 0.85rem; font-weight: 600; padding: 0.55rem 1rem;
-    border-radius: 8px; border: none; background: var(--accent); color: #fff; cursor: pointer; white-space: nowrap;
-  }
+  .register-item .ap-number { font-size: 0.88rem; font-weight: 600; }
 
   @media (max-width: 820px) {
     .sidebar { display: none; }
@@ -140,11 +123,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M6 6V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
         Házipénztár
       </a>
-      <a class="nav-link" href="adatpotlas.html">
+      <a class="nav-link active" href="adatpotlas.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Adatpótlás
       </a>
-      <a class="nav-link active" href="beallitasok.html">
+      <a class="nav-link" href="beallitasok.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.37a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.63 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.63a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.37 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
         Beállítások
       </a>
@@ -177,66 +160,61 @@
 
   <main>
     <div class="wrap">
-      <h1>Beállítások</h1>
+      <h1>Adatpótlás</h1>
+      <div class="page-desc">Itt tudod pótolni a rendszerből hiányzó régebbi adatokat — akár automatikusan a NAV-tól, akár kézzel feltöltve.</div>
       <div id="statusBox" class="status"></div>
       <div id="loadingBox" class="loading">Betöltés...</div>
 
-      <form id="settingsForm" style="display:none;">
+      <div id="content" style="display:none;">
         <div class="card">
-          <h2>Cégadatok</h2>
-          <label>Cégnév</label>
-          <input type="text" id="companyName" required>
-          <label>Adószám</label>
-          <input type="text" id="taxNumber" disabled>
-          <div class="field-help">Az adószám nem módosítható itt — ha ez hibás, írj nekünk.</div>
-        </div>
-
-        <div class="card">
-          <h2>Adózási forma</h2>
-          <div class="desc">Ebből számoljuk a bevételi küszöb-figyelést.</div>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="taxRegime" value="kata"> KATA (kisadózó)</label>
-            <label class="radio-option"><input type="radio" name="taxRegime" value="atalanyado"> Átalányadó</label>
-            <label class="radio-option"><input type="radio" name="taxRegime" value="normal"> Egyéb / normál</label>
-          </div>
-          <div class="checkbox-row">
-            <input type="checkbox" id="alanyiMentes">
-            <div class="label-text">Alanyi ÁFA-mentes vagyok</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>NAV technikai felhasználó adatai</h2>
+          <h2>Régebbi számlák pótlása a NAV-tól</h2>
           <div class="desc">
-            Biztonsági okból a jelenlegi adataidat <b>nem tudjuk megmutatni</b> (titkosítva tároljuk) — csak új adatokat tudsz megadni, amik felülírják a régieket. <b>Hagyd üresen azokat a mezőket, amiket nem szeretnél módosítani.</b>
+            A napi automatikus szinkron csak kb. 34 napra visszamenőleg kérdezi le a NAV-tól a bejövő/kimenő számláidat —
+            ha a rendszer csatlakozása óta eltelt idő ennél rövidebb, a korábbi hónapok hiányozhatnak a dashboardról és
+            az Adataim oldalról. Ez a gomb egyszer visszamenőleg lekérdezi a NAV-tól a hiányzó időszakot (a NAV a
+            számla-adatokat korlátlan ideig megőrzi, tehát ez teljesen pontos lesz). Csak a <b>bejövő/kimenő
+            számlákra</b> vonatkozik — a pénztárgépes adatokhoz lásd lentebb.
           </div>
-          <label>Technikai felhasználó login neve (új)</label>
-          <input type="text" id="navLogin" placeholder="Hagyd üresen, ha nem változott">
-          <label>Technikai felhasználó jelszava (új)</label>
-          <input type="password" id="navPassword" placeholder="Hagyd üresen, ha nem változott">
-          <label>Aláíró kulcs (új)</label>
-          <input type="text" id="navSigningKey" placeholder="Hagyd üresen, ha nem változott">
-          <label>Cserekulcs (új)</label>
-          <input type="text" id="navExchangeKey" placeholder="Hagyd üresen, ha nem változott">
+          <label>Mettől kérdezze le?</label>
+          <input type="text" id="backfillFrom" placeholder="ÉÉÉÉ-HH-NN, pl. 2026-01-01">
+          <div class="field-help">Tipp: az adóév elejétől (pl. január 1-től) érdemes indítani, hogy teljes legyen a kép.</div>
+          <button type="button" class="save-btn" id="backfillBtn" style="margin-top:0.9rem;">Számlák pótlása</button>
+          <div id="backfillNote" class="field-help" style="display:none; margin-top:0.6rem;"></div>
         </div>
 
         <div class="card">
-          <h2>Pénztárgépek</h2>
-          <div class="desc">Ha több pénztárgéped van, mindegyiket felveheted — mindegyiket külön figyeli majd a rendszer.</div>
-          <div id="cashRegistersList"></div>
-          <div class="add-register-row">
-            <input type="text" id="newApNumber" placeholder="Új AP-szám, pl. A00813560">
-            <button type="button" class="add-btn" id="addRegisterBtn">Hozzáadás</button>
+          <h2>Pénztárgépes/könyvelői adatok feltöltése</h2>
+          <div class="desc">
+            A pénztárgépes (nyugta-) adatokat a NAV csak kb. <b>14 napig</b> tartja elérhetőn automatikus lekérdezésre —
+            ami ennél korábbi, azt a NAV oldaláról sem lehet utólag visszaszerezni. Ha teljes éves képet szeretnél, ezt
+            csak úgy pótolhatod, ha <b>te magad (vagy a könyvelőd)</b> lekéred a hiányzó időszakot, és ide feltöltöd:
+          </div>
+          <div class="desc" style="background:var(--ground); border-radius:8px; padding:0.8rem 0.9rem; margin-top:-0.4rem;">
+            <b>Pénztárgépes forgalmi adat (KOBAK):</b> lépj be a
+            <a href="https://kobakonline.nav.gov.hu/" target="_blank" rel="noopener">kobakonline.nav.gov.hu</a> oldalra
+            a saját Ügyfélkapuddal, keresd meg a forgalmi adatok lekérdezése funkciót, add meg a hiányzó időszakot
+            (naptári évenként külön kérhető, max. 5 évre visszamenőleg), és töltsd le az exportot.<br><br>
+            <b>Könyvelői kimutatás:</b> kérj a könyvelődtől egy részletes ÁFA-/analitika-exportot (olyat, mint amit
+            korábban küldtél), ami mutatja, hogy mit könyvelt már el — ebből tudjuk majd kiszűrni, ha valamit kihagyott.
+          </div>
+          <label>Mi ez a fájl?</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="uploadKind" value="kobak_penztargep" checked> KOBAK pénztárgépes export</label>
+            <label class="radio-option"><input type="radio" name="uploadKind" value="konyveloi_afa"> Könyvelői ÁFA-/analitika-kimutatás</label>
+            <label class="radio-option"><input type="radio" name="uploadKind" value="egyeb"> Egyéb</label>
+          </div>
+          <label>Fájl</label>
+          <input type="file" id="uploadFile" accept=".pdf,.xlsx,.xls,.csv,.xml,.zip">
+          <button type="button" class="save-btn" id="uploadBtn" style="margin-top:0.9rem;">Feltöltés</button>
+          <div id="uploadNote" class="field-help" style="display:none; margin-top:0.6rem;"></div>
+          <div id="uploadsList" style="margin-top:1rem;"></div>
+          <div class="field-help" style="margin-top:0.8rem;">
+            A feltöltött fájlokat egyelőre eltároljuk, a bennük lévő adatok automatikus feldolgozását folyamatosan
+            építjük — addig is nálunk vannak biztonságban, és a csapatunk kézzel is fel tudja használni az
+            egyeztetéshez.
           </div>
         </div>
-
-        <div class="card">
-          <h2>Telegram-értesítés</h2>
-          <div id="telegramStatusBox"></div>
-        </div>
-
-        <button type="submit" class="save-btn" id="saveBtn">Mentés</button>
-      </form>
+      </div>
     </div>
   </main>
 
@@ -258,68 +236,116 @@ function showStatus(message, type) {
   box.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-async function loadCashRegisters() {
-  const { data, error } = await sb.from("cash_registers").select("id, ap_number").eq("company_id", company.id).order("ap_number");
-  if (error) {
-    document.getElementById("cashRegistersList").innerHTML = `<div class="no-registers">Hiba a betöltéskor: ${error.message}</div>`;
+document.getElementById("backfillBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("backfillBtn");
+  const note = document.getElementById("backfillNote");
+  const from = document.getElementById("backfillFrom").value.trim();
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(from)) {
+    note.textContent = "Add meg a kezdő dátumot ÉÉÉÉ-HH-NN formátumban, pl. 2026-01-01.";
+    note.style.display = "block";
     return;
   }
-  renderCashRegistersList(data ?? []);
-}
 
-function renderCashRegistersList(registers) {
-  const box = document.getElementById("cashRegistersList");
-  if (registers.length === 0) {
-    box.innerHTML = `<div class="no-registers">Még nincs felvett pénztárgéped.</div>`;
-    return;
-  }
-  box.innerHTML = registers
-    .map(
-      (r) => `
-    <div class="register-item">
-      <div class="ap-number">${r.ap_number}</div>
-      <button type="button" class="remove-btn" data-id="${r.id}">Törlés</button>
-    </div>`
-    )
-    .join("");
-
-  box.querySelectorAll(".remove-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const { error } = await sb.from("cash_registers").delete().eq("id", btn.dataset.id);
-      if (error) {
-        showStatus("Hiba a törléskor: " + error.message, "error");
-      } else {
-        loadCashRegisters();
-      }
+  btn.disabled = true;
+  btn.textContent = "Indítás...";
+  note.style.display = "none";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/trigger-backfill`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+        apikey: SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ from }),
     });
-  });
-}
-
-document.getElementById("addRegisterBtn").addEventListener("click", async () => {
-  const input = document.getElementById("newApNumber");
-  const apNumber = input.value.trim();
-  if (!apNumber) return;
-
-  const { error } = await sb.from("cash_registers").insert({ company_id: company.id, ap_number: apNumber });
-  if (error) {
-    showStatus("Hiba a hozzáadáskor: " + error.message, "error");
-  } else {
-    input.value = "";
-    loadCashRegisters();
+    const body = await res.json();
+    note.textContent = body.message || body.error;
+    note.style.display = "block";
+  } catch (err) {
+    note.textContent = "Hiba történt a pótlás indításakor: " + err.message;
+    note.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Számlák pótlása";
   }
 });
 
-function renderTelegramStatus() {
-  const box = document.getElementById("telegramStatusBox");
-  if (company.telegram_chat_id) {
-    box.innerHTML = `<div class="telegram-status connected">✅ Telegram-értesítés aktív</div>`;
-  } else {
-    box.innerHTML = `
-      <div class="telegram-status disconnected">⚪ Nincs bekötve Telegram-értesítés</div>
-      <a class="telegram-btn" href="https://t.me/${TELEGRAM_BOT_USERNAME}?start=${encodeURIComponent(company.tax_number)}" target="_blank">Telegram-értesítés bekapcsolása</a>
-    `;
+function renderUploadsList(uploads) {
+  const box = document.getElementById("uploadsList");
+  if (!uploads || uploads.length === 0) {
+    box.innerHTML = "";
+    return;
   }
+  const kindLabels = { kobak_penztargep: "KOBAK pénztárgépes export", konyveloi_afa: "Könyvelői kimutatás", egyeb: "Egyéb" };
+  const statusLabels = { feltoltve: "Feltöltve", feldolgozva: "Feldolgozva", hiba: "Hiba" };
+  box.innerHTML =
+    `<div class="field-help" style="font-weight:600; margin-bottom:0.4rem;">Korábban feltöltött fájlok</div>` +
+    uploads
+      .map(
+        (u) => `
+      <div class="register-item">
+        <div>
+          <div class="ap-number" style="font-weight:500;">${u.file_name}</div>
+          <div class="field-help">${kindLabels[u.kind] || u.kind} · ${statusLabels[u.status] || u.status} · ${new Date(u.created_at).toLocaleDateString("hu-HU")}</div>
+        </div>
+      </div>`
+      )
+      .join("");
 }
+
+async function loadUploads() {
+  const { data, error } = await sb
+    .from("manual_data_uploads")
+    .select("id, kind, file_name, status, created_at")
+    .eq("company_id", company.id)
+    .order("created_at", { ascending: false });
+  if (!error) renderUploadsList(data);
+}
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("uploadBtn");
+  const note = document.getElementById("uploadNote");
+  const fileInput = document.getElementById("uploadFile");
+  const kind = document.querySelector('input[name="uploadKind"]:checked').value;
+  const file = fileInput.files[0];
+
+  if (!file) {
+    note.textContent = "Előbb válassz egy fájlt.";
+    note.style.display = "block";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Feltöltés...";
+  note.style.display = "none";
+  try {
+    const storagePath = `${company.id}/${Date.now()}-${file.name}`;
+    const { error: uploadError } = await sb.storage.from("manual-uploads").upload(storagePath, file);
+    if (uploadError) throw uploadError;
+
+    const { error: insertError } = await sb.from("manual_data_uploads").insert({
+      company_id: company.id,
+      kind,
+      file_name: file.name,
+      storage_path: storagePath,
+    });
+    if (insertError) throw insertError;
+
+    note.textContent = "Sikeresen feltöltve! Hamarosan feldolgozzuk.";
+    note.style.display = "block";
+    fileInput.value = "";
+    await loadUploads();
+  } catch (err) {
+    note.textContent = "Hiba történt a feltöltéskor: " + (err.message || err);
+    note.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Feltöltés";
+  }
+});
 
 async function main() {
   const { data: { session } } = await sb.auth.getSession();
@@ -330,78 +356,18 @@ async function main() {
 
   const { data: companies, error } = await sb.from("companies").select("*");
   if (error || !companies || companies.length === 0) {
-    document.getElementById("loadingBox").textContent = "A regisztrációdat még átnézzük és aktiváljuk — addig itt még nincs mit beállítani.";
+    document.getElementById("loadingBox").textContent = "A regisztrációdat még átnézzük és aktiváljuk — addig itt még nincs mit tenni.";
     return;
   }
   company = companies[0];
   document.getElementById("sidebarCompanyName").textContent = company.name;
   document.getElementById("sidebarTaxNumber").textContent = (company.tax_number || "").replace(/-/g, "  ");
 
-  document.getElementById("companyName").value = company.name || "";
-  document.getElementById("taxNumber").value = company.tax_number || "";
-  document.getElementById("alanyiMentes").checked = !!company.alanyi_mentes;
-  const regimeInput = document.querySelector(`input[name="taxRegime"][value="${company.tax_regime || 'normal'}"]`);
-  if (regimeInput) regimeInput.checked = true;
-
-  await loadCashRegisters();
-  renderTelegramStatus();
+  await loadUploads();
 
   document.getElementById("loadingBox").style.display = "none";
-  document.getElementById("settingsForm").style.display = "block";
+  document.getElementById("content").style.display = "block";
 }
-
-document.getElementById("settingsForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const saveBtn = document.getElementById("saveBtn");
-  saveBtn.disabled = true;
-  saveBtn.textContent = "Mentés...";
-
-  try {
-    const updates = {
-      name: document.getElementById("companyName").value.trim(),
-      tax_regime: document.querySelector('input[name="taxRegime"]:checked').value,
-      alanyi_mentes: document.getElementById("alanyiMentes").checked,
-    };
-
-    const navLogin = document.getElementById("navLogin").value.trim();
-    const navPassword = document.getElementById("navPassword").value;
-    const navSigningKey = document.getElementById("navSigningKey").value.trim();
-    const navExchangeKey = document.getElementById("navExchangeKey").value.trim();
-
-    if (navLogin || navPassword || navSigningKey || navExchangeKey) {
-      if (!navLogin || !navPassword || !navSigningKey || !navExchangeKey) {
-        throw new Error("Ha módosítod a NAV-adatokat, mind a négy mezőt ki kell töltened (login, jelszó, aláíró kulcs, cserekulcs).");
-      }
-      const publicKey = await importRegistrationPublicKey();
-      const [encLogin, encPassword, encSigningKey, encExchangeKey] = await Promise.all([
-        encryptField(publicKey, navLogin),
-        encryptField(publicKey, navPassword),
-        encryptField(publicKey, navSigningKey),
-        encryptField(publicKey, navExchangeKey),
-      ]);
-      updates.nav_login_encrypted = encLogin;
-      updates.nav_password_encrypted = encPassword;
-      updates.nav_signing_key_encrypted = encSigningKey;
-      updates.nav_exchange_key_encrypted = encExchangeKey;
-    }
-
-    const { error } = await sb.from("companies").update(updates).eq("id", company.id);
-    if (error) throw error;
-
-    company = { ...company, ...updates };
-    document.getElementById("navLogin").value = "";
-    document.getElementById("navPassword").value = "";
-    document.getElementById("navSigningKey").value = "";
-    document.getElementById("navExchangeKey").value = "";
-
-    showStatus("Sikeresen mentve!", "success");
-  } catch (err) {
-    showStatus("Hiba történt: " + (err.message || err), "error");
-  } finally {
-    saveBtn.disabled = false;
-    saveBtn.textContent = "Mentés";
-  }
-});
 
 main();
 </script>
