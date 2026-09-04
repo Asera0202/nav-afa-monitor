@@ -24,8 +24,33 @@
    az oldal hibát dob.
 2. ✅ E-nyugta felkészültség-jelző (2026.09.01-i kötelezettség) — kész (dashboard,
    a `cash_registers` tábla alapján személyre szabott zöld/sárga jelzés)
-3. KOBAK-import (kell hozzá minta-fájl)
-4. Könyvelői egyeztetés-feltöltés (főkönyvi kivonat, "lekönyveletlen tétel" felismerés)
+3. ⛔ KOBAK-import — TISZTÁZVA (2026.09.04): a "KOBAK" valójában a NAV saját
+   portálja (kobakonline.nav.gov.hu), pénztárgép/e-nyugta adminisztrációra —
+   ebből nincs pótolható új adat, amit ne húznánk már automatikusan a NAV
+   API-n. A pénztárgépes (OPG) adatoknál a NAV csak kb. 14 napig tartja
+   elérhetőn a fájlokat lekérdezésre — ami ennél korábbi, az a NAV oldaláról
+   is véglegesen elveszett, semmivel nem pótolható vissza utólag. Ez a pont
+   emiatt törölhető/lezárva, a valódi igényt a #3b és #4 pontok fedik le.
+3b. Számla-pótló (backfill) szkript — MEGÉPÍTVE, FOLYAMATBAN (2026.09.04):
+    a napi szinkron csak 34 napra visszamenőleg kérdezi le a NAV Online
+    Számla adatait, ezért egy cég csatlakozásakor a korábbi hónapok
+    kimaradtak. `src/backfill-invoices.ts` + `.github/workflows/
+    backfill-invoices.yml` (kézzel indítható GitHub Actions workflow)
+    tetszőleges dátumtól visszatölti a bejövő/kimenő számlákat. Most fut
+    az első futtatás (2026.01.01-től).
+4. Könyvelői egyeztetés-feltöltés (a könyvelőtől időnként kapott "analitika"
+   PDF/Excel feltöltése — pl. a "Részletes ÁFA kimutatás" jellegű riport,
+   ami azt mutatja, mit könyvelt már el a könyvelő — összevetve azzal, amit
+   mi a NAV-tól látunk, hogy kiderüljön van-e "lekönyveletlen tétel", amit a
+   könyvelő esetleg kihagyott). Konkrét minta-fájl megvan (2026.09.04-én
+   kaptunk egyet a felhasználótól, QualitySoft Diamond rendszerből).
+4b. Dokumentum-megosztó portál a könyvelővel — ÚJ ÖTLET (2026.09.04): a
+    vállalkozás fel tudna tölteni mindent, amit a könyvelő kér (bankszámla-
+    kivonat, számlák, egyéb bizonylat), a könyvelő pedig egy helyről le
+    tudná tölteni — mindketten látnák, mi van feltöltve és mi hiányzik.
+    Hasonló, mint a Kulcs-Soft ügyfélportál-megoldása. Még nincs kidolgozva
+    (ki tölthet fel, hogyan fér hozzá a könyvelő, önálló modul-e vagy a #4
+    egyeztetőbe épüljön be) — külön átbeszélendő.
 5. ✅ Anomália-jelzés — kész (dashboard). ÁFA-kulcsonként hasonlítja a beszerzést
    (bejövő számla) és az értékesítést (kimenő számla + pénztárgép) a kiválasztott
    időszakra; 2,5x-nél nagyobb arányú, min. 50 000 Ft-os eltérésnél jelez,
