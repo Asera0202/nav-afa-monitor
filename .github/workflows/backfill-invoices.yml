@@ -1,0 +1,45 @@
+name: Számla-pótlás (backfill) egy cégre
+
+on:
+  workflow_dispatch:
+    inputs:
+      company_id:
+        description: "A cég azonosítója (UUID), amire a pótlást futtatjuk."
+        required: true
+        type: string
+      from:
+        description: "Honnantól kérdezze le a NAV-tól a számlákat (ÉÉÉÉ-HH-NN, pl. 2026-01-01)."
+        required: true
+        type: string
+      to:
+        description: "Meddig kérdezze le (ÉÉÉÉ-HH-NN). Üresen hagyva: a napi szinkron ablakának eleje (kb. 34 nappal ezelőtt), hogy ne legyen átfedés."
+        required: false
+        type: string
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Függőségek telepítése
+        run: npm ci
+
+      - name: Számla-pótlás futtatása
+        run: npx tsx src/backfill-invoices.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          REGISTRATION_PRIVATE_KEY: ${{ secrets.REGISTRATION_PRIVATE_KEY }}
+          SOFTWARE_NAME: Cégfókusz
+          SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
+          SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+          COMPANY_ID: ${{ inputs.company_id }}
+          BACKFILL_FROM: ${{ inputs.from }}
+          BACKFILL_TO: ${{ inputs.to }}
