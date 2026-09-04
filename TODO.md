@@ -71,17 +71,24 @@
     Ügyfélportál adószámla-oldalát, nem automatizál semmit. Ha a NAV valaha
     kiad hivatalos API-t erre,
     érdemes újranézni.
-19. ✅ Manuális "Adatok frissítése" gomb a dashboardon — kész
-    (`supabase/functions/trigger-sync/` Supabase Edge Function indítja a
-    GitHub Actions szinkront, csak az adott cégre). Áttéve Vercel-ről
-    Supabase-re, mert a Vercel Custom Environments Pro-only, de ez nem
-    kell hozzá — a sima Environment Variables (amit itt használtunk volna)
-    ingyenes is lett volna, csak Supabase-re egyszerűbb volt átállni.
-    **TEENDŐ nálad:** Supabase CLI-vel be kell állítani a `GITHUB_DISPATCH_TOKEN`
-    titkos kulcsot és deployolni a függvényt (lásd README "Manuális 'Adatok
-    frissítése' gomb" szakasz) — enélkül a gomb hibát fog dobni.
-    **Még nincs végigtesztelve élesben** — ellenőrizni kell, hogy a titkos kulcs
-    tényleg elmentődött-e, és hogy a gomb ténylegesen elindítja-e a szinkront.
+19. ✅ Manuális "Adatok frissítése" gomb a dashboardon — kész és élesben
+    végigtesztelve, működik (`supabase/functions/trigger-sync/` Supabase Edge
+    Function indítja a GitHub Actions szinkront, csak az adott cégre). Áttéve
+    Vercel-ről Supabase-re, mert a Vercel Custom Environments Pro-only, de ez
+    nem kell hozzá — a sima Environment Variables ingyenes is lett volna,
+    csak Supabase-re egyszerűbb volt átállni.
+    Élesítés közben felmerült és javított hibák (mind megoldva):
+    - hiányzott az `apikey` fejléc a hívásból (az új Supabase kulcsrendszeren
+      ez is kell, nemcsak a felhasználó saját tokenje)
+    - a Supabase platform-rétege ("@supabase/server" wrapper) JSON-ként
+      próbálja beolvasni a kérés törzsét — üres body esetén 500-at dobott;
+      most `{}`-t küldünk body-ként
+    - a "Verify JWT with legacy secret" kapcsolót ki kellett kapcsolni a
+      függvénynél (a kód saját maga ellenőrzi a bejelentkezést)
+    - a GitHub tokent többször "fine-grained" típusúra hozta létre a
+      felhasználó "classic" helyett, ez sosem engedte a workflow-indítást
+    - végül a helyes classic PAT (repo + workflow scope) sem másolódott át
+      helyesen kézi kijelöléssel — a beépített másoló ikonnal sikerült
 20. ✅ Bejelentkezés-hiba javítva — a domain gyökere (`index.html`) korábban egy
     statikus, elavult "Email cím megerősítve" placeholder volt, ami zsákutca
     volt, ha valaki közvetlenül ide navigált. Mostantól teljes értékű, működő
