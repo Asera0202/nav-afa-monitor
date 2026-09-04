@@ -81,6 +81,27 @@ titkos kulcsot kell beállítani:
 5. Telepítsd a függvényt:
    `supabase functions deploy trigger-sync`
 
+Ugyanez a `GITHUB_DISPATCH_TOKEN` titkos kulcs szolgálja ki a Beállítások
+oldalon lévő "Számlák pótlása" gombot is
+(`supabase/functions/trigger-backfill/`, a `backfill-invoices.yml` workflow-t
+indítja) — ezt a függvényt is deployolni kell:
+`supabase functions deploy trigger-backfill`.
+
+**FONTOS mindkét függvénynél:** a Supabase dashboardon az Edge Function
+"Settings" fülén ki kell kapcsolni a **"Verify JWT with legacy secret"**
+kapcsolót (a kód saját maga ellenőrzi a bejelentkezést) — enélkül a hívás
+mindig hibázik. Lásd a TODO.md #19-es pontját a részletesen dokumentált
+buktatókról (apikey fejléc, üres kérés-törzs stb.).
+
+## Kézi feltöltésű dokumentumok (KOBAK, könyvelői kimutatás)
+
+A Beállítások oldalon lévő feltöltő a `supabase/migrations/
+20260904000000_manual_data_uploads.sql` migrációban létrehozott
+`manual_data_uploads` táblát és `manual-uploads` Storage bucket-et használja
+— ezt is alkalmazni kell Supabase-ben (SQL Editor), mielőtt a feltöltés
+működne. A feltöltött fájlok feldolgozása egyelőre kézi (a fájl csak
+biztonságosan tárolva van), az automatikus feldolgozás a következő lépés.
+
 ## Házipénztár
 
 A `public/hazipenztar.html` oldal egy egyszerű pénztárkönyv: a pénztárgépes

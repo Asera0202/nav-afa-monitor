@@ -233,6 +233,57 @@
 
         <button type="submit" class="save-btn" id="saveBtn">Mentés</button>
       </form>
+
+      <div id="extraCards" style="display:none;">
+      <div class="card">
+        <h2>Régebbi számlák pótlása a NAV-tól</h2>
+        <div class="desc">
+          A napi automatikus szinkron csak kb. 34 napra visszamenőleg kérdezi le a NAV-tól a bejövő/kimenő számláidat —
+          ha a rendszer csatlakozása óta eltelt idő ennél rövidebb, a korábbi hónapok hiányozhatnak a dashboardról és
+          az Adataim oldalról. Ez a gomb egyszer visszamenőleg lekérdezi a NAV-tól a hiányzó időszakot (a NAV a
+          számla-adatokat korlátlan ideig megőrzi, tehát ez teljesen pontos lesz). Csak a <b>bejövő/kimenő
+          számlákra</b> vonatkozik — a pénztárgépes adatokhoz lásd lentebb.
+        </div>
+        <label>Mettől kérdezze le?</label>
+        <input type="text" id="backfillFrom" placeholder="ÉÉÉÉ-HH-NN, pl. 2026-01-01">
+        <div class="field-help">Tipp: az adóév elejétől (pl. január 1-től) érdemes indítani, hogy teljes legyen a kép.</div>
+        <button type="button" class="save-btn" id="backfillBtn" style="margin-top:0.9rem;">Számlák pótlása</button>
+        <div id="backfillNote" class="field-help" style="display:none; margin-top:0.6rem;"></div>
+      </div>
+
+      <div class="card">
+        <h2>Pénztárgépes/könyvelői adatok feltöltése</h2>
+        <div class="desc">
+          A pénztárgépes (nyugta-) adatokat a NAV csak kb. <b>14 napig</b> tartja elérhetőn automatikus lekérdezésre —
+          ami ennél korábbi, azt a NAV oldaláról sem lehet utólag visszaszerezni. Ha teljes éves képet szeretnél, ezt
+          csak úgy pótolhatod, ha <b>te magad (vagy a könyvelőd)</b> lekéred a hiányzó időszakot, és ide feltöltöd:
+        </div>
+        <div class="desc" style="background:var(--ground); border-radius:8px; padding:0.8rem 0.9rem; margin-top:-0.4rem;">
+          <b>Pénztárgépes forgalmi adat (KOBAK):</b> lépj be a
+          <a href="https://kobakonline.nav.gov.hu/" target="_blank" rel="noopener">kobakonline.nav.gov.hu</a> oldalra
+          a saját Ügyfélkapuddal, keresd meg a forgalmi adatok lekérdezése funkciót, add meg a hiányzó időszakot
+          (naptári évenként külön kérhető, max. 5 évre visszamenőleg), és töltsd le az exportot.<br><br>
+          <b>Könyvelői kimutatás:</b> kérj a könyvelődtől egy részletes ÁFA-/analitika-exportot (olyat, mint amit
+          korábban küldtél), ami mutatja, hogy mit könyvelt már el — ebből tudjuk majd kiszűrni, ha valamit kihagyott.
+        </div>
+        <label>Mi ez a fájl?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="uploadKind" value="kobak_penztargep" checked> KOBAK pénztárgépes export</label>
+          <label class="radio-option"><input type="radio" name="uploadKind" value="konyveloi_afa"> Könyvelői ÁFA-/analitika-kimutatás</label>
+          <label class="radio-option"><input type="radio" name="uploadKind" value="egyeb"> Egyéb</label>
+        </div>
+        <label>Fájl</label>
+        <input type="file" id="uploadFile" accept=".pdf,.xlsx,.xls,.csv,.xml,.zip">
+        <button type="button" class="save-btn" id="uploadBtn" style="margin-top:0.9rem;">Feltöltés</button>
+        <div id="uploadNote" class="field-help" style="display:none; margin-top:0.6rem;"></div>
+        <div id="uploadsList" style="margin-top:1rem;"></div>
+        <div class="field-help" style="margin-top:0.8rem;">
+          A feltöltött fájlokat egyelőre eltároljuk, a bennük lévő adatok automatikus feldolgozását folyamatosan
+          építjük — addig is nálunk vannak biztonságban, és a csapatunk kézzel is fel tudja használni az
+          egyeztetéshez.
+        </div>
+      </div>
+      </div>
     </div>
   </main>
 
@@ -342,9 +393,123 @@ async function main() {
   await loadCashRegisters();
   renderTelegramStatus();
 
+  await loadUploads();
+
   document.getElementById("loadingBox").style.display = "none";
   document.getElementById("settingsForm").style.display = "block";
+  document.getElementById("extraCards").style.display = "block";
 }
+
+document.getElementById("backfillBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("backfillBtn");
+  const note = document.getElementById("backfillNote");
+  const from = document.getElementById("backfillFrom").value.trim();
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(from)) {
+    note.textContent = "Add meg a kezdő dátumot ÉÉÉÉ-HH-NN formátumban, pl. 2026-01-01.";
+    note.style.display = "block";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Indítás...";
+  note.style.display = "none";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/trigger-backfill`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+        apikey: SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ from }),
+    });
+    const body = await res.json();
+    note.textContent = body.message || body.error;
+    note.style.display = "block";
+  } catch (err) {
+    note.textContent = "Hiba történt a pótlás indításakor: " + err.message;
+    note.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Számlák pótlása";
+  }
+});
+
+function renderUploadsList(uploads) {
+  const box = document.getElementById("uploadsList");
+  if (!uploads || uploads.length === 0) {
+    box.innerHTML = "";
+    return;
+  }
+  const kindLabels = { kobak_penztargep: "KOBAK pénztárgépes export", konyveloi_afa: "Könyvelői kimutatás", egyeb: "Egyéb" };
+  const statusLabels = { feltoltve: "Feltöltve", feldolgozva: "Feldolgozva", hiba: "Hiba" };
+  box.innerHTML =
+    `<div class="field-help" style="font-weight:600; margin-bottom:0.4rem;">Korábban feltöltött fájlok</div>` +
+    uploads
+      .map(
+        (u) => `
+      <div class="register-item">
+        <div>
+          <div class="ap-number" style="font-weight:500;">${u.file_name}</div>
+          <div class="field-help">${kindLabels[u.kind] || u.kind} · ${statusLabels[u.status] || u.status} · ${new Date(u.created_at).toLocaleDateString("hu-HU")}</div>
+        </div>
+      </div>`
+      )
+      .join("");
+}
+
+async function loadUploads() {
+  const { data, error } = await sb
+    .from("manual_data_uploads")
+    .select("id, kind, file_name, status, created_at")
+    .eq("company_id", company.id)
+    .order("created_at", { ascending: false });
+  if (!error) renderUploadsList(data);
+}
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("uploadBtn");
+  const note = document.getElementById("uploadNote");
+  const fileInput = document.getElementById("uploadFile");
+  const kind = document.querySelector('input[name="uploadKind"]:checked').value;
+  const file = fileInput.files[0];
+
+  if (!file) {
+    note.textContent = "Előbb válassz egy fájlt.";
+    note.style.display = "block";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Feltöltés...";
+  note.style.display = "none";
+  try {
+    const storagePath = `${company.id}/${Date.now()}-${file.name}`;
+    const { error: uploadError } = await sb.storage.from("manual-uploads").upload(storagePath, file);
+    if (uploadError) throw uploadError;
+
+    const { error: insertError } = await sb.from("manual_data_uploads").insert({
+      company_id: company.id,
+      kind,
+      file_name: file.name,
+      storage_path: storagePath,
+    });
+    if (insertError) throw insertError;
+
+    note.textContent = "Sikeresen feltöltve! Hamarosan feldolgozzuk.";
+    note.style.display = "block";
+    fileInput.value = "";
+    await loadUploads();
+  } catch (err) {
+    note.textContent = "Hiba történt a feltöltéskor: " + (err.message || err);
+    note.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Feltöltés";
+  }
+});
 
 document.getElementById("settingsForm").addEventListener("submit", async (e) => {
   e.preventDefault();
