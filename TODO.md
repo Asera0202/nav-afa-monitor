@@ -39,15 +39,30 @@
     indítható) tetszőleges dátumtól visszatölti a bejövő/kimenő számlákat,
     30 napos darabokban, lapozást kezelve. Első futás 2026.01.01-től:
     381 számla feldolgozva (1 hibás), 522 ÁFA-sor feltöltve.
-    **TEENDŐ, ha skálázunk (lásd #12):** ma ezt még kézzel, GitHub Actions
-    felületről indítjuk — több ügyfélnél ezt is gombra kell tenni a
-    Beállítások oldalon.
+    **TEENDŐ, ha skálázunk (lásd #12):** ma ezt még GitHub Actions
+    workflow_dispatch-en keresztül hívja meg egy Edge Function — ez a
+    felhasználó felől már gombnyomásra megy (lásd alább), de a mögötte lévő
+    GITHUB_DISPATCH_TOKEN/Edge Function beállítás sok céggel skálázva
+    átgondolandó.
+    ✅ **UI kész (2026.09.04):** önálló "Adatpótlás" oldal a sidebar
+    menüben (`public/adatpotlas.html`, Házipénztár és Beállítások között)
+    — a felhasználó maga választ kezdő dátumot, egy gombbal indítja
+    (`supabase/functions/trigger-backfill/`). Korábban a Beállítások oldal
+    aljára volt eldugva, ahol senki nem kereste — a felhasználó jelezte,
+    hogy ez nem felhasználóbarát, ezért került ki külön menüpontba.
 4. Könyvelői egyeztetés-feltöltés (a könyvelőtől időnként kapott "analitika"
    PDF/Excel feltöltése — pl. a "Részletes ÁFA kimutatás" jellegű riport,
    ami azt mutatja, mit könyvelt már el a könyvelő — összevetve azzal, amit
    mi a NAV-tól látunk, hogy kiderüljön van-e "lekönyveletlen tétel", amit a
    könyvelő esetleg kihagyott). Konkrét minta-fájl megvan (2026.09.04-én
    kaptunk egyet a felhasználótól, QualitySoft Diamond rendszerből).
+   ✅ **Feltöltés UI kész (2026.09.04):** az "Adatpótlás" oldalon KOBAK-
+   pénztárgépes exportot vagy könyvelői kimutatást is fel lehet tölteni,
+   magyarázattal (miért kell, honnan szerezhető meg — a KOBAK-adat csak
+   Ügyfélkapus, portálos lekérdezéssel érhető el, nem automatizálható, lásd
+   #3b). A fájlok biztonságosan tárolva vannak (Supabase Storage,
+   `manual_data_uploads` tábla), de az automatikus feldolgozásuk
+   (egyeztetés/összevetés a NAV-adatokkal) még nincs megírva.
 4b. Dokumentum-megosztó portál a könyvelővel — ÚJ ÖTLET (2026.09.04): a
     vállalkozás fel tudna tölteni mindent, amit a könyvelő kér (bankszámla-
     kivonat, számlák, egyéb bizonylat), a könyvelő pedig egy helyről le
