@@ -28,10 +28,6 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !REGISTRATION_PRIVATE_KEY) {
   console.error("Hiányzó környezeti változó (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / REGISTRATION_PRIVATE_KEY)");
   process.exit(1);
 }
-if (!COMPANY_ID) {
-  console.error("Hiányzó COMPANY_ID env változó — a pótló szkriptet mindig egy konkrét cégre kell futtatni.");
-  process.exit(1);
-}
 if (!BACKFILL_FROM || !/^\d{4}-\d{2}-\d{2}$/.test(BACKFILL_FROM)) {
   console.error("Hiányzó/hibás BACKFILL_FROM (formátum: ÉÉÉÉ-HH-NN).");
   process.exit(1);
@@ -198,20 +194,26 @@ async function backfillCompany(company: CompanyRow, from: string, to: string) {
 
 async function main() {
   const to = BACKFILL_TO && /^\d{4}-\d{2}-\d{2}$/.test(BACKFILL_TO) ? BACKFILL_TO : todayMinusDays(34);
-  console.log(`[${new Date().toISOString()}] Számla-pótlás indul (cég: ${COMPANY_ID}, ${BACKFILL_FROM} .. ${to})`);
+  console.log(
+    `[${new Date().toISOString()}] Számla-pótlás indul (${COMPANY_ID ? `cég: ${COMPANY_ID}` : "minden cégre"}, ${BACKFILL_FROM} .. ${to})`
+  );
 
-  const { data: company, error } = await supabase
+  let query = supabase
     .from("companies")
-    .select("id, name, tax_number, nav_login_encrypted, nav_password_encrypted, nav_signing_key_encrypted, nav_exchange_key_encrypted")
-    .eq("id", COMPANY_ID)
-    .single();
+    .select("id, name, tax_number, nav_login_encrypted, nav_password_encrypted, nav_signing_key_encrypted, nav_exchange_key_encrypted");
+  if (COMPANY_ID) query = query.eq("id", COMPANY_ID);
 
-  if (error || !company) {
-    console.error("Nem található a megadott cég.", error?.message);
-    process.exit(1);
+  const { data: companies, error } = await query;
+
+  if (error) throw error;
+  if (!companies || companies.length === 0) {
+    console.log("Nincs feldolgozandó cég.");
+    return;
   }
 
-  await backfillCompany(company as CompanyRow, BACKFILL_FROM!, to);
+  for (const company of companies as CompanyRow[]) {
+    await backfillCompany(company, BACKFILL_FROM!, to);
+  }
 
   console.log("\nKész.");
 }

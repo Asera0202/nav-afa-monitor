@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       company_id:
-        description: "A cég azonosítója (UUID), amire a pótlást futtatjuk."
-        required: true
+        description: "Ha meg van adva, csak ennek a cégnek a pótlását futtatja. Üresen hagyva minden céget feldolgoz."
+        required: false
         type: string
       from:
         description: "Honnantól kérdezze le a NAV-tól a számlákat (ÉÉÉÉ-HH-NN, pl. 2026-01-01)."
