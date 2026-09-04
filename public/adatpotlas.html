@@ -282,16 +282,18 @@ function renderUploadsList(uploads) {
   }
   const kindLabels = { kobak_penztargep: "KOBAK pénztárgépes export", konyveloi_afa: "Könyvelői kimutatás", egyeb: "Egyéb" };
   const statusLabels = { feltoltve: "Feltöltve", feldolgozva: "Feldolgozva", hiba: "Hiba" };
+  const esc = (s) => (s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   box.innerHTML =
     `<div class="field-help" style="font-weight:600; margin-bottom:0.4rem;">Korábban feltöltött fájlok</div>` +
     uploads
       .map(
         (u) => `
-      <div class="register-item">
+      <div class="register-item" style="flex-direction:column; align-items:stretch;">
         <div>
-          <div class="ap-number" style="font-weight:500;">${u.file_name}</div>
+          <div class="ap-number" style="font-weight:500;">${esc(u.file_name)}</div>
           <div class="field-help">${kindLabels[u.kind] || u.kind} · ${statusLabels[u.status] || u.status} · ${new Date(u.created_at).toLocaleDateString("hu-HU")}</div>
         </div>
+        ${u.note ? `<div class="field-help" style="margin-top:0.35rem;">${esc(u.note)}</div>` : ""}
       </div>`
       )
       .join("");
@@ -300,7 +302,7 @@ function renderUploadsList(uploads) {
 async function loadUploads() {
   const { data, error } = await sb
     .from("manual_data_uploads")
-    .select("id, kind, file_name, status, created_at")
+    .select("id, kind, file_name, status, note, created_at")
     .eq("company_id", company.id)
     .order("created_at", { ascending: false });
   if (!error) renderUploadsList(data);
@@ -327,18 +329,38 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
     const { error: uploadError } = await sb.storage.from("manual-uploads").upload(storagePath, file);
     if (uploadError) throw uploadError;
 
-    const { error: insertError } = await sb.from("manual_data_uploads").insert({
-      company_id: company.id,
-      kind,
-      file_name: file.name,
-      storage_path: storagePath,
-    });
+    const { data: inserted, error: insertError } = await sb
+      .from("manual_data_uploads")
+      .insert({
+        company_id: company.id,
+        kind,
+        file_name: file.name,
+        storage_path: storagePath,
+      })
+      .select("id")
+      .single();
     if (insertError) throw insertError;
 
-    note.textContent = "Sikeresen feltöltve! Hamarosan feldolgozzuk.";
+    note.textContent = "Sikeresen feltöltve! A feldolgozás automatikusan elindul a háttérben, néhány percet vehet igénybe — frissítsd az oldalt később, hogy lásd az eredményt.";
     note.style.display = "block";
     fileInput.value = "";
     await loadUploads();
+
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      await fetch(`${SUPABASE_URL}/functions/v1/trigger-process-upload`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          apikey: SUPABASE_ANON_KEY,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ upload_id: inserted.id }),
+      });
+    } catch {
+      // A feltöltés sikeres volt, a feldolgozás indítása másodlagos — csendben elnyeljük a hibát,
+      // legfeljebb nem indul el automatikusan, de a fájl biztonságban van.
+    }
   } catch (err) {
     note.textContent = "Hiba történt a feltöltéskor: " + (err.message || err);
     note.style.display = "block";

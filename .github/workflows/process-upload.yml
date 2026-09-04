@@ -1,0 +1,31 @@
+name: Feltöltött fájl feldolgozása
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload_id:
+        description: "A manual_data_uploads sor azonosítója (UUID), amit fel kell dolgozni."
+        required: true
+        type: string
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Függőségek telepítése
+        run: npm ci
+
+      - name: Feltöltés feldolgozása
+        run: npx tsx src/process-upload.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          UPLOAD_ID: ${{ inputs.upload_id }}
