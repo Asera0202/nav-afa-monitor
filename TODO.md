@@ -31,13 +31,17 @@
    elérhetőn a fájlokat lekérdezésre — ami ennél korábbi, az a NAV oldaláról
    is véglegesen elveszett, semmivel nem pótolható vissza utólag. Ez a pont
    emiatt törölhető/lezárva, a valódi igényt a #3b és #4 pontok fedik le.
-3b. Számla-pótló (backfill) szkript — MEGÉPÍTVE, FOLYAMATBAN (2026.09.04):
+3b. ✅ Számla-pótló (backfill) szkript — kész, első futás lefutott (2026.09.04):
     a napi szinkron csak 34 napra visszamenőleg kérdezi le a NAV Online
     Számla adatait, ezért egy cég csatlakozásakor a korábbi hónapok
     kimaradtak. `src/backfill-invoices.ts` + `.github/workflows/
-    backfill-invoices.yml` (kézzel indítható GitHub Actions workflow)
-    tetszőleges dátumtól visszatölti a bejövő/kimenő számlákat. Most fut
-    az első futtatás (2026.01.01-től).
+    backfill-invoices.yml` (kézzel, GitHub Actions workflow_dispatch-csel
+    indítható) tetszőleges dátumtól visszatölti a bejövő/kimenő számlákat,
+    30 napos darabokban, lapozást kezelve. Első futás 2026.01.01-től:
+    381 számla feldolgozva (1 hibás), 522 ÁFA-sor feltöltve.
+    **TEENDŐ, ha skálázunk (lásd #12):** ma ezt még kézzel, GitHub Actions
+    felületről indítjuk — több ügyfélnél ezt is gombra kell tenni a
+    Beállítások oldalon.
 4. Könyvelői egyeztetés-feltöltés (a könyvelőtől időnként kapott "analitika"
    PDF/Excel feltöltése — pl. a "Részletes ÁFA kimutatás" jellegű riport,
    ami azt mutatja, mit könyvelt már el a könyvelő — összevetve azzal, amit
@@ -68,6 +72,14 @@
     mélyebb intézményi kék, bankkártya-szerű cégazonosító, talpas számtipó.
 11. Fizetési/előfizetési rendszer
 12. Skálázási előkészítés (ha a cégszám tucat/száz fölé nő)
+    **Elv (2026.09.04):** minden olyan funkció, amit most GitHub Actions
+    manuális workflow_dispatch-csel indítunk (pl. a #3b számla-pótló
+    backfill), csak addig maradhat így, amíg egyetlen (pilot) ügyfél van.
+    Több ügyfélnél ezeknek egy gombnyomásra kell működniük a felhasználói
+    felületen (Beállítások/dashboard), technikai/GitHub-beavatkozás nélkül —
+    hasonlóan, ahogy a #19 "Adatok frissítése" gombot is Edge Function mögé
+    tettük. Ezt a #11/#12 előtt végig kell nézni: mi az, amit még csak én
+    indítok kézzel, és mi kell hozzá, hogy azt is gombra tegyük.
 13. WellData cégadat-automatizálás (most még nem éri meg a költsége: 15.990-37.990 Ft+ÁFA/hó)
 14. Könyvelőirodai partnerprogram
 15. Homepage
