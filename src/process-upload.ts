@@ -17,8 +17,12 @@
 
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
-// @ts-ignore - a pdf-parse csomagnak nincs típusdefiníciója
-import pdfParse from "pdf-parse";
+// @ts-ignore - a pdf-parse csomagnak nincs típusdefiníciója. Fontos: a
+// csomag gyökér "pdf-parse" belépési pontja hibásan "debug módnak" hiszi
+// magát ESM/tsx környezetben, és megpróbál egy nálunk nem létező, saját
+// teszt-PDF-et megnyitni induláskor — ezért a belső modult importáljuk
+// közvetlenül, ami elkerüli ezt a hibás ágat.
+import pdfParse from "pdf-parse/lib/pdf-parse.js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
