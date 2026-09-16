@@ -158,6 +158,28 @@
    **Amit ez nem tud automatikusan követni:** ha maga a jogszabály
    változik (ahogy idén a szocho/TB-járulék gyakoriságával történt) — ezt
    időnként kézzel érdemes újra átnézni.
+   **VÉGLEGESÍTVE (2026.09.16), valós NAV-adattal ellenőrizve:** a
+   felhasználó letöltötte a saját NAV Ügyfélportál Adónaptárának .ics
+   exportját ("Naptárbejegyzések letöltése" funkció) — ebből kiderült,
+   hogy EV-knél/átalányadósoknál NEM vagy-vagy, hanem EGYSZERRE fut egy
+   HAVI "08-as" bevallás (kifizetésekkel/juttatásokkal összefüggő adó,
+   SZJA-levonás — ezt a 2026-os változás nem érintette) ÉS egy
+   NEGYEDÉVES "Járulék bevallás" (szocho+TB-járulék — ez váltott
+   negyedévesre). A generált dátumok pontosan egyeznek a valós .ics
+   fájllal. Emiatt a korábban bevezetett havi/negyedéves választógomb
+   (`jarulek_frequency`) feleslegessé vált (megtévesztő volt, mert nem
+   választás kérdése) — eltávolítva, mindkét tétel mindig automatikusan
+   megjelenik.
+   **Felmerült és ELVETETT ötlet:** automatikus .ics-behúzás minden
+   felhasználónál — kiderült, hogy az Adónaptárhoz nincs technikai
+   felhasználós API (ellentétben az Online Számla/Pénztárgép API-val),
+   csak személyes Ügyfélkapu mögött érhető el, tehát ez ugyanaz a
+   biztonsági/jogi kockázat volna, mint a #18-nál már elutasított
+   Ügyfélkapu-automatizálás. A felhasználó saját kezű .ics feltöltését is
+   elvetettük explicit kérésére — a jövőbeli előfizetők nem fognak
+   fájlokat le-/feltöltögetni. Marad az általános, szabály-alapú naptár,
+   link a NAV saját Adónaptárára a teljesen pontos, személyre szabott
+   adatért.
 9. ✅ Export PDF/Excel — kész (PDF: dashboard "PDF-jelentés" gomb; Excel: Adataim
    oldal "Excel exportálása" gomb, a szűrt tételes adatokat exportálja .xlsx-be)
 10. ✅ Profi, menüsoros/kártyás vizuális redesign — kész, élesítve mind a 6 oldalon
