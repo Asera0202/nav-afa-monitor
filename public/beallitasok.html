@@ -207,6 +207,14 @@
             <label class="radio-option"><input type="radio" name="taxRegime" value="atalanyado"> Átalányadó</label>
             <label class="radio-option"><input type="radio" name="taxRegime" value="normal"> Egyéb / normál</label>
           </div>
+          <div id="entityTypeRow" style="margin-top:0.9rem;">
+            <label>Vállalkozási forma</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="entityType" value="ev"> Egyéni vállalkozó (vállalkozói SZJA szerint)</label>
+              <label class="radio-option"><input type="radio" name="entityType" value="tarsas"> Társas vállalkozás (Kft, Bt, Zrt)</label>
+            </div>
+            <div class="field-help">Ebből számoljuk a NAV-határidő-naptárban, hogy társasági adó vagy SZJA-előleg/járulék határidők vonatkoznak-e rád.</div>
+          </div>
           <div class="checkbox-row">
             <input type="checkbox" id="alanyiMentes">
             <div class="label-text">Alanyi ÁFA-mentes vagyok</div>
@@ -344,6 +352,12 @@ function updateVatFrequencyVisibility() {
 }
 document.getElementById("alanyiMentes").addEventListener("change", updateVatFrequencyVisibility);
 
+function updateEntityTypeVisibility() {
+  const isNormal = document.querySelector('input[name="taxRegime"]:checked')?.value === "normal";
+  document.getElementById("entityTypeRow").style.display = isNormal ? "block" : "none";
+}
+document.querySelectorAll('input[name="taxRegime"]').forEach((el) => el.addEventListener("change", updateEntityTypeVisibility));
+
 async function main() {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
@@ -367,7 +381,10 @@ async function main() {
   if (regimeInput) regimeInput.checked = true;
   const vatFreqInput = document.querySelector(`input[name="vatFrequency"][value="${company.vat_frequency || 'negyedeves'}"]`);
   if (vatFreqInput) vatFreqInput.checked = true;
+  const entityTypeInput = document.querySelector(`input[name="entityType"][value="${company.entity_type || 'ev'}"]`);
+  if (entityTypeInput) entityTypeInput.checked = true;
   updateVatFrequencyVisibility();
+  updateEntityTypeVisibility();
 
   await loadCashRegisters();
   renderTelegramStatus();
@@ -388,6 +405,7 @@ document.getElementById("settingsForm").addEventListener("submit", async (e) => 
       tax_regime: document.querySelector('input[name="taxRegime"]:checked').value,
       alanyi_mentes: document.getElementById("alanyiMentes").checked,
       vat_frequency: document.querySelector('input[name="vatFrequency"]:checked').value,
+      entity_type: document.querySelector('input[name="entityType"]:checked')?.value || "ev",
     };
 
     const navLogin = document.getElementById("navLogin").value.trim();
