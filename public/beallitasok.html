@@ -215,14 +215,6 @@
             </div>
             <div class="field-help">Ebből számoljuk a NAV-határidő-naptárban, hogy társasági adó vagy SZJA-előleg/járulék határidők vonatkoznak-e rád.</div>
           </div>
-          <div id="jarulekFrequencyRow" style="margin-top:0.9rem;">
-            <label>SZJA-előleg / szocho / TB-járulék befizetésének gyakorisága</label>
-            <div class="radio-group">
-              <label class="radio-option"><input type="radio" name="jarulekFrequency" value="havi"> Havi</label>
-              <label class="radio-option"><input type="radio" name="jarulekFrequency" value="negyedeves"> Negyedéves</label>
-            </div>
-            <div class="field-help">2026.01.01-től a NAV szabálya szerint ez alapból negyedéves — de ha nálad a gyakorlatban havonta esedékes (pl. így állapodtál meg a könyvelőddel, vagy más a bejelentett jogviszonyod), itt átállíthatod. A hivatalos, személyre szabott határidőket mindig a <a href="https://nav.gov.hu/fooldal-elemei/fooldali-csempek/adonaptar" target="_blank" rel="noopener">NAV saját Adónaptára</a> mutatja pontosan.</div>
-          </div>
           <div class="checkbox-row">
             <input type="checkbox" id="alanyiMentes">
             <div class="label-text">Alanyi ÁFA-mentes vagyok</div>
@@ -363,17 +355,8 @@ document.getElementById("alanyiMentes").addEventListener("change", updateVatFreq
 function updateEntityTypeVisibility() {
   const isNormal = document.querySelector('input[name="taxRegime"]:checked')?.value === "normal";
   document.getElementById("entityTypeRow").style.display = isNormal ? "block" : "none";
-  updateJarulekFrequencyVisibility();
 }
 document.querySelectorAll('input[name="taxRegime"]').forEach((el) => el.addEventListener("change", updateEntityTypeVisibility));
-
-function updateJarulekFrequencyVisibility() {
-  const regime = document.querySelector('input[name="taxRegime"]:checked')?.value;
-  const entityType = document.querySelector('input[name="entityType"]:checked')?.value || "ev";
-  const applies = regime === "atalanyado" || (regime === "normal" && entityType === "ev");
-  document.getElementById("jarulekFrequencyRow").style.display = applies ? "block" : "none";
-}
-document.querySelectorAll('input[name="entityType"]').forEach((el) => el.addEventListener("change", updateJarulekFrequencyVisibility));
 
 async function main() {
   const { data: { session } } = await sb.auth.getSession();
@@ -400,11 +383,8 @@ async function main() {
   if (vatFreqInput) vatFreqInput.checked = true;
   const entityTypeInput = document.querySelector(`input[name="entityType"][value="${company.entity_type || 'ev'}"]`);
   if (entityTypeInput) entityTypeInput.checked = true;
-  const jarulekFreqInput = document.querySelector(`input[name="jarulekFrequency"][value="${company.jarulek_frequency || 'negyedeves'}"]`);
-  if (jarulekFreqInput) jarulekFreqInput.checked = true;
   updateVatFrequencyVisibility();
   updateEntityTypeVisibility();
-  updateJarulekFrequencyVisibility();
 
   await loadCashRegisters();
   renderTelegramStatus();
@@ -426,7 +406,6 @@ document.getElementById("settingsForm").addEventListener("submit", async (e) => 
       alanyi_mentes: document.getElementById("alanyiMentes").checked,
       vat_frequency: document.querySelector('input[name="vatFrequency"]:checked').value,
       entity_type: document.querySelector('input[name="entityType"]:checked')?.value || "ev",
-      jarulek_frequency: document.querySelector('input[name="jarulekFrequency"]:checked')?.value || "negyedeves",
     };
 
     const navLogin = document.getElementById("navLogin").value.trim();
