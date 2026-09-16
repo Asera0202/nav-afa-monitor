@@ -75,7 +75,14 @@ function extractInvoiceNumbers(text: string): string[] {
   const numbers: string[] = [];
   for (const line of text.split("\n")) {
     const m = line.match(re);
-    if (m) numbers.push(m[3].trim());
+    if (!m) continue;
+    const candidate = m[3].trim();
+    // Egy valódi bizonylatszám mindig tartalmaz számjegyet. Ha nem, az szinte
+    // biztosan egy többsorba tördelt partnernév-töredék, amit a PDF
+    // szövegkinyerése tévesen ide sorolt be — ezt inkább kihagyjuk, mintsem
+    // hibás bizonylatszámként kezeljük.
+    if (!/\d/.test(candidate)) continue;
+    numbers.push(candidate);
   }
   return [...new Set(numbers)];
 }

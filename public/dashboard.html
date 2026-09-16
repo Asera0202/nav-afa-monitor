@@ -388,6 +388,56 @@ function renderVatSummaryHtml(summary) {
   </div>`;
 }
 
+// Könyvelői egyeztetés: a legutóbb feldolgozott könyvelői ÁFA-kimutatás
+// eredményét mutatja — hány NAV-tól ismert bejövő számla hiányzik a
+// könyvelő kimutatásából. Lásd public/adatpotlas.html (feltöltés) és
+// public/egyeztetes-reszletek.html (tételes lista).
+async function computeReconciliationSummary(companyId) {
+  const { data: upload } = await sb
+    .from("manual_data_uploads")
+    .select("id, file_name, created_at")
+    .eq("company_id", companyId)
+    .eq("kind", "konyveloi_afa")
+    .eq("status", "feldolgozva")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (!upload) return null;
+
+  const { count } = await sb
+    .from("reconciliation_findings")
+    .select("id", { count: "exact", head: true })
+    .eq("upload_id", upload.id);
+
+  return { uploadId: upload.id, fileName: upload.file_name, createdAt: upload.created_at, missingCount: count ?? 0 };
+}
+
+function renderReconciliationHtml(summary) {
+  if (!summary) {
+    return `<div class="card"><div class="no-threshold">Még nem töltöttél fel könyvelői kimutatást. Az <a href="adatpotlas.html">Adatpótlás</a> oldalon tudsz feltölteni egyet, hogy lássuk, van-e le nem könyvelt számlád.</div></div>`;
+  }
+  const dateStr = new Date(summary.createdAt).toLocaleDateString("hu-HU");
+  if (summary.missingCount === 0) {
+    return `
+      <div class="card enyugta-card enyugta-ok">
+        <div class="enyugta-icon">✅</div>
+        <div>
+          <div class="enyugta-title">Minden számla lekönyvelve</div>
+          <div class="enyugta-text">A legutóbb feltöltött kimutatás (${summary.fileName}, ${dateStr}) alapján minden NAV-tól ismert bejövő számlánk megtalálható a könyvelő nyilvántartásában.</div>
+        </div>
+      </div>`;
+  }
+  return `
+    <div class="card enyugta-card enyugta-warn">
+      <div class="enyugta-icon">⚠️</div>
+      <div>
+        <div class="enyugta-title">${summary.missingCount} db számla hiányozhat a könyveléséből</div>
+        <div class="enyugta-text">A legutóbb feltöltött kimutatás (${summary.fileName}, ${dateStr}) alapján ennyi NAV-tól ismert bejövő számla nincs a könyvelő nyilvántartásában. <a href="egyeztetes-reszletek.html?upload=${summary.uploadId}">Részletek megtekintése →</a></div>
+      </div>
+    </div>`;
+}
+
 // Anomália-jelzés: ÁFA-kulcsonként összehasonlítja a beszerzést (bejövő
 // számla nettó) és az értékesítést (kimenő számla + pénztárgép nettó) a
 // kiválasztott időszakra. Ha az egyik oldal aránytalanul (ANOMALY_MULTIPLIER-
@@ -777,13 +827,14 @@ async function main() {
 
   try {
     const { from: defFrom, to: defTo } = defaultVatDates();
-    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml, anomalies] = await Promise.all([
+    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml, anomalies, reconciliationSummary] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
       computeVatSummary(company.id, defFrom, defTo),
       computePaymentSummary(company.id, defFrom, defTo),
       renderENyugtaSection(company.id),
       computeAnomalies(company.id, defFrom, defTo),
+      computeReconciliationSummary(company.id),
     ]);
 
     content.innerHTML = `
@@ -808,6 +859,9 @@ async function main() {
 
       <div class="section-title">Anomália-jelzés</div>
       <div id="anomaliesContainer">${renderAnomaliesHtml(anomalies)}</div>
+
+      <div class="section-title">Könyvelői egyeztetés</div>
+      ${renderReconciliationHtml(reconciliationSummary)}
 
       <div class="section-title-row">
         <div class="section-title">Napi szinkron állapota</div>
