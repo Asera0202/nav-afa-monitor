@@ -128,7 +128,20 @@
    (anyagköltség, ELÁBÉ, alvállalkozói díj) kézzel kell majd megadni/kategorizálni
    (szállító-memória + kulcsszó-javaslat + AI-javaslat kombinációja tervezve)
 7. Beépített AI-chat asszisztens (cég-specifikus adatra korlátozva + friss adózási hírek)
-8. NAV-határidő-naptár
+8. ✅ NAV-határidő-naptár — kész (2026.09.16). Önálló `public/hatarido-naptar.html`
+   oldal + dashboard-kártya a legközelebbi 1-2 határidővel
+   (`renderUpcomingDeadlinesHtml`). A szabálykészlet (`public/tax-deadlines.js`)
+   mindhárom adózási formára (KATA, átalányadó, normál) és az alanyi
+   ÁFA-mentességre is lefedi a jellemző határidőket, tudatosan úgy, hogy a
+   jövőbeli előfizetők bármelyik formát választva helyes dátumokat kapjanak,
+   nem csak a pilot-ügyfélre hangolva. Ehhez a Beállítások oldalon új mező:
+   ÁFA-bevallás gyakorisága (havi/negyedéves/éves) — csak akkor jelenik meg,
+   ha a cég nem alanyi mentes.
+   **TEENDŐ nálad:** a migrációt (`supabase/migrations/
+   20260916010000_vat_frequency.sql`) alkalmazni kell Supabase-ben.
+   **Tudatos egyszerűsítés:** tájékoztató jellegű, a leggyakoribb
+   határidőket mutatja (nincs pl. alkalmazotti bér utáni járulék, mert
+   nincs alkalmazott-adat a rendszerben) — ez a naptáron is jelezve van.
 9. ✅ Export PDF/Excel — kész (PDF: dashboard "PDF-jelentés" gomb; Excel: Adataim
    oldal "Excel exportálása" gomb, a szűrt tételes adatokat exportálja .xlsx-be)
 10. ✅ Profi, menüsoros/kártyás vizuális redesign — kész, élesítve mind a 6 oldalon
