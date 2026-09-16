@@ -127,16 +127,34 @@ function generateTaxDeadlines(company, { fromYear, yearsAhead = 1 } = {}) {
       }
     }
 
-    // --- Átalányadó / normál egyéni vállalkozó: negyedéves SZJA-előleg +
-    // szocho + TB-járulék (2026.01.01-től egységesen negyedéves, a
-    // negyedévet követő hónap 12-ig), plusz éves SZJA-bevallás ---
+    // --- Átalányadó / normál egyéni vállalkozó: SZJA-előleg + szocho +
+    // TB-járulék befizetése. A NAV hivatalos szabálya szerint 2026.01.01-től
+    // ez alapból negyedéves (a negyedévet követő hónap 12-ig) — de mivel
+    // a gyakorlatban ez adózónként eltérhet (pl. a könyvelővel kötött
+    // megállapodás vagy más bejelentett jogviszony miatt), a Beállítások
+    // oldalon a felhasználó átállíthatja havira (`jarulek_frequency`). A
+    // hivatalos, személyre szabott határidőket mindig a NAV saját,
+    // bejelentkezés utáni Adónaptára (Ügyfélportál) mutatja pontosan.
     if (company.tax_regime === "atalanyado" || (company.tax_regime === "normal" && entityType === "ev")) {
-      for (const q of quarterlyDates(year)) {
-        deadlines.push({
-          date: iso(q.y, q.m, 12),
-          title: "Negyedéves SZJA-előleg, szocho és TB-járulék befizetése",
-          description: `Az előző negyedévi (${q.label}) személyijövedelemadó-előleg, szociális hozzájárulási adó és társadalombiztosítási járulék bevallásának és befizetésének határideje (2026-tól ezek egységesen negyedévesek egyéni vállalkozóknál).`,
-        });
+      const jarulekFreq = company.jarulek_frequency || "negyedeves";
+      if (jarulekFreq === "havi") {
+        for (let m = 1; m <= 12; m++) {
+          const dueYear = m === 12 ? year + 1 : year;
+          const dueMonth = m === 12 ? 1 : m + 1;
+          deadlines.push({
+            date: iso(dueYear, dueMonth, 12),
+            title: "Havi SZJA-előleg, szocho és TB-járulék befizetése",
+            description: `A(z) ${year}. ${pad2(m)}. havi személyijövedelemadó-előleg, szociális hozzájárulási adó és társadalombiztosítási járulék bevallásának és befizetésének határideje.`,
+          });
+        }
+      } else {
+        for (const q of quarterlyDates(year)) {
+          deadlines.push({
+            date: iso(q.y, q.m, 12),
+            title: "Negyedéves SZJA-előleg, szocho és TB-járulék befizetése",
+            description: `Az előző negyedévi (${q.label}) személyijövedelemadó-előleg, szociális hozzájárulási adó és társadalombiztosítási járulék bevallásának és befizetésének határideje (2026-tól ezek a NAV szabálya szerint alapból negyedévesek egyéni vállalkozóknál).`,
+          });
+        }
       }
       deadlines.push({
         date: iso(year, 5, 20),
