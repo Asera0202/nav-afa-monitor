@@ -325,7 +325,8 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
   btn.textContent = "Feltöltés...";
   note.style.display = "none";
   try {
-    const storagePath = `${company.id}/${Date.now()}-${file.name}`;
+    const safeName = file.name.normalize("NFKD").replace(/[^\w.\-]+/g, "_");
+    const storagePath = `${company.id}/${Date.now()}-${safeName}`;
     const { error: uploadError } = await sb.storage.from("manual-uploads").upload(storagePath, file);
     if (uploadError) throw uploadError;
 
