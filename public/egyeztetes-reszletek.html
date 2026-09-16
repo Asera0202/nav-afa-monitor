@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Könyvelői egyeztetés — Cégfókusz</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #f5f5fa; --surface: #ffffff;
+    --surface-sidebar: #0f1a33; --surface-sidebar-hover: #182746;
+    --ink: #12172b; --ink-soft: #5a6178; --ink-faint: #9297ab;
+    --line: #e6e8f0; --accent: #1f3a7a; --accent-soft: #e9edf7; --accent-ink: #ffffff;
+    --on-sidebar: #d8d9ec; --on-sidebar-soft: #7c7f9e;
+    --warn: #a4650a; --warn-soft: #faf1e3;
+    --ok: #1a7f4e; --ok-soft: #e8f5ee;
+    --shadow: 0 1px 2px rgba(20,21,42,0.04), 0 8px 24px rgba(20,21,42,0.05);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; display: flex; min-height: 100vh; }
+
+  .sidebar { width: 232px; flex-shrink: 0; background: var(--surface-sidebar); color: var(--on-sidebar); display: flex; flex-direction: column; padding: 1.5rem 1rem; position: sticky; top: 0; height: 100vh; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; padding: 0 0.5rem; margin-bottom: 2.2rem; }
+  .brand-mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .brand-mark img { width: 20px; height: 20px; }
+  .brand-name { font-family: var(--serif); font-size: 1.05rem; letter-spacing: 0.01em; color: #fff; }
+
+  .nav-group-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--on-sidebar-soft); padding: 0 0.6rem; margin: 0 0 0.5rem; }
+  nav.nav { display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 1.6rem; }
+  .nav-link { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem 0.6rem; border-radius: 8px; color: var(--on-sidebar-soft); text-decoration: none; font-size: 0.87rem; font-weight: 500; }
+  .nav-link svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.85; }
+  .nav-link:hover { background: var(--surface-sidebar-hover); color: var(--on-sidebar); }
+  .nav-link.active { background: var(--surface-sidebar-hover); color: #fff; }
+  .nav-link.active svg { opacity: 1; color: #7093e8; }
+
+  .sidebar-foot { margin-top: auto; }
+  .id-card { position: relative; border-radius: 12px; padding: 0.95rem 1rem; background: linear-gradient(150deg, #1c2c52, #0a1226 88%); border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
+  .id-card::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120px 90px at 100% 0%, rgba(112,147,232,0.22), transparent 70%); pointer-events: none; }
+  .id-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.1rem; }
+  .id-chip { width: 22px; height: 16px; border-radius: 3px; background: linear-gradient(160deg, #c9d3ec, #8b96b8); }
+  .id-status { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #8fe3b0; display: flex; align-items: center; gap: 0.3rem; }
+  .id-status .dot { width: 5px; height: 5px; border-radius: 999px; background: #3fcb84; flex-shrink: 0; }
+  .id-card-number { font-family: var(--sans); font-variant-numeric: tabular-nums; letter-spacing: 0.09em; font-size: 0.86rem; color: #eef0fa; margin-bottom: 0.7rem; }
+  .id-card-name { font-size: 0.82rem; font-weight: 600; color: #fff; }
+  .id-card-sub { font-size: 0.68rem; color: #8992b8; margin-top: 0.1rem; }
+
+  .trust-note { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.9rem; padding: 0 0.3rem; font-size: 0.68rem; color: var(--on-sidebar-soft); }
+  .trust-note svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  .logout-link { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; padding: 0.5rem 0.6rem; border-radius: 8px; font-size: 0.8rem; color: var(--on-sidebar-soft); text-decoration: none; background: none; border: none; cursor: pointer; font-family: var(--sans); width: 100%; text-align: left; }
+  .logout-link:hover { background: var(--surface-sidebar-hover); color: var(--on-sidebar); }
+  .logout-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  main { flex: 1; min-width: 0; }
+  .wrap { max-width: 980px; padding: 1.8rem 2.2rem 4rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; color: var(--accent); text-decoration: none; font-weight: 600; margin-bottom: 0.9rem; }
+  .back-link svg { width: 14px; height: 14px; }
+  h1 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin: 0 0 0.3rem; }
+  .page-desc { font-size: 0.85rem; color: var(--ink-soft); margin: 0 0 1.4rem; line-height: 1.5; }
+
+  .loading { text-align: center; padding: 3rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
+
+  .summary-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 1.1rem 1.3rem; margin-bottom: 1.2rem; font-size: 0.85rem; line-height: 1.6; }
+  .summary-card b { font-weight: 700; }
+  .caveat { background: var(--warn-soft); color: var(--warn); border-radius: 8px; padding: 0.7rem 0.9rem; font-size: 0.78rem; margin-top: 0.7rem; line-height: 1.5; }
+
+  .empty-state { background: var(--ok-soft); color: var(--ok); border-radius: 12px; padding: 1.2rem 1.3rem; font-size: 0.9rem; font-weight: 600; }
+
+  table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  thead th { text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-faint); padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--line); background: var(--ground); }
+  tbody td { padding: 0.65rem 0.9rem; font-size: 0.84rem; border-bottom: 1px solid var(--line); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.invoice-number { font-weight: 600; }
+
+  @media (max-width: 820px) {
+    .sidebar { display: none; }
+    .wrap { padding-left: 1.2rem; padding-right: 1.2rem; }
+    table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><img src="favicon.svg" alt=""></div>
+      <div class="brand-name">Cégfókusz</div>
+    </div>
+
+    <div class="nav-group-label">Menü</div>
+    <nav class="nav">
+      <a class="nav-link" href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Irányítópult
+      </a>
+      <a class="nav-link" href="adataim.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5a2 2 0 0 1 2-2h8l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v6h6"/></svg>
+        Adataim
+      </a>
+      <a class="nav-link" href="hazipenztar.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M6 6V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+        Házipénztár
+      </a>
+      <a class="nav-link active" href="adatpotlas.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Adatpótlás
+      </a>
+      <a class="nav-link" href="beallitasok.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.37a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.63 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.63a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.37 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
+        Beállítások
+      </a>
+      <a class="nav-link" href="https://ugyfelportal.nav.gov.hu/adoszamla/lekerdezes" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        NAV adószámla
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="id-card">
+        <div class="id-card-top">
+          <div class="id-chip"></div>
+          <div class="id-status"><span class="dot"></span>Aktív</div>
+        </div>
+        <div class="id-card-number" id="sidebarTaxNumber">····&nbsp;····&nbsp;·&nbsp;··</div>
+        <div class="id-card-name" id="sidebarCompanyName">Betöltés…</div>
+        <div class="id-card-sub">Adószám · regisztrált cég</div>
+      </div>
+      <div class="trust-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Biztonságos, titkosított kapcsolat
+      </div>
+      <button class="logout-link" id="logoutBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Kijelentkezés
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrap">
+      <a class="back-link" href="adatpotlas.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        Vissza az Adatpótláshoz
+      </a>
+      <h1>Könyvelői egyeztetés részletei</h1>
+      <div class="page-desc" id="fileNameLine">Betöltés...</div>
+
+      <div id="loadingBox" class="loading">Betöltés...</div>
+      <div id="content" style="display:none;"></div>
+    </div>
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await sb.auth.signOut();
+  window.location.href = "login.html";
+});
+
+function fmt(n) {
+  return new Intl.NumberFormat("hu-HU").format(Math.round(n || 0)) + " Ft";
+}
+
+async function main() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const uploadId = params.get("upload");
+  if (!uploadId) {
+    document.getElementById("loadingBox").textContent = "Hiányzó feltöltés-azonosító.";
+    return;
+  }
+
+  const { data: companies } = await sb.from("companies").select("*");
+  if (!companies || companies.length === 0) {
+    document.getElementById("loadingBox").textContent = "A regisztrációdat még átnézzük és aktiváljuk.";
+    return;
+  }
+  const company = companies[0];
+  document.getElementById("sidebarCompanyName").textContent = company.name;
+  document.getElementById("sidebarTaxNumber").textContent = (company.tax_number || "").replace(/-/g, "  ");
+
+  const { data: upload, error: uploadError } = await sb
+    .from("manual_data_uploads")
+    .select("file_name, kind, status, note, created_at")
+    .eq("id", uploadId)
+    .single();
+
+  if (uploadError || !upload) {
+    document.getElementById("loadingBox").textContent = "Nem található ez a feltöltés.";
+    return;
+  }
+
+  document.getElementById("fileNameLine").textContent = `${upload.file_name} — feltöltve: ${new Date(upload.created_at).toLocaleDateString("hu-HU")}`;
+
+  const { data: findings } = await sb
+    .from("reconciliation_findings")
+    .select("invoice_number, partner_name, issue_date, net_amount, vat_amount, gross_amount")
+    .eq("upload_id", uploadId)
+    .order("issue_date", { ascending: false });
+
+  const content = document.getElementById("content");
+  const summary = `
+    <div class="summary-card">
+      ${(upload.note || "").replace(/\. /g, ".<br>")}
+    </div>
+  `;
+
+  if (!findings || findings.length === 0) {
+    content.innerHTML = summary + `<div class="empty-state">✅ Nincs hiányzó tétel — minden NAV-tól ismert bejövő számla megtalálható a könyvelő kimutatásában (ebben az időszakban).</div>`;
+  } else {
+    const rows = findings
+      .map(
+        (f) => `
+      <tr>
+        <td class="invoice-number">${f.invoice_number}</td>
+        <td>${f.partner_name || "—"}</td>
+        <td>${f.issue_date ? new Date(f.issue_date).toLocaleDateString("hu-HU") : "—"}</td>
+        <td class="num">${fmt(f.net_amount)}</td>
+        <td class="num">${fmt(f.vat_amount)}</td>
+        <td class="num">${fmt(f.gross_amount)}</td>
+      </tr>`
+      )
+      .join("");
+
+    content.innerHTML =
+      summary +
+      `
+      <table>
+        <thead>
+          <tr>
+            <th>Bizonylatszám</th>
+            <th>Szállító</th>
+            <th>Teljesítés dátuma</th>
+            <th style="text-align:right;">Nettó</th>
+            <th style="text-align:right;">ÁFA</th>
+            <th style="text-align:right;">Bruttó</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+
+  document.getElementById("loadingBox").style.display = "none";
+  content.style.display = "block";
+}
+
+main();
+</script>
+</body>
+</html>

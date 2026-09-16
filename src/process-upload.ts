@@ -80,6 +80,16 @@ function extractInvoiceNumbers(text: string): string[] {
   return [...new Set(numbers)];
 }
 
+/** A riport fejlécében szereplő időszak kiolvasása, pl. "2026.04.01 - 2026.06.30". */
+function extractPeriod(text: string): { from: string; to: string } | null {
+  const m = text.match(/kimutatás\s+(\d{4})\.(\d{2})\.(\d{2})\s*-\s*(\d{4})\.(\d{2})\.(\d{2})/);
+  if (!m) return null;
+  return {
+    from: `${m[1]}-${m[2]}-${m[3]}`,
+    to: `${m[4]}-${m[5]}-${m[6]}`,
+  };
+}
+
 async function main() {
   console.log(`[${new Date().toISOString()}] Feltöltés feldolgozása indul (upload: ${UPLOAD_ID})`);
 
@@ -134,9 +144,11 @@ async function main() {
   const buffer = Buffer.from(await fileData.arrayBuffer());
 
   let extractedNumbers: string[] = [];
+  let period: { from: string; to: string } | null = null;
   try {
     const parsed = await pdfParse(buffer, { pagerender: renderPositional });
     extractedNumbers = extractInvoiceNumbers(parsed.text);
+    period = extractPeriod(parsed.text);
   } catch (err) {
     console.error("Hiba a PDF feldolgozásakor.", err);
     await supabase
@@ -147,26 +159,67 @@ async function main() {
   }
 
   console.log(`  ${extractedNumbers.length} egyedi bizonylatszám felismerve a fájlban.`);
+  console.log(`  Riport időszaka: ${period ? `${period.from} .. ${period.to}` : "nem sikerült kiolvasni, teljes évet nézzük"}`);
 
-  const { data: navInvoices } = await supabase
+  let query = supabase
     .from("invoice_vat_lines")
-    .select("invoice_number")
+    .select("invoice_number, partner_name, issue_date, net_amount, vat_amount, gross_amount")
     .eq("company_id", upload.company_id)
     .eq("direction", "INBOUND");
+  if (period) query = query.gte("issue_date", period.from).lte("issue_date", period.to);
 
-  const navInvoiceNumbers = [...new Set((navInvoices ?? []).map((r) => r.invoice_number))];
+  const { data: navLines } = await query;
+
+  // Számlánkénti összesítés (egy számlának több ÁFA-kulcsa/sora is lehet).
+  const byInvoice = new Map<
+    string,
+    { partnerName: string | null; issueDate: string | null; net: number; vat: number; gross: number }
+  >();
+  for (const line of navLines ?? []) {
+    const existing = byInvoice.get(line.invoice_number) ?? {
+      partnerName: line.partner_name,
+      issueDate: line.issue_date,
+      net: 0,
+      vat: 0,
+      gross: 0,
+    };
+    existing.net += Number(line.net_amount ?? 0);
+    existing.vat += Number(line.vat_amount ?? 0);
+    existing.gross += Number(line.gross_amount ?? 0);
+    byInvoice.set(line.invoice_number, existing);
+  }
+
   const extractedSet = new Set(extractedNumbers);
-  const missingFromAccountant = navInvoiceNumbers.filter((n) => !extractedSet.has(n));
+  const missingFromAccountant = [...byInvoice.keys()].filter((n) => !extractedSet.has(n));
 
-  console.log(`  ${navInvoiceNumbers.length} bejövő számla van nálunk a NAV-tól, ebből ${missingFromAccountant.length} nincs a könyvelő kimutatásában.`);
+  console.log(`  ${byInvoice.size} bejövő számla van nálunk a NAV-tól ebben az időszakban, ebből ${missingFromAccountant.length} nincs a könyvelő kimutatásában.`);
 
+  // Korábbi (ugyanerre a feltöltésre vonatkozó) eredmények törlése újrafeldolgozás esetére.
+  await supabase.from("reconciliation_findings").delete().eq("upload_id", upload.id);
+
+  if (missingFromAccountant.length > 0) {
+    const rows = missingFromAccountant.map((invoiceNumber) => {
+      const info = byInvoice.get(invoiceNumber)!;
+      return {
+        upload_id: upload.id,
+        company_id: upload.company_id,
+        invoice_number: invoiceNumber,
+        partner_name: info.partnerName,
+        issue_date: info.issueDate,
+        net_amount: info.net,
+        vat_amount: info.vat,
+        gross_amount: info.gross,
+      };
+    });
+    await supabase.from("reconciliation_findings").insert(rows);
+  }
+
+  const periodText = period ? ` (${period.from} .. ${period.to} időszakra)` : "";
   let note: string;
   if (missingFromAccountant.length === 0) {
-    note = `Feldolgozva: ${extractedNumbers.length} bizonylatszám felismerve a fájlból. Minden NAV-tól ismert bejövő számlánk (${navInvoiceNumbers.length} db) megtalálható a könyvelő kimutatásában — nincs jele hiányzó könyvelésnek.`;
+    note = `Feldolgozva: ${extractedNumbers.length} bizonylatszám felismerve a fájlból. Minden NAV-tól ismert bejövő számlánk${periodText} (${byInvoice.size} db) megtalálható a könyvelő kimutatásában — nincs jele hiányzó könyvelésnek.`;
   } else {
-    const preview = missingFromAccountant.slice(0, 15).join(", ");
-    const more = missingFromAccountant.length > 15 ? ` (+${missingFromAccountant.length - 15} további)` : "";
-    note = `Feldolgozva: ${extractedNumbers.length} bizonylatszám felismerve a fájlból. ${missingFromAccountant.length} db NAV-tól ismert bejövő számlánk NINCS a könyvelő kimutatásában (lehet, hogy még nem könyvelte le, vagy csak nem esik ebbe az időszakba): ${preview}${more}. Fontos: a felismerés nem 100%-os (néhány több sorba törő tétel kimaradhat), ezért ellenőrizd kézzel is a listát.`;
+    note = `Feldolgozva: ${missingFromAccountant.length} db NAV-tól ismert bejövő számla${periodText} NINCS a könyvelő kimutatásában — lásd a részletes listát lent. Fontos: a felismerés nem 100%-os (néhány több sorba törő tétel kimaradhat a fájlból), ezért ellenőrizd kézzel is.`;
   }
 
   await supabase.from("manual_data_uploads").update({ status: "feldolgozva", note }).eq("id", upload.id);

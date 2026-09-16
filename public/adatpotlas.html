@@ -294,6 +294,7 @@ function renderUploadsList(uploads) {
           <div class="field-help">${kindLabels[u.kind] || u.kind} · ${statusLabels[u.status] || u.status} · ${new Date(u.created_at).toLocaleDateString("hu-HU")}</div>
         </div>
         ${u.note ? `<div class="field-help" style="margin-top:0.35rem;">${esc(u.note)}</div>` : ""}
+        ${u.kind === "konyveloi_afa" && u.status === "feldolgozva" ? `<a href="egyeztetes-reszletek.html?upload=${u.id}" style="font-size:0.78rem; font-weight:600; color:var(--accent); margin-top:0.4rem; display:inline-block;">Részletek megtekintése →</a>` : ""}
       </div>`
       )
       .join("");
