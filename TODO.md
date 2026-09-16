@@ -50,29 +50,46 @@
     (`supabase/functions/trigger-backfill/`). Korábban a Beállítások oldal
     aljára volt eldugva, ahol senki nem kereste — a felhasználó jelezte,
     hogy ez nem felhasználóbarát, ezért került ki külön menüpontba.
-4. ✅ Könyvelői egyeztetés-feltöltés — **automatikus feldolgozás megépítve
-   (2026.09.04)**, de a Supabase-oldali beállítás/tesztelés nincs
-   megerősítve befejezettnek (12 napos szünet volt a beszélgetésben).
-   Feltöltés után automatikusan elindul: `supabase/functions/
-   trigger-process-upload/` → `.github/workflows/process-upload.yml` →
-   `src/process-upload.ts`. A PDF-et pozíció (x/y koordináta) alapján
-   olvassa ki (a nyers szövegkinyerés összekeverte az oszlopokat a
-   QualitySoft Diamond "Részletes ÁFA kimutatás" riport-típusnál),
-   kinyeri a bizonylatszámokat, összeveti a NAV-tól nálunk lévő bejövő
-   számlákkal, és jelzi, ha van olyan NAV-számlánk, ami nincs a könyvelő
-   kimutatásában. Teszten (a felhasználó valódi fájlján) 91/kb.94 releváns
-   bizonylatszámot ismert fel helyesen — **"legjobb próbálkozás" jellegű,
-   nem 100%-os** (néhány több sorba tördelt tétel kimaradhat), ezt a
-   visszajelzés szövege is jelzi, és a felhasználóval is tisztázva lett,
-   hogy kézi ellenőrzés is szükséges rá támaszkodás előtt.
+4. ✅ Könyvelői egyeztetés-feltöltés — **teljesen kész, élesben tesztelve
+   és működik (2026.09.16)**. Feltöltés után automatikusan elindul:
+   `supabase/functions/trigger-process-upload/` → `.github/workflows/
+   process-upload.yml` → `src/process-upload.ts`. A PDF-et pozíció (x/y
+   koordináta) alapján olvassa ki (a nyers szövegkinyerés összekeverte az
+   oszlopokat a QualitySoft Diamond "Részletes ÁFA kimutatás"
+   riport-típusnál), kiolvassa a riport fejlécéből az időszakot is, és
+   **csak az arra az időszakra eső** NAV-bejövő-számlákkal veti össze
+   (korábban a teljes évet nézte egy negyedéves kimutatáshoz, ami
+   irreálisan magas "hiányzó" számot adott — javítva).
+   Az eredmény egy külön táblában (`reconciliation_findings`) és egy
+   részletes, táblázatos oldalon jelenik meg
+   (`public/egyeztetes-reszletek.html`: bizonylatszám, szállító, dátum,
+   nettó/ÁFA/bruttó) — nem csak egy rövid szövegben. A **dashboardon** is
+   megjelenik egy "Könyvelői egyeztetés" kártya, link a részletekre.
+   A hibás (nem szám tartalmú) bizonylatszám-felismeréseket kiszűrjük.
+   **Ismert korlát, tisztázva a felhasználóval:** PDF-ből 100%-osan
+   hibátlan kiolvasás technikailag nem garantálható (néhány több sorba
+   tördelt tétel kimaradhat a felismerésből — inkább kimarad, mint hogy
+   hibásan párosuljon). Az Adatpótlás oldal magyarázata most már
+   kifejezetten javasolja Excel/CSV kérését a könyvelőtől PDF helyett
+   (ha van ilyen exportja), mert az kétértelműség nélkül, tökéletesen
+   feldolgozható lenne — ha a felhasználó tud ilyet szerezni, érdemes
+   megírni hozzá is a feldolgozást.
    Csak a "konyveloi_afa" típusú PDF-eket dolgozza fel — a "kobak_penztargep"
    típusúakat egyelőre csak tárolja (nincs minta-fájl hozzá).
-   **TEENDŐ nálad, ha még nem történt meg:** deployolni kell a
-   `trigger-process-upload` Edge Function-t (lásd README), és kikapcsolni
-   nála is a "Verify JWT with legacy secret" kapcsolót — ugyanaz a menet,
-   mint a `trigger-sync`/`trigger-backfill`-nél. Utána próbáld ki újra a
-   feltöltést, és nézd meg, mit ír ki a "Korábban feltöltött fájlok" listánál
-   frissítés után.
+   **Élesítés közben felmerült és javított hibák (mind megoldva):**
+   - a `manual_data_uploads`/`reconciliation_findings` táblákhoz a
+     `service_role`-nak nem volt jogosultsága (csak `authenticated`-nek
+     adtuk meg korábban) — "permission denied" hibát adott, míg ki nem
+     derült a debug-üzenettel
+   - a `trigger-process-upload` Edge Function 12 napig érintetlenül állt,
+     és valamiért nem volt elérhető (404) — törlés + újra-deploy oldotta meg
+   - a `pdf-parse` npm csomag hibásan "debug módnak" hiszi magát ESM/tsx
+     környezetben, és egy nálunk nem létező, saját teszt-PDF-et próbál
+     megnyitni induláskor — ez minden feldolgozást elhasalt, amíg ki nem
+     derült a GitHub Actions logból; a belső `pdf-parse/lib/pdf-parse.js`
+     modult importálva elkerülhető
+   - fájlnévben lévő zárójel/szóköz "Invalid key" Storage-hibát adott —
+     a tárolási útvonalhoz most a fájlnevet biztonságos formára alakítjuk
 4b. Dokumentum-megosztó portál a könyvelővel — ÚJ ÖTLET (2026.09.04): a
     vállalkozás fel tudna tölteni mindent, amit a könyvelő kér (bankszámla-
     kivonat, számlák, egyéb bizonylat), a könyvelő pedig egy helyről le

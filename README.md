@@ -87,7 +87,12 @@ oldalon lévő "Számlák pótlása" gombot is
 indítja) — ezt a függvényt is deployolni kell:
 `supabase functions deploy trigger-backfill`.
 
-**FONTOS mindkét függvénynél:** a Supabase dashboardon az Edge Function
+Ugyanígy az Adatpótlás oldal fájlfeltöltés utáni automatikus feldolgozását a
+`supabase/functions/trigger-process-upload/` függvény indítja el (a
+`process-upload.yml` workflow-t) — ezt is deployolni kell:
+`supabase functions deploy trigger-process-upload`.
+
+**FONTOS mindhárom függvénynél:** a Supabase dashboardon az Edge Function
 "Settings" fülén ki kell kapcsolni a **"Verify JWT with legacy secret"**
 kapcsolót (a kód saját maga ellenőrzi a bejelentkezést) — enélkül a hívás
 mindig hibázik. Lásd a TODO.md #19-es pontját a részletesen dokumentált
@@ -95,12 +100,25 @@ buktatókról (apikey fejléc, üres kérés-törzs stb.).
 
 ## Kézi feltöltésű dokumentumok (KOBAK, könyvelői kimutatás)
 
-A Beállítások oldalon lévő feltöltő a `supabase/migrations/
-20260904000000_manual_data_uploads.sql` migrációban létrehozott
-`manual_data_uploads` táblát és `manual-uploads` Storage bucket-et használja
-— ezt is alkalmazni kell Supabase-ben (SQL Editor), mielőtt a feltöltés
-működne. A feltöltött fájlok feldolgozása egyelőre kézi (a fájl csak
-biztonságosan tárolva van), az automatikus feldolgozás a következő lépés.
+Az Adatpótlás oldalon lévő feltöltő a `supabase/migrations/
+20260904000000_manual_data_uploads.sql` (a `manual_data_uploads` tábla és a
+`manual-uploads` Storage bucket) és a `supabase/migrations/
+20260916000000_reconciliation_findings.sql` (a `reconciliation_findings`
+tábla, a feldolgozás eredményének tételes tárolására) migrációkat
+használja — ezeket is alkalmazni kell Supabase-ben (SQL Editor). **Mindkét
+táblánál a `service_role`-nak is grantolni kell** (nemcsak
+`authenticated`-nek), mert a szerver-oldali feldolgozó szkript a service
+role kulccsal ír/olvas:
+
+    grant select, insert, update, delete on manual_data_uploads to service_role;
+    grant select, insert, delete on reconciliation_findings to service_role;
+
+A könyvelői ÁFA-kimutatás PDF-jét feltöltés után automatikusan feldolgozza a
+`src/process-upload.ts` (pozíció-alapú PDF-kiolvasás + időszak-alapú
+összevetés a NAV-adatokkal) — az eredmény a dashboardon és a
+`public/egyeztetes-reszletek.html` oldalon jelenik meg. A KOBAK
+pénztárgépes exportokhoz még nincs minta-fájl, azokat egyelőre csak
+tárolja, nem dolgozza fel.
 
 ## Házipénztár
 
