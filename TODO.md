@@ -142,6 +142,22 @@
    **Tudatos egyszerűsítés:** tájékoztató jellegű, a leggyakoribb
    határidőket mutatja (nincs pl. alkalmazotti bér utáni járulék, mert
    nincs alkalmazott-adat a rendszerben) — ez a naptáron is jelezve van.
+   **BŐVÍTVE (2026.09.16), felhasználói visszajelzés alapján ("nincs benne
+   a járulékfizetési határidő"):** kutatás a NAV hivatalos adónaptára és
+   több forrás (accace.hu, adózóna.hu) alapján — pótoltuk az egyéni
+   vállalkozói szocho és TB-járulék határidőket (2026.01.01-től negyedéves,
+   nem havi), és bevezettük a hétvégére/munkaszüneti napra eső határidők
+   automatikus áttolását a következő munkanapra, Meeus-algoritmussal
+   számolt húsvét-függő ünnepekkel — ez minden jövőbeli évre magától
+   helyes marad, kézi karbantartás nélkül. Ellenőrizve a 2026-os NAV
+   tényleges áttolt dátumaival, pontos egyezés. Új mező a Beállítások
+   oldalon: vállalkozási forma (egyéni vállalkozó / társas vállalkozás),
+   csak "normál" adózásnál — migráció: `companies.entity_type`.
+   **TEENDŐ nálad:** ezt a migrációt is (`supabase/migrations/
+   20260916020000_entity_type.sql`) alkalmazni kell Supabase-ben.
+   **Amit ez nem tud automatikusan követni:** ha maga a jogszabály
+   változik (ahogy idén a szocho/TB-járulék gyakoriságával történt) — ezt
+   időnként kézzel érdemes újra átnézni.
 9. ✅ Export PDF/Excel — kész (PDF: dashboard "PDF-jelentés" gomb; Excel: Adataim
    oldal "Excel exportálása" gomb, a szűrt tételes adatokat exportálja .xlsx-be)
 10. ✅ Profi, menüsoros/kártyás vizuális redesign — kész, élesítve mind a 6 oldalon
