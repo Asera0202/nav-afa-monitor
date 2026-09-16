@@ -207,16 +207,9 @@
             Könyvelői ÁFA-kimutatás feltöltéséhez és egyeztetéséhez lásd a külön
             <a href="konyveloi-egyeztetes.html">Könyvelői egyeztetés</a> oldalt.
           </div>
-          <div class="field-help" style="margin-bottom:0.6rem;">
-            Ha a könyvelőd/bérszámfejtő szoftvered havonta küld egy <b>"Járulék utalási összesítő"</b> PDF-et (a tényleges
-            szocho/TB-járulék/SZJA-előleg befizetendő tételekkel és a pontos határidővel), töltsd fel ide minden hónapban
-            — ebből a <a href="hatarido-naptar.html">Határidő-naptár</a> a valódi, tételes összegeket és dátumot mutatja
-            majd a jogszabály alapján számolt becslés helyett.
-          </div>
           <label>Mi ez a fájl?</label>
           <div class="radio-group">
             <label class="radio-option"><input type="radio" name="uploadKind" value="kobak_penztargep" checked> KOBAK pénztárgépes export</label>
-            <label class="radio-option"><input type="radio" name="uploadKind" value="jarulek_osszesito"> Havi járulék utalási összesítő (szocho/TB/SZJA-előleg)</label>
             <label class="radio-option"><input type="radio" name="uploadKind" value="egyeb"> Egyéb</label>
           </div>
           <label>Fájl</label>
@@ -295,7 +288,7 @@ function renderUploadsList(uploads) {
     box.innerHTML = "";
     return;
   }
-  const kindLabels = { kobak_penztargep: "KOBAK pénztárgépes export", konyveloi_afa: "Könyvelői kimutatás", jarulek_osszesito: "Járulék utalási összesítő", egyeb: "Egyéb" };
+  const kindLabels = { kobak_penztargep: "KOBAK pénztárgépes export", konyveloi_afa: "Könyvelői kimutatás", egyeb: "Egyéb" };
   const statusLabels = { feltoltve: "Feltöltve", feldolgozva: "Feldolgozva", hiba: "Hiba" };
   const esc = (s) => (s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   box.innerHTML =
@@ -310,7 +303,6 @@ function renderUploadsList(uploads) {
         </div>
         ${u.note ? `<div class="field-help" style="margin-top:0.35rem;">${esc(u.note)}</div>` : ""}
         ${u.kind === "konyveloi_afa" && u.status === "feldolgozva" ? `<a href="egyeztetes-reszletek.html?upload=${u.id}" style="font-size:0.78rem; font-weight:600; color:var(--accent); margin-top:0.4rem; display:inline-block;">Részletek megtekintése →</a>` : ""}
-        ${u.kind === "jarulek_osszesito" && u.status === "feldolgozva" ? `<a href="hatarido-naptar.html" style="font-size:0.78rem; font-weight:600; color:var(--accent); margin-top:0.4rem; display:inline-block;">Megnézem a naptárban →</a>` : ""}
       </div>`
       )
       .join("");

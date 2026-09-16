@@ -249,31 +249,3 @@ function daysUntil(dateIso, fromDate) {
   const target = new Date(dateIso + "T00:00:00");
   return Math.round((target - todayMidnight) / 86400000);
 }
-
-// A feltöltött "Járulék utalási összesítő" fájlokból (jarulek_deadlines
-// tábla) kiolvasott VALÓDI, tételes összegek felülírják a jogszabály
-// alapján SZÁMOLT, generikus "...SZJA-előleg, szocho és TB-járulék..."
-// becslést arra a hónapra, amelyikre van feltöltött adat — jogcímenként
-// külön-külön kártyaként jelenítve meg, ahogy a felhasználó kérte.
-function mergeRealJarulekDeadlines(genericDeadlines, realRows) {
-  if (!realRows || realRows.length === 0) return genericDeadlines;
-
-  const realMonths = new Set(realRows.map((r) => `${r.due_date.slice(0, 7)}`));
-  const filtered = genericDeadlines.filter((d) => {
-    const isGenericJarulekItem = /SZJA-előleg,\s*szocho\s*és\s*TB-járulék/.test(d.title);
-    if (!isGenericJarulekItem) return true;
-    return !realMonths.has(d.date.slice(0, 7));
-  });
-
-  const realDeadlines = realRows.map((r) => ({
-    date: r.due_date,
-    title: r.jogcim,
-    description: `Tényleges összeg a feltöltött járulék utalási összesítő alapján: ${Math.round(r.amount).toLocaleString("hu-HU")} Ft (${r.period_year}. ${r.period_month}. hónapra vonatkozik).`,
-    real: true,
-    amount: r.amount,
-  }));
-
-  const merged = filtered.concat(realDeadlines);
-  merged.sort((a, b) => a.date.localeCompare(b.date));
-  return merged;
-}

@@ -377,139 +377,6 @@ async function processKobakPenztargep(upload: { id: string; company_id: string; 
   await supabase.from("manual_data_uploads").update({ status: "feldolgozva", note }).eq("id", upload.id);
 }
 
-// "jarulek_osszesito" (PDF): a könyvelő/bérszámfejtő szoftver (QualitySoft
-// Diamond) havonta generált "Járulék utalási összesítő" riportja — a
-// ténylegesen befizetendő szocho/TB-járulék/SZJA-előleg tételeket és a
-// pontos befizetési határidőt tartalmazza. Ezt olvassuk ki és tesszük be a
-// jarulek_deadlines táblába, hogy a NAV-határidő-naptár a generikus,
-// jogszabály alapján SZÁMOLT becslés helyett a valódi, könyvelő által
-// megadott összegeket és dátumot mutassa, tételesen (jogcímenként külön).
-//
-// A NAV "adónem kód" országosan egységes (nem cégfüggő), ezért ebből
-// biztonságosan azonosítható, melyik jogcímről van szó, akkor is, ha a
-// riport sorrendje/tördelése hónapról hónapra kicsit változna.
-const ADONEM_LABELS: Record<string, string> = {
-  "406": "TB-járulék (egyéni vállalkozó)",
-  "407": "TB-járulék (alkalmazott után)",
-  "258": "Szociális hozzájárulási adó (szocho)",
-  "290": "Levont SZJA-előleg (alkalmazott után)",
-  "103": "Levont SZJA-előleg (egyéni vállalkozó)",
-};
-
-function parseHuNumber(raw: string): number {
-  return parseFloat(raw.replace(/\./g, "").replace(",", "."));
-}
-
-async function processJarulekOsszesito(upload: { id: string; company_id: string; file_name: string }, buffer: Buffer) {
-  const lowerName = upload.file_name.toLowerCase();
-  if (!lowerName.endsWith(".pdf")) {
-    await supabase
-      .from("manual_data_uploads")
-      .update({
-        status: "feldolgozva",
-        note: "Ez a fájl nem PDF — a járulék utalási összesítő automatikus feldolgozása egyelőre csak ilyet támogat. A fájl biztonságban tárolva van.",
-      })
-      .eq("id", upload.id);
-    return;
-  }
-
-  let text: string;
-  try {
-    const parsed = await pdfParse(buffer);
-    text = parsed.text as string;
-  } catch (err) {
-    console.error("Hiba a PDF beolvasásakor.", err);
-    await supabase
-      .from("manual_data_uploads")
-      .update({ status: "hiba", note: `Hiba a PDF beolvasásakor: ${(err as Error).message}` })
-      .eq("id", upload.id);
-    return;
-  }
-
-  const periodMatch = text.match(/Időszak:\s*(\d{4})\s*-\s*(\d{1,2})\.\s*hónap/);
-  const dueDateMatch = text.match(/(\d{4})\.\s*(\d{1,2})\.\s*hónap\s*(\d{1,2})-ig/);
-
-  if (!periodMatch || !dueDateMatch) {
-    await supabase
-      .from("manual_data_uploads")
-      .update({
-        status: "hiba",
-        note: "Nem sikerült felismerni a fájlból az időszakot és a befizetési határidőt — ellenőrizd, hogy ez tényleg egy \"Járulék utalási összesítő\" riport.",
-      })
-      .eq("id", upload.id);
-    return;
-  }
-
-  const periodYear = Number(periodMatch[1]);
-  const periodMonth = Number(periodMatch[2]);
-  const dueDate = `${dueDateMatch[1]}-${String(dueDateMatch[2]).padStart(2, "0")}-${String(dueDateMatch[3]).padStart(2, "0")}`;
-
-  // A riport minden befizetendő tételt "<bankszámlaszám> számlaszámra:
-  // <kerekített összeg> Ft <adónem kód>" formában zár le (a "kerekített",
-  // ténylegesen utalt összeget használjuk, nem a "számfejtett" előtte álló
-  // értéket). Ez az anchor stabil marad hónapról hónapra, függetlenül
-  // attól, hogy a sorszámozott ("N.)") tételek pontosan hogyan törnek sorba
-  // a PDF-ben.
-  const lineRegex = /([\d-]{10,})\s*számlaszámra:\s*([\d.,]+)\s*Ft\s*(\d{2,4})\b/g;
-  const rows: { adonem_kod: string; jogcim: string; amount: number }[] = [];
-  let m: RegExpExecArray | null;
-  while ((m = lineRegex.exec(text)) !== null) {
-    const adonemKod = m[3];
-    const amount = parseHuNumber(m[2]);
-    if (amount <= 0) continue; // 0 Ft tételeket (pl. nincs alkalmazott) kihagyjuk
-    rows.push({
-      adonem_kod: adonemKod,
-      jogcim: ADONEM_LABELS[adonemKod] ?? `NAV adónem #${adonemKod}`,
-      amount,
-    });
-  }
-
-  if (rows.length === 0) {
-    await supabase
-      .from("manual_data_uploads")
-      .update({
-        status: "hiba",
-        note: "Nem sikerült egyetlen befizetendő tételt sem felismerni a fájlból — ellenőrizd, hogy ez tényleg egy \"Járulék utalási összesítő\" riport.",
-      })
-      .eq("id", upload.id);
-    return;
-  }
-
-  // Ha erre a hónapra (due_date) korábban már töltöttünk fel adatot, azt
-  // felülírjuk a most feltöltött, frissebb fájllal — nem duplázzuk.
-  await supabase
-    .from("jarulek_deadlines")
-    .delete()
-    .eq("company_id", upload.company_id)
-    .eq("due_date", dueDate);
-
-  const { error: insertError } = await supabase.from("jarulek_deadlines").insert(
-    rows.map((r) => ({
-      company_id: upload.company_id,
-      upload_id: upload.id,
-      period_year: periodYear,
-      period_month: periodMonth,
-      due_date: dueDate,
-      adonem_kod: r.adonem_kod,
-      jogcim: r.jogcim,
-      amount: r.amount,
-    }))
-  );
-
-  if (insertError) {
-    console.error("Supabase mentési hiba.", insertError.message);
-    await supabase
-      .from("manual_data_uploads")
-      .update({ status: "hiba", note: `Hiba a járulék-tételek mentésekor: ${insertError.message}` })
-      .eq("id", upload.id);
-    return;
-  }
-
-  const totalAmount = rows.reduce((s, r) => s + r.amount, 0);
-  const note = `Feldolgozva: ${rows.length} db befizetendő tétel, összesen ${Math.round(totalAmount).toLocaleString("hu-HU")} Ft, határidő: ${dueDate} (${periodYear}. ${periodMonth}. hónapra vonatkozik) — ez mostantól a NAV-határidő-naptárban is megjelenik, tételesen.`;
-  await supabase.from("manual_data_uploads").update({ status: "feldolgozva", note }).eq("id", upload.id);
-}
-
 async function main() {
   console.log(`[${new Date().toISOString()}] Feltöltés feldolgozása indul (upload: ${UPLOAD_ID})`);
 
@@ -524,7 +391,7 @@ async function main() {
     process.exit(1);
   }
 
-  if (upload.kind !== "konyveloi_afa" && upload.kind !== "kobak_penztargep" && upload.kind !== "jarulek_osszesito") {
+  if (upload.kind !== "konyveloi_afa" && upload.kind !== "kobak_penztargep") {
     console.log(`  Kihagyva: a "${upload.kind}" típusú fájlokhoz még nincs automatikus feldolgozás.`);
     await supabase
       .from("manual_data_uploads")
@@ -553,10 +420,8 @@ async function main() {
 
   if (upload.kind === "konyveloi_afa") {
     await processKonyveloiAfa(upload, buffer);
-  } else if (upload.kind === "kobak_penztargep") {
-    await processKobakPenztargep(upload, buffer);
   } else {
-    await processJarulekOsszesito(upload, buffer);
+    await processKobakPenztargep(upload, buffer);
   }
 
   console.log("Kész.");

@@ -482,22 +482,12 @@ function renderReconciliationHtml(summary) {
 // NAV-határidő-naptár: a Beállítások oldalon megadott adózási forma és
 // ÁFA-gyakoriság alapján (tax-deadlines.js) a legközelebbi 2 határidő
 // rövid kártyája a dashboardon, link a teljes naptárra.
-async function computeUpcomingDeadlines(company) {
-  const todayIso = new Date().toISOString().slice(0, 10);
-  const { data: realRows } = await sb
-    .from("jarulek_deadlines")
-    .select("due_date, jogcim, amount, period_year, period_month")
-    .eq("company_id", company.id)
-    .gte("due_date", todayIso);
-  const generic = generateTaxDeadlines(company, { yearsAhead: 1 }).filter((d) => d.date >= todayIso);
-  return mergeRealJarulekDeadlines(generic, realRows).slice(0, 2);
-}
-
-function renderUpcomingDeadlinesHtml(upcoming) {
+function renderUpcomingDeadlinesHtml(company) {
   const openBtn = `<a href="hatarido-naptar.html" class="sync-refresh-btn" style="text-decoration:none; margin-top:0.6rem;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
     Teljes határidő-naptár megnyitása
   </a>`;
+  const upcoming = upcomingTaxDeadlines(company, { limit: 2 });
   if (upcoming.length === 0) {
     return `
       <div class="card enyugta-card">
@@ -515,8 +505,7 @@ function renderUpcomingDeadlinesHtml(upcoming) {
       const remaining = daysUntil(d.date);
       const countdownText = remaining === 0 ? "ma" : remaining === 1 ? "holnap" : `${remaining} nap múlva`;
       const dateStr = new Date(d.date + "T00:00:00").toLocaleDateString("hu-HU");
-      const tag = d.real ? ' <span style="font-size:0.65rem; font-weight:700; color:var(--ok);">(tényleges)</span>' : "";
-      return `<div style="margin-top:0.4rem;"><b>${d.title}</b>${tag} — ${dateStr} (${countdownText})</div>`;
+      return `<div style="margin-top:0.4rem;"><b>${d.title}</b> — ${dateStr} (${countdownText})</div>`;
     })
     .join("");
   return `
@@ -919,7 +908,7 @@ async function main() {
 
   try {
     const { from: defFrom, to: defTo } = defaultVatDates();
-    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml, anomalies, reconciliationSummary, upcomingDeadlines] = await Promise.all([
+    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml, anomalies, reconciliationSummary] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
       computeVatSummary(company.id, defFrom, defTo),
@@ -927,7 +916,6 @@ async function main() {
       renderENyugtaSection(company.id),
       computeAnomalies(company.id, defFrom, defTo),
       computeReconciliationSummary(company.id),
-      computeUpcomingDeadlines(company),
     ]);
 
     content.innerHTML = `
@@ -957,7 +945,7 @@ async function main() {
       ${renderReconciliationHtml(reconciliationSummary)}
 
       <div class="section-title">NAV-határidő-naptár</div>
-      ${renderUpcomingDeadlinesHtml(upcomingDeadlines)}
+      ${renderUpcomingDeadlinesHtml(company)}
 
       <div class="section-title-row">
         <div class="section-title">Napi szinkron állapota</div>
