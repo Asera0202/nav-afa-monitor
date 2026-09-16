@@ -231,6 +231,24 @@
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// A Supabase/PostgREST alapértelmezésben legfeljebb 1000 sort ad vissza
+// egy lekérdezésre. Az olyan összegzéseknél, ahol minden sorra szükség van
+// (pl. ÁFA-összesítés), ez csendben levágja az adatot, ha egy időszakra
+// 1000-nél több pénztárgépes/számla-tétel esik. Ez a segédfüggvény lapozva
+// (range) lekéri az ÖSSZES sort, mielőtt összegzésre kerülne sor.
+async function fetchAllRows(buildQuery, pageSize = 1000) {
+  let allRows = [];
+  let from = 0;
+  while (true) {
+    const { data, error } = await buildQuery().range(from, from + pageSize - 1);
+    if (error) return { data: null, error };
+    allRows = allRows.concat(data ?? []);
+    if (!data || data.length < pageSize) break;
+    from += pageSize;
+  }
+  return { data: allRows, error: null };
+}
+
 const SOURCE_LABELS = {
   opg: "Pénztárgép",
   invoice_inbound: "Bejövő számlák",
@@ -364,9 +382,9 @@ async function renderENyugtaSection(companyId) {
 
 async function computeVatSummary(companyId, fromIso, toIso) {
   const [{ data: outboundRows, error: e1 }, { data: inboundRows, error: e2 }, { data: opgRows, error: e3 }] = await Promise.all([
-    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
-    sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
-    sb.from("opg_receipt_items").select("vat_amount").eq("company_id", companyId).gte("transaction_at", fromIso).lte("transaction_at", toIso + "T23:59:59"),
+    fetchAllRows(() => sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", fromIso).lte("issue_date", toIso)),
+    fetchAllRows(() => sb.from("invoice_vat_lines").select("vat_amount").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", fromIso).lte("issue_date", toIso)),
+    fetchAllRows(() => sb.from("opg_receipt_items").select("vat_amount").eq("company_id", companyId).gte("transaction_at", fromIso).lte("transaction_at", toIso + "T23:59:59")),
   ]);
   if (e1 || e2 || e3) throw (e1 || e2 || e3);
 
@@ -473,9 +491,9 @@ function formatVatRate(rate) {
 
 async function computeAnomalies(companyId, fromIso, toIso) {
   const [{ data: inboundRows, error: e1 }, { data: outboundRows, error: e2 }, { data: opgRows, error: e3 }] = await Promise.all([
-    sb.from("invoice_vat_lines").select("net_amount, vat_percentage").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
-    sb.from("invoice_vat_lines").select("net_amount, vat_percentage").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", fromIso).lte("issue_date", toIso),
-    sb.from("opg_receipt_items").select("net_amount, vat_percentage").eq("company_id", companyId).gte("transaction_at", fromIso).lte("transaction_at", toIso + "T23:59:59"),
+    fetchAllRows(() => sb.from("invoice_vat_lines").select("net_amount, vat_percentage").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", fromIso).lte("issue_date", toIso)),
+    fetchAllRows(() => sb.from("invoice_vat_lines").select("net_amount, vat_percentage").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", fromIso).lte("issue_date", toIso)),
+    fetchAllRows(() => sb.from("opg_receipt_items").select("net_amount, vat_percentage").eq("company_id", companyId).gte("transaction_at", fromIso).lte("transaction_at", toIso + "T23:59:59")),
   ]);
   if (e1 || e2 || e3) throw (e1 || e2 || e3);
 
@@ -546,12 +564,12 @@ function defaultVatDates() {
 const PAYMENT_COLORS = { "Bankkártya": "#4338ca", "Készpénz": "#16a34a", "Egyéb": "#d97706" };
 
 async function computePaymentSummary(companyId, fromIso, toIso) {
-  const { data, error } = await sb
+  const { data, error } = await fetchAllRows(() => sb
     .from("opg_receipt_payments")
     .select("payment_type, amount")
     .eq("company_id", companyId)
     .gte("transaction_at", fromIso)
-    .lte("transaction_at", toIso + "T23:59:59");
+    .lte("transaction_at", toIso + "T23:59:59"));
   if (error) throw error;
 
   const totals = { "Bankkártya": 0, "Készpénz": 0, "Egyéb": 0 };
@@ -598,19 +616,19 @@ function renderPaymentSummaryHtml(totals) {
 async function computeThresholdChecks(company) {
   const from = yearStartIso();
 
-  const { data: invoiceRows, error: invoiceError } = await sb
+  const { data: invoiceRows, error: invoiceError } = await fetchAllRows(() => sb
     .from("invoice_vat_lines")
     .select("net_amount")
     .eq("company_id", company.id)
     .eq("direction", "OUTBOUND")
-    .gte("issue_date", from);
+    .gte("issue_date", from));
   if (invoiceError) throw invoiceError;
 
-  const { data: opgRows, error: opgError } = await sb
+  const { data: opgRows, error: opgError } = await fetchAllRows(() => sb
     .from("opg_receipt_items")
     .select("net_amount")
     .eq("company_id", company.id)
-    .gte("transaction_at", from);
+    .gte("transaction_at", from));
   if (opgError) throw opgError;
 
   const invoiceTotal = (invoiceRows ?? []).reduce((s, r) => s + Number(r.net_amount ?? 0), 0);
@@ -946,29 +964,6 @@ async function main() {
         paymentContainer.innerHTML = renderPaymentSummaryHtml(paymentSummary);
         const anomalies = await computeAnomalies(company.id, from, to);
         anomaliesContainer.innerHTML = renderAnomaliesHtml(anomalies);
-
-        // IDEIGLENES DIAGNOSZTIKA — a KOBAK-adat eltűnésének kereséséhez.
-        const { data: debugRows, error: debugError } = await sb
-          .from("opg_receipt_items")
-          .select("receipt_number, transaction_at, vat_amount")
-          .eq("company_id", company.id)
-          .gte("transaction_at", from)
-          .lte("transaction_at", to + "T23:59:59")
-          .like("receipt_number", "KOBAK-%");
-        let debugBox = document.getElementById("tempDebugBox");
-        if (!debugBox) {
-          debugBox = document.createElement("div");
-          debugBox.id = "tempDebugBox";
-          debugBox.style.cssText = "margin-top:16px;padding:12px;border:2px solid red;background:#fff3f3;font-family:monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;";
-          container.parentNode.insertBefore(debugBox, container.nextSibling);
-        }
-        debugBox.textContent =
-          "company.id=" + company.id + "\n" +
-          "from=" + from + "  to=" + to + "\n" +
-          "opg_receipt_items összes vat_amount sor száma=" + "(lásd fent)" + "\n" +
-          "KOBAK sorok találva ezzel a szűréssel=" + (debugRows ? debugRows.length : 0) + "\n" +
-          "debugError=" + (debugError ? JSON.stringify(debugError) : "nincs") + "\n" +
-          "első 3 KOBAK sor=" + JSON.stringify((debugRows || []).slice(0, 3), null, 2);
       } catch (err) {
         container.innerHTML = `<div class="empty-state">Hiba: ${err.message}</div>`;
       }
