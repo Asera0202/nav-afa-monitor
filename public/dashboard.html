@@ -946,6 +946,29 @@ async function main() {
         paymentContainer.innerHTML = renderPaymentSummaryHtml(paymentSummary);
         const anomalies = await computeAnomalies(company.id, from, to);
         anomaliesContainer.innerHTML = renderAnomaliesHtml(anomalies);
+
+        // IDEIGLENES DIAGNOSZTIKA — a KOBAK-adat eltűnésének kereséséhez.
+        const { data: debugRows, error: debugError } = await sb
+          .from("opg_receipt_items")
+          .select("receipt_number, transaction_at, vat_amount")
+          .eq("company_id", company.id)
+          .gte("transaction_at", from)
+          .lte("transaction_at", to + "T23:59:59")
+          .like("receipt_number", "KOBAK-%");
+        let debugBox = document.getElementById("tempDebugBox");
+        if (!debugBox) {
+          debugBox = document.createElement("div");
+          debugBox.id = "tempDebugBox";
+          debugBox.style.cssText = "margin-top:16px;padding:12px;border:2px solid red;background:#fff3f3;font-family:monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;";
+          container.parentNode.insertBefore(debugBox, container.nextSibling);
+        }
+        debugBox.textContent =
+          "company.id=" + company.id + "\n" +
+          "from=" + from + "  to=" + to + "\n" +
+          "opg_receipt_items összes vat_amount sor száma=" + "(lásd fent)" + "\n" +
+          "KOBAK sorok találva ezzel a szűréssel=" + (debugRows ? debugRows.length : 0) + "\n" +
+          "debugError=" + (debugError ? JSON.stringify(debugError) : "nincs") + "\n" +
+          "első 3 KOBAK sor=" + JSON.stringify((debugRows || []).slice(0, 3), null, 2);
       } catch (err) {
         container.innerHTML = `<div class="empty-state">Hiba: ${err.message}</div>`;
       }
