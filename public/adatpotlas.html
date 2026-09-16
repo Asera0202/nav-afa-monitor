@@ -127,6 +127,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Adatpótlás
       </a>
+      <a class="nav-link" href="konyveloi-egyeztetes.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Könyvelői egyeztetés
+      </a>
       <a class="nav-link" href="beallitasok.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.37a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.63 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.63a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.37 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
         Beállítások
@@ -183,29 +187,25 @@
         </div>
 
         <div class="card">
-          <h2>Pénztárgépes/könyvelői adatok feltöltése</h2>
+          <h2>Pénztárgépes adatok feltöltése (KOBAK)</h2>
           <div class="desc">
             A pénztárgépes (nyugta-) adatokat a NAV csak kb. <b>14 napig</b> tartja elérhetőn automatikus lekérdezésre —
             ami ennél korábbi, azt a NAV oldaláról sem lehet utólag visszaszerezni. Ha teljes éves képet szeretnél, ezt
-            csak úgy pótolhatod, ha <b>te magad (vagy a könyvelőd)</b> lekéred a hiányzó időszakot, és ide feltöltöd:
+            csak úgy pótolhatod, ha <b>te magad</b> lekéred a hiányzó időszakot, és ide feltöltöd:
           </div>
           <div class="desc" style="background:var(--ground); border-radius:8px; padding:0.8rem 0.9rem; margin-top:-0.4rem;">
-            <b>Pénztárgépes forgalmi adat (KOBAK):</b> lépj be a
-            <a href="https://kobakonline.nav.gov.hu/" target="_blank" rel="noopener">kobakonline.nav.gov.hu</a> oldalra
-            a saját Ügyfélkapuddal, a bal oldali menüben kattints a <b>"PÉNZTÁRGÉP ŰRLAPOK"</b> pontra, majd a
+            Lépj be a <a href="https://kobakonline.nav.gov.hu/" target="_blank" rel="noopener">kobakonline.nav.gov.hu</a>
+            oldalra a saját Ügyfélkapuddal, a bal oldali menüben kattints a <b>"PÉNZTÁRGÉP ŰRLAPOK"</b> pontra, majd a
             megjelenő két kártya közül a <b>"Forgalmi adatok (PTGADAT)"</b>-ra. Add meg a hiányzó időszakot (naptári
-            évenként külön kérhető, max. 5 évre visszamenőleg), és töltsd le az exportot.<br><br>
-            <b>Könyvelői kimutatás:</b> kérj a könyvelődtől egy részletes ÁFA-/analitika-exportot, ami mutatja, hogy
-            mit könyvelt már el — ebből tudjuk majd kiszűrni, ha valamit kihagyott. <b>Ha lehet, kérj Excel (.xlsx)
-            vagy CSV formátumot PDF helyett</b> — ez a legpontosabb, mert táblázatos adatból tévedés nélkül ki tudjuk
-            olvasni a tételeket. <b>PDF-fájlnál előfordulhat, hogy néhány tétel (jellemzően a hosszabb, több sorba
-            törő szállítónevű sorok) kimarad a felismerésből</b> — ez esetben mindig érdemes kézzel is átnézni az
-            eredményt, mielőtt bármit "elmaradt könyvelésként" kezelnél.
+            évenként külön kérhető, max. 5 évre visszamenőleg), és töltsd le az exportot.
+          </div>
+          <div class="field-help" style="margin-bottom:0.6rem;">
+            Könyvelői ÁFA-kimutatás feltöltéséhez és egyeztetéséhez lásd a külön
+            <a href="konyveloi-egyeztetes.html">Könyvelői egyeztetés</a> oldalt.
           </div>
           <label>Mi ez a fájl?</label>
           <div class="radio-group">
             <label class="radio-option"><input type="radio" name="uploadKind" value="kobak_penztargep" checked> KOBAK pénztárgépes export</label>
-            <label class="radio-option"><input type="radio" name="uploadKind" value="konyveloi_afa"> Könyvelői ÁFA-/analitika-kimutatás</label>
             <label class="radio-option"><input type="radio" name="uploadKind" value="egyeb"> Egyéb</label>
           </div>
           <label>Fájl</label>
