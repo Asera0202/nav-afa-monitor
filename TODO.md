@@ -186,7 +186,38 @@
     (dashboard, adataim, beallitasok: teljes sidebar-váltás; login, register,
     reset-password: szín- és tipográfiai frissítés). Bankos irányba tolva:
     mélyebb intézményi kék, bankkártya-szerű cégazonosító, talpas számtipó.
-11. Fizetési/előfizetési rendszer
+11. ⏳ Fizetési/előfizetési rendszer — RÉSZBEN KÉSZ (2026.09.16), Barion
+    integráció még nem élesített.
+    **Döntések a felhasználóval:** Barion (magyar szolgáltató, olcsóbb mint
+    a Stripe 2026.08-i magyar díjemelése után, van recurring API-ja);
+    minden funkció mindenkinek elérhető, FORGALOM alapján árazunk, nem
+    funkció-korlátozással; sáv = havi bizonylatszám (kimenő+bejövő számla
+    darabra + pénztárgépes NAPOK száma, nem nyugtánként — a NAV API-t is
+    naponta egyszer hívjuk egy pénztárgépre, ez tükrözi a tényleges
+    terhelést); sávok: ≤100 = 7.999 Ft/hó, 101-250 = 9.999 Ft/hó, 250+ =
+    11.999 Ft/hó; 30 napos ingyenes próbaidőszak mindenkinek, nincs
+    sáv-választás regisztrációkor, a tényleges előző havi forgalom dönti
+    el a sávot.
+    **Megépítve:** `subscriptions` tábla + `compute_billing_usage()` SQL
+    függvény, `public/elofizetes.html` (próbaidőszak/előfizetés állapota,
+    havi forgalom, sávok, fizetés-indítás), `supabase/functions/
+    barion-start-payment/` + `barion-callback/`, automatikus trial-sor
+    létrehozás minden új regisztrációnál.
+    **TEENDŐ nálad:**
+    1. migráció alkalmazása (`supabase/migrations/
+       20260916050000_subscriptions.sql`)
+    2. Barion Business fiók regisztrálása (ha még nincs), teszt- majd éles
+       POSKey beszerzése
+    3. Supabase secrets beállítása: `BARION_POS_KEY`, `BARION_PAYEE_EMAIL`,
+       `BARION_ENV` (test/prod), `APP_BASE_URL`
+    4. a két Edge Function deployolása (a szokásos módon, "Verify JWT"
+       kikapcsolva a `barion-start-payment`-nél a saját JWT-ellenőrzés
+       miatt, és a `barion-callback`-nél is, mert azt a Barion hívja,
+       nincs felhasználói JWT-je)
+    5. **egy éles teszttranzakció Barion sandbox-ban**, mielőtt bárkinek
+       élesítjük — a Payment/Start és GetPaymentState hívások mezőnevei
+       kutatásból származnak (a docs.barion.com nem volt elérhető a
+       fejlesztői környezetből), ellenőrzés/finomhangolás szükséges
 12. ⏳ Skálázási előkészítés (ha a cégszám tucat/száz fölé nő) — RÉSZBEN KÉSZ
     (2026.09.16).
     **Elv (2026.09.04):** minden olyan funkció, amit most GitHub Actions
