@@ -67,20 +67,7 @@ Deno.serve(async (req) => {
     .single();
 
   if (uploadError || !upload || (upload as any).companies?.owner_user_id !== userData.user.id) {
-    return json(
-      {
-        error: "Nem található feltöltés ehhez a fiókhoz.",
-        debug: {
-          uploadId,
-          userId: userData.user.id,
-          uploadErrorMessage: uploadError?.message ?? null,
-          uploadErrorDetails: uploadError?.details ?? null,
-          uploadErrorHint: uploadError?.hint ?? null,
-          upload: upload ?? null,
-        },
-      },
-      404
-    );
+    return json({ error: "Nem található feltöltés ehhez a fiókhoz." }, 404);
   }
 
   const dispatchRes = await fetch(
