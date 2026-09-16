@@ -14,7 +14,84 @@ permissions:
   contents: write
 
 jobs:
-  sync:
+  # Ütemezett (minden céges) futásnál előbb összegyűjtjük az összes cég
+  # id-ját, hogy a "sync-all" job cégenként KÜLÖN, PÁRHUZAMOS futásban
+  # dolgozza fel őket — így a napi szinkron nem lassul soros futásként a
+  # cégek számának növekedésével, hanem vízszintesen skálázódik.
+  list-companies:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.company_id == '' }}
+    runs-on: ubuntu-latest
+    outputs:
+      company_ids: ${{ steps.list.outputs.company_ids }}
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Függőségek telepítése
+        run: npm ci
+
+      - name: Cég-azonosítók listázása
+        id: list
+        run: echo "company_ids=$(npx tsx src/list-company-ids.ts)" >> "$GITHUB_OUTPUT"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+  # Minden cégre külön, párhuzamos job (max 5 egyszerre — ne terheljük túl
+  # a NAV API-t, és férjünk bele kényelmesen a GitHub Actions ingyenes
+  # keretbe).
+  sync-all:
+    needs: list-companies
+    if: ${{ needs.list-companies.result == 'success' && needs.list-companies.outputs.company_ids != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        company_id: ${{ fromJson(needs.list-companies.outputs.company_ids) }}
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Függőségek telepítése
+        run: npm ci
+
+      - name: Napi OPG (pénztárgép) szinkron futtatása
+        run: npx tsx src/daily-opg-sync.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          REGISTRATION_PRIVATE_KEY: ${{ secrets.REGISTRATION_PRIVATE_KEY }}
+          SOFTWARE_NAME: Cégfókusz
+          SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
+          SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+          COMPANY_ID: ${{ matrix.company_id }}
+
+      - name: Napi számla (bejövő + kimenő) szinkron futtatása
+        run: npx tsx src/daily-invoice-sync.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          REGISTRATION_PRIVATE_KEY: ${{ secrets.REGISTRATION_PRIVATE_KEY }}
+          SOFTWARE_NAME: Cégfókusz
+          SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
+          SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
+          COMPANY_ID: ${{ matrix.company_id }}
+
+  # Manuális, egy-cégre szóló futás (az "Adatok frissítése" gombhoz) —
+  # ilyenkor nincs szükség a matrix-szervezésre, egyetlen gyors job elég.
+  sync-one:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.company_id != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Repó kicsomagolása
@@ -49,6 +126,24 @@ jobs:
           SOFTWARE_DEV_NAME: ${{ secrets.SOFTWARE_DEV_NAME }}
           SOFTWARE_DEV_CONTACT: ${{ secrets.SOFTWARE_DEV_CONTACT }}
           COMPANY_ID: ${{ inputs.company_id }}
+
+  # Az állapot-oldalak minden céget együtt nézik, ezért ez csak a
+  # cégenkénti szinkronok után, egyszer fut le.
+  finalize:
+    needs: [sync-all, sync-one]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Függőségek telepítése
+        run: npm ci
 
       - name: Állapot-oldal generálása
         run: npx tsx src/generate-status-page.ts
