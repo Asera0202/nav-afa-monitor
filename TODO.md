@@ -96,13 +96,30 @@
      modult importálva elkerülhető
    - fájlnévben lévő zárójel/szóköz "Invalid key" Storage-hibát adott —
      a tárolási útvonalhoz most a fájlnevet biztonságos formára alakítjuk
-4b. Dokumentum-megosztó portál a könyvelővel — ÚJ ÖTLET (2026.09.04): a
-    vállalkozás fel tudna tölteni mindent, amit a könyvelő kér (bankszámla-
-    kivonat, számlák, egyéb bizonylat), a könyvelő pedig egy helyről le
-    tudná tölteni — mindketten látnák, mi van feltöltve és mi hiányzik.
-    Hasonló, mint a Kulcs-Soft ügyfélportál-megoldása. Még nincs kidolgozva
-    (ki tölthet fel, hogyan fér hozzá a könyvelő, önálló modul-e vagy a #4
-    egyeztetőbe épüljön be) — külön átbeszélendő.
+4b. Dokumentum-megosztó portál a könyvelővel — ÚJ ÖTLET (2026.09.04),
+    TERV PONTOSÍTVA (2026.09.16): a vállalkozás fel tudna tölteni mindent,
+    amit a könyvelő kér (bankszámla-kivonat, számlák, egyéb bizonylat), a
+    könyvelő pedig egy helyről le tudná tölteni — mindketten látnák, mi van
+    feltöltve és mi hiányzik. Felmértük a piaci megoldásokat (Kulcs-Soft
+    Kulcs Connect, Cashbook, Accace online portál) — mindegyik ugyanazt a
+    mintát követi: kategorizált feltöltés (kimenő/bejövő számla, bank-
+    kivonat, szerződés, egyéb) + könyvelői oldali nézet, ahol látszik mi van
+    meg és mi hiányzik + kétirányú megjegyzés-lehetőség.
+    **Döntés a felhasználóval (2026.09.16):** a könyvelő saját, teljes
+    értékű fiókkal férjen hozzá (nem egyszerű tokenes linkkel) — regisztrál,
+    bejelentkezik, és csak a hozzá rendelt cégek adatait látja.
+    **Vázlatos terv, amikor sorra kerül:**
+    - `accountants` tábla + `company_accountant_links` (meghívásos/
+      elfogadásos hozzárendelés, melyik könyvelő melyik céghez fér hozzá)
+    - könyvelői bejelentkezés után külön nézet: csak a hozzárendelt cégek
+      dokumentumtára, kategorizálva
+    - vállalkozói oldalon feltöltés kategóriával + checklist, hogy mi
+      hiányzik még a könyvelő kérése szerint
+    - kétirányú megjegyzés-lehetőség
+    - Storage + RLS a meglévő `manual_data_uploads`/Storage mintára építve,
+      könyvelői szerepkörrel bővített jogosultsággal
+    Egyelőre nem kezdtük el — a listán utána következő pontokkal (#6, #7,
+    #8) haladunk tovább, ez akkor kerül elő, amikor a sorban ideérünk.
 5. ✅ Anomália-jelzés — kész (dashboard). ÁFA-kulcsonként hasonlítja a beszerzést
    (bejövő számla) és az értékesítést (kimenő számla + pénztárgép) a kiválasztott
    időszakra; 2,5x-nél nagyobb arányú, min. 50 000 Ft-os eltérésnél jelez,
