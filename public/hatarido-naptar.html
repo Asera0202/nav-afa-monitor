@@ -202,7 +202,7 @@ function renderDeadlines(deadlines) {
             <div class="deadline-month">${HU_MONTHS_SHORT[m - 1]} ${y}</div>
           </div>
           <div class="deadline-body">
-            <div class="deadline-title">${d.title}</div>
+            <div class="deadline-title">${d.title}${d.real ? ' <span style="font-size:0.65rem; font-weight:700; color:var(--ok); background:var(--ok-soft); padding:0.1rem 0.4rem; border-radius:999px; margin-left:0.3rem;">tényleges</span>' : ""}</div>
             <div class="deadline-desc">${d.description}</div>
           </div>
           <div class="deadline-countdown ${isSoon ? "soon" : ""}">${countdownText}</div>
@@ -227,9 +227,15 @@ async function main() {
   document.getElementById("sidebarCompanyName").textContent = company.name;
   document.getElementById("sidebarTaxNumber").textContent = (company.tax_number || "").replace(/-/g, "  ");
 
-  const deadlines = generateTaxDeadlines(company, { yearsAhead: 1 }).filter(
-    (d) => d.date >= new Date().toISOString().slice(0, 10)
-  );
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const { data: realRows } = await sb
+    .from("jarulek_deadlines")
+    .select("due_date, jogcim, amount, period_year, period_month")
+    .eq("company_id", company.id)
+    .gte("due_date", todayIso);
+
+  const generic = generateTaxDeadlines(company, { yearsAhead: 1 }).filter((d) => d.date >= todayIso);
+  const deadlines = mergeRealJarulekDeadlines(generic, realRows);
   renderDeadlines(deadlines);
 
   document.getElementById("loadingBox").style.display = "none";
