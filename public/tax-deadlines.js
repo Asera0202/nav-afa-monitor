@@ -172,8 +172,38 @@ function generateTaxDeadlines(company, { fromYear, yearsAhead = 1 } = {}) {
       });
     }
 
-    // --- Helyi iparűzési adó: normál adózásnál (EV és társas is) ---
-    if (company.tax_regime === "normal") {
+    // --- Helyi iparűzési adó (HIPA): ez FORMÁTÓL FÜGGETLENÜL szinte
+    // minden vállalkozót érint (KATA, átalányadó, normál is), mert nem a
+    // központi adózási módhoz, hanem a székhely/telephely szerinti
+    // önkormányzathoz kötődik. Korábban ez tévesen csak "normál"
+    // adózásnál jelent meg — javítva, kutatás alapján (lásd lentebb a
+    // KATA-specifikus szabályt is).
+    if (company.tax_regime === "kata") {
+      // KATA-alanyok választhatnak "tételes" (fix, önkormányzatonként
+      // 2,5M Ft/év alapú) HIPA-t — ha ezt választják, ÉS 12 hónapos a
+      // adóévük, az adót két egyenlő részletben, március 15-ig és
+      // szeptember 15-ig kell megfizetni, bevallás és előlegfizetés
+      // NÉLKÜL (forrás: NAV GYIK "Kata-alanyok tételes iparűzési
+      // adókötelezettsége", onadozo.hu, adozona.hu — 2026.09 kutatás).
+      // A választást minden év február 15-ig kell bejelenteni az
+      // önkormányzatnál (induló vállalkozásnál a KATA-alanyiság kezdetétől
+      // számított 45 napon belül).
+      deadlines.push({
+        date: iso(year, 2, 15),
+        title: "Tételes helyi iparűzési adó választásának bejelentési határideje",
+        description: "Ha tételes (fix összegű) helyi iparűzési adót szeretnél fizetni KATA-alanyként a folyó évre, ezt eddig kell bejelentened az illetékes önkormányzatnál. Ez NEM befizetési határidő, hanem választási nyilatkozat — ha már korábban bejelentetted és nem változtatsz, nincs teendő.",
+      });
+      deadlines.push({
+        date: iso(year, 3, 15),
+        title: "Tételes helyi iparűzési adó I. részlete (ha ezt választottad)",
+        description: "Ha KATA-alanyként tételes helyi iparűzési adót választottál, ennek első (fél)részletét eddig kell megfizetned. Ha nem tételes, hanem a normál HIPA-szabályok szerint adózol, nézd meg az önkormányzatodnál/könyvelőddel a rád vonatkozó pontos határidőt.",
+      });
+      deadlines.push({
+        date: iso(year, 9, 15),
+        title: "Tételes helyi iparűzési adó II. részlete (ha ezt választottad)",
+        description: "Ha KATA-alanyként tételes helyi iparűzési adót választottál, ennek második (fél)részletét eddig kell megfizetned.",
+      });
+    } else {
       deadlines.push({
         date: iso(year, 5, 31),
         title: "Éves helyi iparűzési adó bevallása",
