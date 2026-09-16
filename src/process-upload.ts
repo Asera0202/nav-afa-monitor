@@ -336,8 +336,10 @@ async function processKobakPenztargep(upload: { id: string; company_id: string; 
   }
 
   console.log(`  ${filledDates.size} nap pótolva, ${skippedDates.size} nap kihagyva (már megvolt a rendes szinkronból).`);
+  console.log(`  ${newRows.length} sort próbálunk feltölteni az opg_receipt_items táblába.`);
 
   let uploaded = 0;
+  let firstError: string | null = null;
   const CHUNK_SIZE = 500;
   for (let i = 0; i < newRows.length; i += CHUNK_SIZE) {
     const chunk = newRows.slice(i, i + CHUNK_SIZE);
@@ -345,16 +347,29 @@ async function processKobakPenztargep(upload: { id: string; company_id: string; 
       .from("opg_receipt_items")
       .upsert(chunk, { onConflict: "company_id,ap_number,receipt_number,item_index" });
     if (upsertError) {
-      console.error("  Supabase feltöltési hiba:", upsertError.message);
+      console.error("  Supabase feltöltési hiba:", upsertError.message, upsertError.details, upsertError.hint);
+      firstError = firstError ?? upsertError.message;
     } else {
       uploaded += chunk.length;
     }
+  }
+
+  console.log(`  Ténylegesen feltöltve: ${uploaded} / ${newRows.length} sor.`);
+
+  if (newRows.length > 0 && uploaded === 0) {
+    await supabase
+      .from("manual_data_uploads")
+      .update({ status: "hiba", note: `Hiba történt a pénztárgépes adatok mentésekor, semmi nem került be: ${firstError}` })
+      .eq("id", upload.id);
+    return;
   }
 
   const totalGross = newRows.reduce((sum, r) => sum + r.gross_amount, 0);
   let note: string;
   if (filledDates.size === 0) {
     note = `Feldolgozva: a fájl ${minDate} .. ${maxDate} közötti napi zárásokat tartalmazza, de ezekre a napokra már van adatunk a rendes NAV-szinkronból — nem volt mit pótolni.`;
+  } else if (firstError) {
+    note = `Részlegesen feldolgozva: ${filledDates.size} napból csak ${uploaded} sor (nem nap!) került be hiba miatt: ${firstError}. Kérlek jelezd, hogy tudjuk kijavítani.`;
   } else {
     note = `Feldolgozva: ${filledDates.size} nap pénztárgépes forgalma pótolva (${minDate} .. ${maxDate} közötti időszakból, ${skippedDates.size} nap kihagyva, mert arra már volt adat), összesen ${Math.round(totalGross).toLocaleString("hu-HU")} Ft bruttó forgalom — ez mostantól a dashboardon és az Adataim oldalon is megjelenik.`;
   }
