@@ -96,6 +96,10 @@ async function main() {
           console.log(`⚠️  Hiba a(z) ${apNumber} pénztárgép felvételekor: ${registerErr.message}`);
         }
       }
+      const { error: subErr } = await supabase.from("subscriptions").insert({ company_id: newCompany.id });
+      if (subErr) {
+        console.log(`⚠️  Hiba az előfizetés-sor létrehozásakor: ${subErr.message}`);
+      }
       await supabase
         .from("pending_registrations")
         .update({ status: "approved", processed_at: new Date().toISOString() })
