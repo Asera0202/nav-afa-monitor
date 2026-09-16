@@ -50,19 +50,29 @@
     (`supabase/functions/trigger-backfill/`). Korábban a Beállítások oldal
     aljára volt eldugva, ahol senki nem kereste — a felhasználó jelezte,
     hogy ez nem felhasználóbarát, ezért került ki külön menüpontba.
-4. Könyvelői egyeztetés-feltöltés (a könyvelőtől időnként kapott "analitika"
-   PDF/Excel feltöltése — pl. a "Részletes ÁFA kimutatás" jellegű riport,
-   ami azt mutatja, mit könyvelt már el a könyvelő — összevetve azzal, amit
-   mi a NAV-tól látunk, hogy kiderüljön van-e "lekönyveletlen tétel", amit a
-   könyvelő esetleg kihagyott). Konkrét minta-fájl megvan (2026.09.04-én
-   kaptunk egyet a felhasználótól, QualitySoft Diamond rendszerből).
-   ✅ **Feltöltés UI kész (2026.09.04):** az "Adatpótlás" oldalon KOBAK-
-   pénztárgépes exportot vagy könyvelői kimutatást is fel lehet tölteni,
-   magyarázattal (miért kell, honnan szerezhető meg — a KOBAK-adat csak
-   Ügyfélkapus, portálos lekérdezéssel érhető el, nem automatizálható, lásd
-   #3b). A fájlok biztonságosan tárolva vannak (Supabase Storage,
-   `manual_data_uploads` tábla), de az automatikus feldolgozásuk
-   (egyeztetés/összevetés a NAV-adatokkal) még nincs megírva.
+4. ✅ Könyvelői egyeztetés-feltöltés — **automatikus feldolgozás megépítve
+   (2026.09.04)**, de a Supabase-oldali beállítás/tesztelés nincs
+   megerősítve befejezettnek (12 napos szünet volt a beszélgetésben).
+   Feltöltés után automatikusan elindul: `supabase/functions/
+   trigger-process-upload/` → `.github/workflows/process-upload.yml` →
+   `src/process-upload.ts`. A PDF-et pozíció (x/y koordináta) alapján
+   olvassa ki (a nyers szövegkinyerés összekeverte az oszlopokat a
+   QualitySoft Diamond "Részletes ÁFA kimutatás" riport-típusnál),
+   kinyeri a bizonylatszámokat, összeveti a NAV-tól nálunk lévő bejövő
+   számlákkal, és jelzi, ha van olyan NAV-számlánk, ami nincs a könyvelő
+   kimutatásában. Teszten (a felhasználó valódi fájlján) 91/kb.94 releváns
+   bizonylatszámot ismert fel helyesen — **"legjobb próbálkozás" jellegű,
+   nem 100%-os** (néhány több sorba tördelt tétel kimaradhat), ezt a
+   visszajelzés szövege is jelzi, és a felhasználóval is tisztázva lett,
+   hogy kézi ellenőrzés is szükséges rá támaszkodás előtt.
+   Csak a "konyveloi_afa" típusú PDF-eket dolgozza fel — a "kobak_penztargep"
+   típusúakat egyelőre csak tárolja (nincs minta-fájl hozzá).
+   **TEENDŐ nálad, ha még nem történt meg:** deployolni kell a
+   `trigger-process-upload` Edge Function-t (lásd README), és kikapcsolni
+   nála is a "Verify JWT with legacy secret" kapcsolót — ugyanaz a menet,
+   mint a `trigger-sync`/`trigger-backfill`-nél. Utána próbáld ki újra a
+   feltöltést, és nézd meg, mit ír ki a "Korábban feltöltött fájlok" listánál
+   frissítés után.
 4b. Dokumentum-megosztó portál a könyvelővel — ÚJ ÖTLET (2026.09.04): a
     vállalkozás fel tudna tölteni mindent, amit a könyvelő kér (bankszámla-
     kivonat, számlák, egyéb bizonylat), a könyvelő pedig egy helyről le
