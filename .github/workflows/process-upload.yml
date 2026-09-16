@@ -7,6 +7,14 @@ on:
         description: "A manual_data_uploads sor azonosítója (UUID), amit fel kell dolgozni."
         required: true
         type: string
+      period_from:
+        description: "Opcionális: felülírja a fájlból automatikusan felismert kezdő dátumot (ÉÉÉÉ-HH-NN)."
+        required: false
+        type: string
+      period_to:
+        description: "Opcionális: felülírja a fájlból automatikusan felismert záró dátumot (ÉÉÉÉ-HH-NN)."
+        required: false
+        type: string
 
 jobs:
   process:
@@ -29,3 +37,5 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           UPLOAD_ID: ${{ inputs.upload_id }}
+          PERIOD_FROM: ${{ inputs.period_from }}
+          PERIOD_TO: ${{ inputs.period_to }}

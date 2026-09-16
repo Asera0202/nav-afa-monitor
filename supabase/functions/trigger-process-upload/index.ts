@@ -51,6 +51,11 @@ Deno.serve(async (req) => {
   if (!uploadId) {
     return json({ error: "Hiányzó upload_id." }, 400);
   }
+  // Opcionális: a felhasználó felülírhatja a fájlból automatikusan
+  // felismert időszakot (csak a könyvelői ÁFA-kimutatás egyeztetésénél
+  // van jelentősége).
+  const periodFrom = typeof body?.period_from === "string" ? body.period_from.trim() : "";
+  const periodTo = typeof body?.period_to === "string" ? body.period_to.trim() : "";
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
@@ -80,7 +85,7 @@ Deno.serve(async (req) => {
         "X-GitHub-Api-Version": "2022-11-28",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ref: "main", inputs: { upload_id: uploadId } }),
+      body: JSON.stringify({ ref: "main", inputs: { upload_id: uploadId, period_from: periodFrom, period_to: periodTo } }),
     }
   );
 

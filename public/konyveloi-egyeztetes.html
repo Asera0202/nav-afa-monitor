@@ -200,6 +200,22 @@
 
         <div class="card">
           <div class="step-title"><span class="step-num">3</span>Eredmény</div>
+          <div class="desc">
+            A rendszer alapból a feltöltött kimutatás fejlécéből felismert időszakot használja az összevetéshez. Ha ez
+            hibás vagy nem sikerült felismerni, itt felülbírálhatod:
+          </div>
+          <div style="display:flex; gap:0.7rem; align-items:end; flex-wrap:wrap; margin-bottom:0.8rem;">
+            <div style="flex:1; min-width:140px;">
+              <label style="margin-top:0;">Mettől</label>
+              <input type="date" id="periodFrom">
+            </div>
+            <div style="flex:1; min-width:140px;">
+              <label style="margin-top:0;">Meddig</label>
+              <input type="date" id="periodTo">
+            </div>
+            <button type="button" class="save-btn" id="reprocessBtn" style="margin-top:0; width:auto; padding:0.6rem 1rem; white-space:nowrap;">Újraszámolás ezzel az időszakkal</button>
+          </div>
+          <div id="reprocessNote" class="field-help" style="display:none; margin-bottom:0.8rem;"></div>
           <div id="resultBox"></div>
         </div>
 
@@ -216,6 +232,7 @@
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let company = null;
+let latestUploadId = null;
 
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   await sb.auth.signOut();
@@ -291,6 +308,8 @@ async function loadUploads() {
     .order("created_at", { ascending: false });
 
   const uploads = data || [];
+  latestUploadId = uploads[0] ? uploads[0].id : null;
+  document.getElementById("reprocessBtn").disabled = !latestUploadId;
   await renderResult(uploads[0] || null);
 
   const historyCard = document.getElementById("historyCard");
@@ -312,6 +331,49 @@ async function loadUploads() {
       .join("");
   }
 }
+
+document.getElementById("reprocessBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("reprocessBtn");
+  const note = document.getElementById("reprocessNote");
+  const from = document.getElementById("periodFrom").value;
+  const to = document.getElementById("periodTo").value;
+
+  if (!latestUploadId) {
+    note.textContent = "Nincs még feltöltött kimutatás.";
+    note.style.display = "block";
+    return;
+  }
+  if (!from || !to) {
+    note.textContent = "Add meg mindkét dátumot az újraszámoláshoz.";
+    note.style.display = "block";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Indítás...";
+  note.style.display = "none";
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/trigger-process-upload`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+        apikey: SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ upload_id: latestUploadId, period_from: from, period_to: to }),
+    });
+    const body = await res.json();
+    note.textContent = (body.message || body.error) + " Néhány percet vehet igénybe — frissítsd az oldalt később.";
+    note.style.display = "block";
+  } catch (err) {
+    note.textContent = "Hiba történt az újraszámolás indításakor: " + err.message;
+    note.style.display = "block";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Újraszámolás ezzel az időszakkal";
+  }
+});
 
 document.getElementById("uploadBtn").addEventListener("click", async () => {
   const btn = document.getElementById("uploadBtn");
