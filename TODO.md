@@ -158,6 +158,27 @@
    **Amit ez nem tud automatikusan követni:** ha maga a jogszabály
    változik (ahogy idén a szocho/TB-járulék gyakoriságával történt) — ezt
    időnként kézzel érdemes újra átnézni.
+   **TOVÁBB PONTOSÍTVA (2026.09.16), valós minta-PDF alapján:** a
+   felhasználó jelezte, hogy nála a gyakorlatban havonta esedékes a
+   szocho/TB (nem a jogszabály szerinti negyedéves alapérték), és küldött
+   egy valódi "Járulék utalási összesítő" PDF-et (amit a könyvelője
+   havonta generál a QualitySoft Diamond rendszerből). Ahelyett, hogy
+   tovább vitatkoztunk volna az általános szabályról, bevezettem az
+   automatikus feldolgozását: új feltöltés-típus ("jarulek_osszesito") az
+   Adatpótlás oldalon, a `src/process-upload.ts` kiolvassa belőle a
+   pontos időszakot, határidőt és minden tételt (NAV adónem-kód alapján
+   azonosítva, ami stabil, országosan egységes anchor), és egy új
+   `jarulek_deadlines` táblába menti. A Határidő-naptár (dashboard-kártya
+   + teljes oldal) ezekre a hónapokra a VALÓDI, tételes ("tényleges"
+   jelöléssel ellátott), jogcímenként külön-külön megjelenő adatot mutatja
+   a generikus becslés helyett — csak azokra a hónapokra esik vissza a
+   becslésre, amikről még nincs feltöltve összesítő. Így elég havonta
+   feltölteni ezt a fájlt (amit a felhasználó amúgy is megkap a
+   könyvelőjétől), és a naptár automatikusan a pontos adatot mutatja.
+   Teszteltem a valós mintafájllal — a kiolvasott összeg pontosan egyezik
+   a riport saját "Összesen" sorával.
+   **TEENDŐ nálad:** ezt a migrációt is (`supabase/migrations/
+   20260916040000_jarulek_deadlines.sql`) alkalmazni kell Supabase-ben.
 9. ✅ Export PDF/Excel — kész (PDF: dashboard "PDF-jelentés" gomb; Excel: Adataim
    oldal "Excel exportálása" gomb, a szűrt tételes adatokat exportálja .xlsx-be)
 10. ✅ Profi, menüsoros/kártyás vizuális redesign — kész, élesítve mind a 6 oldalon
