@@ -1,0 +1,27 @@
+name: Regisztrációk automatikus aktiválása
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repó kicsomagolása
+        uses: actions/checkout@v4
+
+      - name: Node.js beállítása
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Függőségek telepítése
+        run: npm ci
+
+      - name: Regisztrációk aktiválása
+        run: npx tsx src/auto-approve-registrations.ts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

@@ -389,7 +389,7 @@ async function main() {
 
   const { data: companies, error } = await sb.from("companies").select("*");
   if (error || !companies || companies.length === 0) {
-    document.getElementById("loadingBox").textContent = "A regisztrációdat még átnézzük és aktiváljuk — addig itt még nincs mit tenni.";
+    document.getElementById("loadingBox").textContent = "A fiókodat automatikusan aktiváljuk (néhány percet vehet igénybe az email-megerősítés után) — addig itt még nincs mit tenni.";
     return;
   }
   company = companies[0];

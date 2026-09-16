@@ -32,6 +32,22 @@ jobs:
             -f "backups/backup-${DATE}.sql"
           echo "Mentés kész: backups/backup-${DATE}.sql ($(wc -l < backups/backup-${DATE}.sql) sor)"
 
+      - name: Régi mentések törlése (utolsó 30 nap megtartása)
+        run: |
+          # A git checkout minden fájl módosítási dátumát a checkout
+          # időpontjára állítja, ezért "find -mtime" nem használható — a
+          # fájlnévbe írt dátumot (backup-ÉÉÉÉ-HH-NN.sql) hasonlítjuk a mai
+          # naphoz.
+          CUTOFF=$(date -u -d "30 days ago" +%Y-%m-%d)
+          for f in backups/backup-*.sql; do
+            [ -e "$f" ] || continue
+            FILE_DATE=$(basename "$f" | sed -E 's/^backup-([0-9]{4}-[0-9]{2}-[0-9]{2})\.sql$/\1/')
+            if [[ "$FILE_DATE" < "$CUTOFF" ]]; then
+              echo "Törlés (30 napnál régebbi): $f"
+              rm "$f"
+            fi
+          done
+
       - name: Mentés commitolása
         run: |
           git config user.name "cegfokusz-bot"

@@ -117,7 +117,7 @@ function showStatus(message, type) {
   const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
   const type = params.get("type") || hashParams.get("type");
   if (type === "signup" || type === "email_change") {
-    showStatus("Email cím megerősítve! A fiókodat hamarosan átnézzük és aktiváljuk — addig is jelentkezz be nyugodtan.", "success");
+    showStatus("Email cím megerősítve! A fiókodat automatikusan aktiváljuk, néhány percen belül — addig is jelentkezz be nyugodtan.", "success");
   }
 })();
 

@@ -185,7 +185,7 @@ async function main() {
 
   const { data: companies } = await sb.from("companies").select("*");
   if (!companies || companies.length === 0) {
-    document.getElementById("loadingBox").textContent = "A regisztrációdat még átnézzük és aktiváljuk.";
+    document.getElementById("loadingBox").textContent = "A fiókodat automatikusan aktiváljuk (néhány percet vehet igénybe az email-megerősítés után).";
     return;
   }
   const company = companies[0];

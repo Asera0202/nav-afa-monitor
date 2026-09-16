@@ -580,7 +580,7 @@ async function main() {
 
   const { data: companies, error } = await sb.from("companies").select("id, name, tax_number");
   if (error || !companies || companies.length === 0) {
-    document.getElementById("content").innerHTML = `<div class="empty-state">A regisztrációdat még átnézzük és aktiváljuk — addig itt még nincs mit mutatni.</div>`;
+    document.getElementById("content").innerHTML = `<div class="empty-state">A fiókodat automatikusan aktiváljuk (néhány percet vehet igénybe az email-megerősítés után) — addig itt még nincs mit mutatni.</div>`;
     return;
   }
   companyId = companies[0].id;
