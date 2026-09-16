@@ -51,8 +51,14 @@
     aljára volt eldugva, ahol senki nem kereste — a felhasználó jelezte,
     hogy ez nem felhasználóbarát, ezért került ki külön menüpontba.
 4. ✅ Könyvelői egyeztetés-feltöltés — **teljesen kész, élesben tesztelve
-   és működik (2026.09.16)**. Feltöltés után automatikusan elindul:
-   `supabase/functions/trigger-process-upload/` → `.github/workflows/
+   és működik (2026.09.16)**. Saját sidebar-menüpontja és oldala van
+   (`public/konyveloi-egyeztetes.html`) — egy oldalon a magyarázat,
+   feltöltés és eredmény, a dashboardon pedig egy jól látható
+   "Könyvelői egyeztetés megnyitása" gomb mutat ide (korábban az
+   Adatpótlás oldal aljára volt eldugva, és külön oldalon jelentek meg
+   a részletek — a felhasználó kérésére önálló, végigvezetett oldal lett).
+   Feltöltés után automatikusan elindul: `supabase/functions/
+   trigger-process-upload/` → `.github/workflows/
    process-upload.yml` → `src/process-upload.ts`. A PDF-et pozíció (x/y
    koordináta) alapján olvassa ki (a nyers szövegkinyerés összekeverte az
    oszlopokat a QualitySoft Diamond "Részletes ÁFA kimutatás"
