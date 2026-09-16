@@ -187,15 +187,36 @@
     reset-password: szín- és tipográfiai frissítés). Bankos irányba tolva:
     mélyebb intézményi kék, bankkártya-szerű cégazonosító, talpas számtipó.
 11. Fizetési/előfizetési rendszer
-12. Skálázási előkészítés (ha a cégszám tucat/száz fölé nő)
+12. ⏳ Skálázási előkészítés (ha a cégszám tucat/száz fölé nő) — RÉSZBEN KÉSZ
+    (2026.09.16).
     **Elv (2026.09.04):** minden olyan funkció, amit most GitHub Actions
     manuális workflow_dispatch-csel indítunk (pl. a #3b számla-pótló
     backfill), csak addig maradhat így, amíg egyetlen (pilot) ügyfél van.
     Több ügyfélnél ezeknek egy gombnyomásra kell működniük a felhasználói
     felületen (Beállítások/dashboard), technikai/GitHub-beavatkozás nélkül —
     hasonlóan, ahogy a #19 "Adatok frissítése" gombot is Edge Function mögé
-    tettük. Ezt a #11/#12 előtt végig kell nézni: mi az, amit még csak én
-    indítok kézzel, és mi kell hozzá, hogy azt is gombra tegyük.
+    tettük.
+    **Átvilágítás eredménye (2026.09.16):** a napi szinkron, havi email,
+    kétheti emlékeztető, felhasználó-indított gombok (Adatok frissítése,
+    Adatpótlás, feltöltés-feldolgozás) mind már jól skálázódnak, cégenkénti
+    kódmódosítás nélkül. Két valódi szűk keresztmetszetet találtunk:
+    - ✅ **Regisztráció kézi jóváhagyása** — MEGOLDVA: a felhasználóval
+      egyeztetve (tudatosan vállalt kockázat: nincs emberi ellenőrzés a
+      NAV-adatokon) a `src/auto-approve-registrations.ts` +
+      `.github/workflows/auto-approve-registrations.yml` (15 percenként fut)
+      most már automatikusan aktiválja az új cégeket, nem kell nekem
+      kézzel lefuttatnom a régi `review-registrations.ts`-t (ami megmaradt
+      tartalék/hibakereső eszköznek).
+    - ✅ **Backup git-repóba írása vég nélkül nőtt** — MEGOLDVA: 30 napos
+      retenció bevezetve a `backup-database.yml`-ben (fájlnév-dátum
+      alapján, mert git checkout után mtime nem használható). Felmerült
+      alternatívaként a Supabase saját napi backup-ja (Pro csomag, kb.
+      $25/hó ≈ 9.000-9.500 Ft) — ez még nyitott döntés, egyelőre a git-
+      retenció fut, ingyenes.
+    **Még hátra (ha tényleg sok cégre nő):** a `daily-opg-sync`/
+    `daily-invoice-sync` egyetlen GitHub Actions jobban fut le minden
+    cégre — sok tucat/száz cégnél érdemes lehet particionálni vagy
+    valódi worker-queue rendszerre váltani.
 13. WellData cégadat-automatizálás (most még nem éri meg a költsége: 15.990-37.990 Ft+ÁFA/hó)
 14. Könyvelőirodai partnerprogram
 15. Homepage
