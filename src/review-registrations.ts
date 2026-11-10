@@ -67,6 +67,19 @@ async function main() {
     const answer = (await rl.question("\nJóváhagyod ezt a regisztrációt? (i = igen / n = nem / s = kihagy most): ")).trim().toLowerCase();
 
     if (answer === "i") {
+      let referredByAccountantId: string | null = null;
+      if (reg.referral_code_used) {
+        const { data: accountant } = await supabase
+          .from("accountants")
+          .select("id")
+          .ilike("referral_code", reg.referral_code_used)
+          .maybeSingle();
+        referredByAccountantId = accountant?.id ?? null;
+        if (!referredByAccountantId) {
+          console.log(`⚠️  Ismeretlen ajánlói kód: ${reg.referral_code_used} — ajánló nélkül folytatjuk.`);
+        }
+      }
+
       const { data: newCompany, error: insertErr } = await supabase
         .from("companies")
         .insert({
@@ -80,6 +93,7 @@ async function main() {
           nav_signing_key_encrypted: reg.nav_signing_key_encrypted,
           nav_exchange_key_encrypted: reg.nav_exchange_key_encrypted,
           opg_ap_number: reg.opg_ap_number,
+          referred_by_accountant_id: referredByAccountantId,
         })
         .select("id")
         .single();

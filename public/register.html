@@ -161,6 +161,13 @@
       </div>
 
       <div class="card">
+        <h2>Könyvelő ajánlója (opcionális)</h2>
+        <div class="desc">Ha a könyvelőd ajánlott minket, írd be az általa kapott kódot — ezzel támogatod a könyvelőidet, nincs vele plusz költséged.</div>
+        <label>Ajánlói kód</label>
+        <input type="text" id="referralCode" placeholder="pl. ABC123" style="text-transform:uppercase;">
+      </div>
+
+      <div class="card">
         <h2>Értesítések és hozzájárulások</h2>
 
         <div class="checkbox-row">
@@ -299,6 +306,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     const alanyiMentes = document.getElementById("alanyiMentes").checked;
     const wantsTelegram = wantsTelegramEl.checked;
     const marketingConsent = document.getElementById("marketingConsent").checked;
+    const referralCode = document.getElementById("referralCode").value.trim().toUpperCase() || null;
 
     const { data: signUpData, error: signUpError } = await sb.auth.signUp({ email, password });
     if (signUpError) throw signUpError;
@@ -327,6 +335,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       opg_ap_numbers: apNumbers,
       wants_telegram: wantsTelegram,
       marketing_consent: marketingConsent,
+      referral_code_used: referralCode,
       marketing_consent_at: marketingConsent ? new Date().toISOString() : null,
     });
     if (insertError) throw insertError;

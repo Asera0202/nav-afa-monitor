@@ -17,10 +17,10 @@ const BARION_ENV = Deno.env.get("BARION_ENV") ?? "test";
 
 const BARION_API_BASE = BARION_ENV === "prod" ? "https://api.barion.com" : "https://api.test.barion.com";
 
-function priceForUsage(usage: number): { tier: string } {
-  if (usage <= 100) return { tier: "sav1" };
-  if (usage <= 250) return { tier: "sav2" };
-  return { tier: "sav3" };
+function priceForUsage(usage: number): { tier: string; price: number } {
+  if (usage <= 100) return { tier: "sav1", price: 7999 };
+  if (usage <= 250) return { tier: "sav2", price: 9999 };
+  return { tier: "sav3", price: 11999 };
 }
 
 Deno.serve(async (req) => {
@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
     const now = new Date();
     const periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
     const periodEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0));
-    const { tier } = priceForUsage(subscription.last_usage_count ?? 0);
+    const { tier, price } = priceForUsage(subscription.last_usage_count ?? 0);
 
     await supabase
       .from("subscriptions")
@@ -72,6 +72,17 @@ Deno.serve(async (req) => {
         updated_at: new Date().toISOString(),
       })
       .eq("company_id", subscription.company_id);
+
+    // Jutalék-elszámolási napló (a könyvelői ajánlói program ebből
+    // számolja a 25%-os havi jutalékot).
+    await supabase.from("subscription_payments").insert({
+      company_id: subscription.company_id,
+      tier,
+      price,
+      period_start: periodStart.toISOString().slice(0, 10),
+      period_end: periodEnd.toISOString().slice(0, 10),
+      barion_payment_id: paymentId,
+    });
   } else if (state.Status === "Failed" || state.Status === "Canceled" || state.Status === "Expired") {
     await supabase
       .from("subscriptions")

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Könyvelői regisztráció — Cégfókusz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #f5f5fa; --surface: #ffffff; --ink: #12172b; --ink-soft: #5a6178; --ink-faint: #9297ab;
+    --line: #e6e8f0; --accent: #1f3a7a; --accent-soft: #e9edf7;
+    --danger: #b3261e; --danger-soft: #fbeceb; --ok: #1a7f4e; --ok-soft: #e8f5ee;
+    --shadow: 0 1px 2px rgba(20,21,42,0.04), 0 8px 24px rgba(20,21,42,0.05);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+  .masthead { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.75rem; text-decoration: none; }
+  .masthead .logo-mark { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .masthead .logo-mark img { width: 28px; height: 28px; }
+  .masthead .title { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 0.01em; color: var(--ink); }
+  .masthead .sub { font-size: 0.8rem; color: var(--ink-soft); }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 1.6rem 1.6rem; margin-bottom: 1.25rem; }
+  .card h2 { font-size: 0.92rem; margin: 0 0 0.3rem; }
+  .card .desc { font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 1.1rem; line-height: 1.5; }
+
+  label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.9rem; }
+  label:first-of-type { margin-top: 0; }
+  input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%; font-family: var(--sans); font-size: 0.9rem; padding: 0.6rem 0.75rem;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--ground); color: var(--ink);
+  }
+  input:focus { outline: none; border-color: var(--accent); }
+  .field-help { font-size: 0.74rem; color: var(--ink-faint); margin-top: 0.25rem; line-height: 1.4; }
+
+  .submit-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 0.85rem; font-size: 0.92rem; font-weight: 600; cursor: pointer; }
+  .submit-btn:hover { background: #17305f; }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .status { display: none; border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.84rem; margin-bottom: 1.1rem; line-height: 1.5; }
+  .status.error { display: block; background: var(--danger-soft); color: #7a1c16; }
+  .status.success { display: block; background: var(--ok-soft); color: #135a37; }
+
+  .login-link { text-align: center; font-size: 0.85rem; color: var(--ink-soft); margin-top: 1.2rem; }
+  .login-link a { color: var(--accent); font-weight: 600; text-decoration: none; }
+</style>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+  <div class="wrap">
+    <a class="masthead" href="index.html">
+      <div class="logo-mark"><img src="favicon.svg" alt=""></div>
+      <div>
+        <div class="title">Cégfókusz</div>
+        <div class="sub">Könyvelői partnerprogram</div>
+      </div>
+    </a>
+
+    <div id="statusBox" class="status"></div>
+
+    <div class="card">
+      <h2>Regisztráció könyvelőként</h2>
+      <div class="desc">
+        Ajánld az ügyfeleidnek a Cégfókuszt, és a saját, egyedi kódoddal regisztráló cégek havi
+        előfizetési díjának <b>25%-át</b> megkapod jutalékként, amíg az ügyfél előfizet. Bejelentkezés
+        után itt látod az általad ajánlott cégeket, az előfizetési állapotukat, és amint feltöltenek
+        valamit (pl. könyvelői kimutatást), azonnal megjelenik nálad is.
+      </div>
+      <form id="registerForm">
+        <label>Neved / irodád neve</label>
+        <input type="text" id="name" required>
+        <label>Email cím</label>
+        <input type="email" id="email" required>
+        <label>Jelszó</label>
+        <input type="password" id="password" required minlength="6">
+        <label>Jelszó megerősítése</label>
+        <input type="password" id="passwordConfirm" required minlength="6">
+        <button type="submit" class="submit-btn" id="submitBtn" style="margin-top:1.2rem;">Regisztráció</button>
+      </form>
+    </div>
+
+    <div class="login-link">Már van fiókod? <a href="konyvelo-login.html">Jelentkezz be</a></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function translateError(message) {
+  const map = [
+    [/user already registered/i, "Ez az email cím már regisztrálva van nálunk."],
+    [/password should be at least/i, "A jelszónak legalább 6 karakter hosszúnak kell lennie."],
+    [/rate limit/i, "Túl sok próbálkozás történt rövid idő alatt — kérjük, várj egy percet, és próbáld újra."],
+    [/network|fetch/i, "Hálózati hiba történt — ellenőrizd az internetkapcsolatod, és próbáld újra."],
+    [/duplicate key/i, "Ez az email cím már regisztrálva van nálunk."],
+  ];
+  for (const [pattern, hu] of map) {
+    if (pattern.test(message)) return hu;
+  }
+  return "Hiba történt: " + message;
+}
+
+function showStatus(message, type) {
+  const box = document.getElementById("statusBox");
+  box.textContent = message;
+  box.className = "status " + type;
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function generateReferralCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const submitBtn = document.getElementById("submitBtn");
+
+  const password = document.getElementById("password").value;
+  const passwordConfirm = document.getElementById("passwordConfirm").value;
+  if (password !== passwordConfirm) {
+    showStatus("A két jelszó nem egyezik.", "error");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Feldolgozás...";
+
+  try {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    const { data: signUpData, error: signUpError } = await sb.auth.signUp({ email, password });
+    if (signUpError) throw signUpError;
+    const userId = signUpData.user?.id;
+    if (!userId) throw new Error("Nem sikerült a felhasználói fiók létrehozása.");
+
+    // Néhány próbálkozás, ha véletlenül ütközne a generált kód egy
+    // meglévővel (unique constraint a referral_code oszlopon).
+    let lastError = null;
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const code = generateReferralCode();
+      const { error: insertError } = await sb.from("accountants").insert({
+        user_id: userId,
+        name,
+        email,
+        referral_code: code,
+      });
+      if (!insertError) {
+        lastError = null;
+        break;
+      }
+      lastError = insertError;
+      if (!/duplicate key/i.test(insertError.message)) break;
+    }
+    if (lastError) throw lastError;
+
+    document.getElementById("registerForm").style.display = "none";
+    showStatus(
+      "Sikeres regisztráció! Ellenőrizd az email fiókodat egy megerősítő linkért, utána be tudsz jelentkezni a könyvelői belépőn.",
+      "success"
+    );
+  } catch (err) {
+    showStatus(translateError(err.message || String(err)), "error");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Regisztráció";
+  }
+});
+</script>
+</body>
+</html>
