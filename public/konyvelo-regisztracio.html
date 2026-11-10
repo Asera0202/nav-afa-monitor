@@ -67,7 +67,7 @@
       <h2>Regisztráció könyvelőként</h2>
       <div class="desc">
         Ajánld az ügyfeleidnek a Cégfókuszt, és a saját, egyedi kódoddal regisztráló cégek havi
-        előfizetési díjának <b>25%-át</b> megkapod jutalékként, amíg az ügyfél előfizet. Bejelentkezés
+        előfizetési díjának <b id="commissionRateText">25%-át</b> megkapod jutalékként, amíg az ügyfél előfizet. Bejelentkezés
         után itt látod az általad ajánlott cégeket, az előfizetési állapotukat, és amint feltöltenek
         valamit (pl. könyvelői kimutatást), azonnal megjelenik nálad is.
       </div>
@@ -91,6 +91,11 @@
 <script src="config.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+sb.from("platform_settings").select("value").eq("key", "accountant_commission_rate").maybeSingle().then(({ data }) => {
+  const pct = Math.round((data ? parseFloat(data.value) : 0.25) * 100);
+  document.getElementById("commissionRateText").textContent = pct + "%-át";
+});
 
 function translateError(message) {
   const map = [

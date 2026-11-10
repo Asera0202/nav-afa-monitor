@@ -103,7 +103,6 @@
 <script src="config.js"></script>
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const COMMISSION_RATE = 0.25;
 const TIER_LABELS = { sav1: "Alap sáv", sav2: "Közepes sáv", sav3: "Nagy sáv" };
 const STATUS_LABELS = { trial: "Próbaidőszak", active: "Aktív előfizetés", past_due: "Elmaradt fizetés", canceled: "Lemondva" };
 const UPLOAD_KIND_LABELS = { kobak_penztargep: "KOBAK pénztárgépes export", konyveloi_afa: "Könyvelői kimutatás", jarulek_osszesito: "Járulék utalási összesítő", egyeb: "Egyéb" };
@@ -131,6 +130,13 @@ async function main() {
     return;
   }
 
+  const { data: rateSetting } = await sb
+    .from("platform_settings")
+    .select("value")
+    .eq("key", "accountant_commission_rate")
+    .maybeSingle();
+  const currentRatePct = Math.round((rateSetting ? parseFloat(rateSetting.value) : 0.25) * 100);
+
   const { data: companies } = await sb
     .from("companies")
     .select("id, name, tax_number, created_at")
@@ -147,7 +153,7 @@ async function main() {
     const [{ data: subs }, { data: uploads }, { data: pays }] = await Promise.all([
       sb.from("subscriptions").select("company_id, status, tier, current_period_end").in("company_id", companyIds),
       sb.from("manual_data_uploads").select("company_id, kind, file_name, status, created_at").in("company_id", companyIds).order("created_at", { ascending: false }),
-      sb.from("subscription_payments").select("company_id, price, period_start").in("company_id", companyIds),
+      sb.from("subscription_payments").select("company_id, price, period_start, commission_rate").in("company_id", companyIds),
     ]);
     for (const s of subs ?? []) subsByCompany[s.company_id] = s;
     for (const u of uploads ?? []) {
@@ -157,11 +163,11 @@ async function main() {
     payments = pays ?? [];
   }
 
-  const totalCommissionEver = payments.reduce((s, p) => s + Number(p.price) * COMMISSION_RATE, 0);
+  const totalCommissionEver = payments.reduce((s, p) => s + Number(p.price) * Number(p.commission_rate ?? 0.25), 0);
   const thisMonthPrefix = new Date().toISOString().slice(0, 7);
   const thisMonthCommission = payments
     .filter((p) => (p.period_start || "").startsWith(thisMonthPrefix))
-    .reduce((s, p) => s + Number(p.price) * COMMISSION_RATE, 0);
+    .reduce((s, p) => s + Number(p.price) * Number(p.commission_rate ?? 0.25), 0);
 
   const companyRows = (companies ?? [])
     .map((c) => {
@@ -197,12 +203,12 @@ async function main() {
       <div class="referral-box">
         <div class="referral-code" id="referralCodeText">${accountant.referral_code}</div>
         <button class="copy-btn" id="copyCodeBtn">Másolás</button>
-        <div style="font-size:0.8rem; color:var(--ink-soft); flex-basis:100%;">Add ezt a kódot az ügyfeleidnek — a regisztrációnál be tudják írni, és onnantól a havi előfizetési díjuk 25%-át megkapod, amíg előfizetnek.</div>
+        <div style="font-size:0.8rem; color:var(--ink-soft); flex-basis:100%;">Add ezt a kódot az ügyfeleidnek — a regisztrációnál be tudják írni, és onnantól a havi előfizetési díjuk ${currentRatePct}%-át megkapod, amíg előfizetnek.</div>
       </div>
     </div>
 
     <div class="card">
-      <h2>Jutalék</h2>
+      <h2>Jutalék <span style="font-size:0.75rem; font-weight:400; color:var(--ink-faint);">(jelenlegi kulcs: ${currentRatePct}%)</span></h2>
       <div class="stat-row">
         <div class="stat-box"><div class="stat-num">${Math.round(thisMonthCommission).toLocaleString("hu-HU")} Ft</div><div class="stat-label">Ebben a hónapban</div></div>
         <div class="stat-box"><div class="stat-num">${Math.round(totalCommissionEver).toLocaleString("hu-HU")} Ft</div><div class="stat-label">Összesen eddig</div></div>

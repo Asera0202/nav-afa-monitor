@@ -74,7 +74,17 @@ Deno.serve(async (req) => {
       .eq("company_id", subscription.company_id);
 
     // Jutalék-elszámolási napló (a könyvelői ajánlói program ebből
-    // számolja a 25%-os havi jutalékot).
+    // számolja a havi jutalékot). A jutalékszázalékot a FIZETÉS
+    // PILLANATÁBAN rögzítjük (platform_settings-ből olvasva) — így ha a
+    // rendszergazda később átírja a rátát, a már kifizetett hónapok
+    // jutaléka nem változik meg visszamenőleg.
+    const { data: rateSetting } = await supabase
+      .from("platform_settings")
+      .select("value")
+      .eq("key", "accountant_commission_rate")
+      .maybeSingle();
+    const commissionRate = rateSetting ? parseFloat(rateSetting.value) : 0.25;
+
     await supabase.from("subscription_payments").insert({
       company_id: subscription.company_id,
       tier,
@@ -82,6 +92,7 @@ Deno.serve(async (req) => {
       period_start: periodStart.toISOString().slice(0, 10),
       period_end: periodEnd.toISOString().slice(0, 10),
       barion_payment_id: paymentId,
+      commission_rate: Number.isFinite(commissionRate) ? commissionRate : 0.25,
     });
   } else if (state.Status === "Failed" || state.Status === "Canceled" || state.Status === "Expired") {
     await supabase
