@@ -249,7 +249,28 @@
     cégre — sok tucat/száz cégnél érdemes lehet particionálni vagy
     valódi worker-queue rendszerre váltani.
 13. WellData cégadat-automatizálás (most még nem éri meg a költsége: 15.990-37.990 Ft+ÁFA/hó)
-14. Könyvelőirodai partnerprogram
+14. ⏳ Könyvelőirodai partnerprogram — RÉSZBEN KÉSZ (2026.11.10), a #11
+    fizetési rendszerrel együtt tervezve/építve.
+    **Döntések a felhasználóval:** a könyvelő saját fiókkal regisztrál és
+    lép be (nem a vállalkozói felületen keresztül); minden könyvelőnek van
+    egyedi, automatikusan generált ajánlói kódja, amit a vállalkozás a
+    regisztrációnál megadhat (opcionális); amíg az így beregisztrált cég
+    előfizet, a könyvelő a havi előfizetési díj **25%-át** kapja
+    jutalékként, minden hónapban újra.
+    **Megépítve:** `accountants` tábla + `companies.referred_by_accountant_id`
+    + `subscription_payments` (jutalék-elszámolási napló) — migráció:
+    `supabase/migrations/20261110000000_accountant_referrals.sql`;
+    `public/konyvelo-regisztracio.html` / `konyvelo-login.html` /
+    `konyvelo-dashboard.html` — saját könyvelői felület: ajánlói kód
+    (másolható), havi/összesített jutalék-kimutatás, ajánlott cégek
+    listája előfizetési állapottal és legutóbbi feltöltésekkel (amint a
+    vállalkozó feltölt valamit, azonnal látja a könyvelő is); a fő
+    `register.html`-en új "Könyvelő ajánlója" mező.
+    **TEENDŐ nálad:** a migrációt alkalmazni kell Supabase-ben.
+    **Még hátra, ha igény lesz rá:** jutalék tényleges kifizetése (ma csak
+    a dashboardon látszik a jutalék, nincs automatikus utalás a
+    könyvelőnek); könyvelői partnerprogram homepage-es/marketinges
+    bemutatása.
 15. Homepage
 16. Jogi papírok (adatkezelési tájékoztató, ÁSZF) — szándékosan a legvégére, amikor minden
     kész és piacra lépnétek
