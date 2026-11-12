@@ -264,6 +264,17 @@
         </div>
 
         <div class="card">
+          <h2>Könyvelő</h2>
+          <div class="desc">Ha a könyvelőd ajánlott minket, írd be a tőle kapott kódot — ezzel a könyvelőd látni fogja az ide feltöltött dokumentumaidat, és jutalékot kap az előfizetésed után.</div>
+          <div id="accountantStatusBox"></div>
+          <label>Ajánlói kód</label>
+          <div style="display:flex; gap:0.5rem;">
+            <input type="text" id="referralCodeInput" placeholder="pl. ABC123" style="text-transform:uppercase; flex:1;">
+            <button type="button" class="add-btn" id="linkAccountantBtn">Összekötés</button>
+          </div>
+        </div>
+
+        <div class="card">
           <h2>Telegram-értesítés</h2>
           <div id="telegramStatusBox"></div>
         </div>
@@ -342,6 +353,43 @@ document.getElementById("addRegisterBtn").addEventListener("click", async () => 
   }
 });
 
+async function renderAccountantStatus() {
+  const box = document.getElementById("accountantStatusBox");
+  if (!company.referred_by_accountant_id) {
+    box.innerHTML = `<div class="telegram-status disconnected">⚪ Jelenleg nincs könyvelő összekötve ezzel a céggel</div>`;
+    return;
+  }
+  const { data: accountant } = await sb.from("accountants").select("name").eq("id", company.referred_by_accountant_id).maybeSingle();
+  box.innerHTML = `<div class="telegram-status connected">✅ Összekötve: ${accountant?.name || "könyvelő"}</div>`;
+}
+
+document.getElementById("linkAccountantBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("linkAccountantBtn");
+  const code = document.getElementById("referralCodeInput").value.trim();
+  if (!code) return;
+  btn.disabled = true;
+  btn.textContent = "Összekötés...";
+  try {
+    const { data: ok, error } = await sb.rpc("link_company_to_accountant", { p_company_id: company.id, p_referral_code: code });
+    if (error) throw error;
+    if (!ok) {
+      showStatus("Nem találtunk ilyen ajánlói kódot — ellenőrizd, és próbáld újra.", "error");
+    } else {
+      document.getElementById("referralCodeInput").value = "";
+      company.referred_by_accountant_id = "linked"; // újratöltjük pontosan utána
+      const { data: companies } = await sb.from("companies").select("*").eq("id", company.id).maybeSingle();
+      if (companies) company = companies;
+      await renderAccountantStatus();
+      showStatus("Sikeresen összekötve a könyvelőddel!", "success");
+    }
+  } catch (err) {
+    showStatus("Hiba történt: " + (err.message || err), "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Összekötés";
+  }
+});
+
 function renderTelegramStatus() {
   const box = document.getElementById("telegramStatusBox");
   if (company.telegram_chat_id) {
@@ -396,6 +444,7 @@ async function main() {
 
   await loadCashRegisters();
   renderTelegramStatus();
+  await renderAccountantStatus();
 
   document.getElementById("loadingBox").style.display = "none";
   document.getElementById("settingsForm").style.display = "block";
