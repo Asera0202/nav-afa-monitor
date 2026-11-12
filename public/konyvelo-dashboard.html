@@ -193,6 +193,7 @@ async function main() {
           <div class="status-badge status-${statusKey}">${STATUS_LABELS[statusKey] || statusKey}${sub?.tier ? " · " + (TIER_LABELS[sub.tier] || sub.tier) : ""}</div>
         </div>
         <div class="upload-list">${uploadsHtml}</div>
+        <a href="dokumentumok.html?company=${c.id}" style="display:inline-block; margin-top:0.5rem; font-size:0.78rem; font-weight:600; color:var(--accent); text-decoration:none;">Dokumentumok megnyitása →</a>
       </div>`;
     })
     .join("");
