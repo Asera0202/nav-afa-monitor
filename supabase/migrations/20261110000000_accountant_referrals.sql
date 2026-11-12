@@ -22,6 +22,9 @@ create policy accountant_can_select_own_row on accountants
 create policy accountant_can_insert_own_row on accountants
   for insert with check (user_id = auth.uid());
 
+grant select, insert on accountants to authenticated;
+grant select, insert on accountants to service_role;
+
 -- A regisztrációnál megadott ajánlói kódot (nyers szöveg) a
 -- pending_registrations sorban visszük át, és az automatikus
 -- aktiváláskor oldjuk fel accountant_id-ra (így egy elgépelt/érvénytelen
