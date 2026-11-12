@@ -584,6 +584,92 @@ async function computeAnomalies(companyId, fromIso, toIso) {
   return anomalies;
 }
 
+// Bizonylatszám-ellenőrzés: a saját kiállítású (OUTBOUND) számlák
+// sorszámozásában keres kihagyott számokat (pl. 2026/15 után 2026/18 jön,
+// a 16-17 hiányzik — ez gyakran azt jelzi, hogy egy számla sosem jutott el
+// a NAV-szinkronba), illetve teljesen azonos (szám + összeg is egyező)
+// duplikátumokat (ez inkább technikai hiba jele, nem tévesztendő össze egy
+// jogos sztornó/módosító számlával, aminél az összeg eltér).
+function parseInvoiceSeries(invoiceNumber) {
+  const match = /^(.*?)(\d+)$/.exec(invoiceNumber || "");
+  if (!match) return null;
+  return { prefix: match[1], numStr: match[2], num: parseInt(match[2], 10) };
+}
+
+async function computeInvoiceNumberIssues(companyId, fromIso, toIso) {
+  const { data: rows, error } = await fetchAllRows(() =>
+    sb.from("invoice_vat_lines").select("invoice_number, issue_date, net_amount, vat_amount, gross_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", fromIso).lte("issue_date", toIso)
+  );
+  if (error) throw error;
+
+  const bySeries = new Map();
+  const byNumber = new Map();
+  for (const r of rows ?? []) {
+    const parsed = parseInvoiceSeries(r.invoice_number);
+    if (parsed) {
+      const list = bySeries.get(parsed.prefix) ?? [];
+      list.push(parsed);
+      bySeries.set(parsed.prefix, list);
+    }
+    const key = r.invoice_number;
+    const list2 = byNumber.get(key) ?? [];
+    list2.push(r);
+    byNumber.set(key, list2);
+  }
+
+  const gaps = [];
+  for (const [prefix, list] of bySeries) {
+    if (list.length < 3) continue;
+    const nums = [...new Set(list.map((x) => x.num))].sort((a, b) => a - b);
+    const padLen = list[0].numStr.length;
+    for (let i = 0; i < nums.length - 1; i++) {
+      const diff = nums[i + 1] - nums[i];
+      if (diff > 1 && diff <= 50) {
+        for (let missing = nums[i] + 1; missing < nums[i + 1]; missing++) {
+          gaps.push(`${prefix}${String(missing).padStart(padLen, "0")}`);
+        }
+      }
+    }
+  }
+
+  const duplicates = [];
+  for (const [number, list] of byNumber) {
+    if (list.length < 2) continue;
+    const allSame = list.every((r) => Number(r.net_amount) === Number(list[0].net_amount) && Number(r.vat_amount) === Number(list[0].vat_amount));
+    if (allSame) duplicates.push({ number, count: list.length, gross: list[0].gross_amount });
+  }
+
+  return { gaps, duplicates };
+}
+
+function renderInvoiceNumberIssuesHtml({ gaps, duplicates }) {
+  if (gaps.length === 0 && duplicates.length === 0) {
+    return `<div class="card"><div class="no-threshold">Nem találtunk kihagyott sorszámot vagy duplikált bizonylatot a kiállított számláid között ebben az időszakban.</div></div>`;
+  }
+  const parts = [];
+  if (gaps.length > 0) {
+    parts.push(`
+      <div class="card enyugta-card enyugta-warn" style="margin-bottom:0.7rem;">
+        <div class="enyugta-icon">🔢</div>
+        <div>
+          <div class="enyugta-title">Hiányzó sorszám${gaps.length > 1 ? "ok" : ""} a kiállított számláid között</div>
+          <div class="enyugta-text">${gaps.slice(0, 20).join(", ")}${gaps.length > 20 ? ` (+${gaps.length - 20} további)` : ""} — lehet, hogy egy számla sosem jutott el hozzánk a NAV-szinkronban, vagy sosem lett kiállítva. Érdemes ellenőrizni.</div>
+        </div>
+      </div>`);
+  }
+  for (const d of duplicates) {
+    parts.push(`
+      <div class="card enyugta-card enyugta-warn" style="margin-bottom:0.7rem;">
+        <div class="enyugta-icon">⚠️</div>
+        <div>
+          <div class="enyugta-title">Duplikált bizonylat: ${d.number}</div>
+          <div class="enyugta-text">Ez a bizonylatszám ${d.count}-szer szerepel, mindig ugyanazzal az összeggel (${formatFt(d.gross)}) — ez valószínűleg technikai hiba (kétszer szinkronizálódott), nem jogos sztornó/módosítás.</div>
+        </div>
+      </div>`);
+  }
+  return parts.join("");
+}
+
 function renderAnomaliesHtml(anomalies) {
   if (anomalies.length === 0) {
     return `<div class="card"><div class="no-threshold">Nincs kiugró eltérés a beszerzés és az értékesítés ÁFA-kulcsonkénti aránya között ebben az időszakban.</div></div>`;
@@ -916,13 +1002,14 @@ async function main() {
 
   try {
     const { from: defFrom, to: defTo } = defaultVatDates();
-    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml, anomalies, reconciliationSummary] = await Promise.all([
+    const [statusHtml, thresholdHtml, vatSummary, paymentSummary, enyugtaHtml, anomalies, invoiceIssues, reconciliationSummary] = await Promise.all([
       renderStatusSection(company.id),
       renderThresholdSection(company),
       computeVatSummary(company.id, defFrom, defTo),
       computePaymentSummary(company.id, defFrom, defTo),
       renderENyugtaSection(company.id),
       computeAnomalies(company.id, defFrom, defTo),
+      computeInvoiceNumberIssues(company.id, defFrom, defTo),
       computeReconciliationSummary(company.id),
     ]);
 
@@ -948,6 +1035,9 @@ async function main() {
 
       <div class="section-title">Anomália-jelzés</div>
       <div id="anomaliesContainer">${renderAnomaliesHtml(anomalies)}</div>
+
+      <div class="section-title">Bizonylatszám-ellenőrzés</div>
+      <div id="invoiceIssuesContainer">${renderInvoiceNumberIssuesHtml(invoiceIssues)}</div>
 
       <div class="section-title">Könyvelői egyeztetés</div>
       ${renderReconciliationHtml(reconciliationSummary)}
@@ -1010,9 +1100,11 @@ async function main() {
       const container = document.getElementById("vatHeroContainer");
       const paymentContainer = document.getElementById("paymentContainer");
       const anomaliesContainer = document.getElementById("anomaliesContainer");
+      const invoiceIssuesContainer = document.getElementById("invoiceIssuesContainer");
       container.innerHTML = `<div class="loading">Számolás...</div>`;
       paymentContainer.innerHTML = `<div class="loading">Számolás...</div>`;
       anomaliesContainer.innerHTML = `<div class="loading">Számolás...</div>`;
+      invoiceIssuesContainer.innerHTML = `<div class="loading">Számolás...</div>`;
       try {
         const summary = await computeVatSummary(company.id, from, to);
         container.innerHTML = renderVatSummaryHtml(summary);
@@ -1020,6 +1112,8 @@ async function main() {
         paymentContainer.innerHTML = renderPaymentSummaryHtml(paymentSummary);
         const anomalies = await computeAnomalies(company.id, from, to);
         anomaliesContainer.innerHTML = renderAnomaliesHtml(anomalies);
+        const invoiceIssues = await computeInvoiceNumberIssues(company.id, from, to);
+        invoiceIssuesContainer.innerHTML = renderInvoiceNumberIssuesHtml(invoiceIssues);
       } catch (err) {
         container.innerHTML = `<div class="empty-state">Hiba: ${err.message}</div>`;
       }
