@@ -90,6 +90,13 @@
   .item-row .del-btn { background: none; border: none; color: var(--danger); font-size: 0.78rem; font-weight: 600; cursor: pointer; flex-shrink: 0; }
   .empty-folder { font-size: 0.85rem; color: var(--ink-soft); padding: 1.2rem 0.5rem; text-align: center; }
 
+  /* Megjegyzések */
+  .comment-row { border-radius: 10px; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; background: var(--ground); }
+  .comment-row.comment-accountant { background: var(--accent-soft); }
+  .comment-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 0.25rem; }
+  .comment-date { font-size: 0.72rem; color: var(--ink-faint); font-weight: 400; }
+  .comment-body { font-size: 0.85rem; color: var(--ink); line-height: 1.4; }
+
   @media (max-width: 820px) {
     .sidebar { display: none; }
     .wrap { padding-left: 1.2rem; padding-right: 1.2rem; }
@@ -171,6 +178,8 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const urlParams = new URLSearchParams(window.location.search);
 const viewCompanyId = urlParams.get("company");
 let readonly = !!viewCompanyId;
+let currentUserRole = null;
+let currentUserName = null;
 let company = null;
 let currentFolderId = null; // null = gyökér
 let folderPath = []; // [{id, name}, ...] a gyökértől a jelenlegi mappáig
@@ -374,6 +383,32 @@ function renderBreadcrumb() {
   return `<div class="breadcrumb">${parts.join("")}</div>`;
 }
 
+async function loadComments(folderId) {
+  const { data } = await sb.from("document_comments").select("*").eq("folder_id", folderId).order("created_at", { ascending: true });
+  return data || [];
+}
+
+function renderCommentsHtml(comments) {
+  const listHtml = comments.length === 0
+    ? `<div class="empty-folder" style="padding:0.6rem 0;">Még nincs megjegyzés ebben a mappában.</div>`
+    : comments
+        .map((c) => `
+        <div class="comment-row ${c.author_role === "accountant" ? "comment-accountant" : "comment-owner"}">
+          <div class="comment-head"><b>${c.author_role === "accountant" ? "📋 " + c.author_name : "🏢 " + c.author_name}</b><span class="comment-date">${fmtDate(c.created_at)}</span></div>
+          <div class="comment-body">${c.body.replace(/</g, "&lt;")}</div>
+        </div>`)
+        .join("");
+  return `
+    <div class="card">
+      <h2>Megjegyzések ehhez a mappához</h2>
+      <div id="commentsList">${listHtml}</div>
+      <form id="commentForm" style="margin-top:0.9rem; display:flex; gap:0.5rem;">
+        <input type="text" id="commentInput" placeholder="Írj megjegyzést... (pl. 'ez hiányos', 'ide kérek bankszámlakivonatot')" style="flex:1; font-family:var(--sans); font-size:0.85rem; padding:0.55rem 0.7rem; border:1px solid var(--line); border-radius:8px;">
+        <button type="submit" style="font-family:var(--sans); font-size:0.83rem; font-weight:600; padding:0.55rem 0.9rem; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer;">Küldés</button>
+      </form>
+    </div>`;
+}
+
 async function renderFolderView() {
   const { subfolders, files } = await loadFolderContents();
 
@@ -407,6 +442,8 @@ async function renderFolderView() {
       </label>
     </div>`;
 
+  const commentsHtml = currentFolderId ? renderCommentsHtml(await loadComments(currentFolderId)) : "";
+
   document.getElementById("content").innerHTML = `
     ${renderDocumentChecklistHtml(await loadDocumentChecklist())}
     <div class="card">
@@ -416,10 +453,29 @@ async function renderFolderView() {
       <div id="uploadProgress" style="display:none; font-size:0.83rem; color:var(--ink-soft); margin-bottom:0.8rem;"></div>
       ${listHtml}
     </div>
+    ${commentsHtml}
     ${await loadAnalysis()}
   `;
 
   attachHandlers();
+
+  document.getElementById("commentForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const input = document.getElementById("commentInput");
+    const body = input.value.trim();
+    if (!body) return;
+    const { error } = await sb.from("document_comments").insert({
+      company_id: company.id,
+      folder_id: currentFolderId,
+      author_user_id: (await sb.auth.getSession()).data.session.user.id,
+      author_role: currentUserRole,
+      author_name: currentUserName,
+      body,
+    });
+    if (error) { showStatus("Nem sikerült elküldeni a megjegyzést: " + error.message, "error"); return; }
+    input.value = "";
+    renderFolderView();
+  });
 }
 
 function attachHandlers() {
@@ -530,6 +586,9 @@ async function main() {
     }
     company = c;
     document.getElementById("pageDesc").textContent = `${company.name} dokumentumai — csak megtekintésre.`;
+    currentUserRole = "accountant";
+    const { data: accountant } = await sb.from("accountants").select("name").eq("user_id", session.user.id).maybeSingle();
+    currentUserName = accountant?.name || "Könyvelő";
   } else {
     const { data: companies, error } = await sb.from("companies").select("*");
     if (error || !companies || companies.length === 0) {
@@ -537,6 +596,8 @@ async function main() {
       return;
     }
     company = companies[0];
+    currentUserRole = "owner";
+    currentUserName = "Te";
     await ensureDefaultFolders();
   }
 
