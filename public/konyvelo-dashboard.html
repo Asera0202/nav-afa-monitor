@@ -24,16 +24,25 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; display: flex; min-height: 100vh; }
 
-  .sidebar { width: 220px; flex-shrink: 0; background: var(--surface-sidebar); color: var(--on-sidebar); display: flex; flex-direction: column; padding: 1.5rem 1rem; position: sticky; top: 0; height: 100vh; }
+  .sidebar { width: 232px; flex-shrink: 0; background: var(--surface-sidebar); color: var(--on-sidebar); display: flex; flex-direction: column; padding: 1.5rem 1rem; position: sticky; top: 0; height: 100vh; }
   .brand { display: flex; align-items: center; gap: 0.6rem; padding: 0 0.5rem; margin-bottom: 2.2rem; }
   .brand-mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .brand-mark img { width: 20px; height: 20px; }
   .brand-name { font-family: var(--serif); font-size: 1.05rem; letter-spacing: 0.01em; color: #fff; }
   .brand-sub { font-size: 0.68rem; color: var(--on-sidebar-soft); margin-top: 0.1rem; }
 
+  .nav-group-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--on-sidebar-soft); padding: 0 0.6rem; margin: 0 0 0.5rem; }
+  nav.nav { display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 1.6rem; }
+  .nav-link { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem 0.6rem; border-radius: 8px; color: var(--on-sidebar-soft); text-decoration: none; font-size: 0.87rem; font-weight: 500; }
+  .nav-link svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.85; }
+  .nav-link:hover { background: var(--surface-sidebar-hover); color: var(--on-sidebar); }
+  .nav-link.active { background: var(--surface-sidebar-hover); color: #fff; }
+  .nav-link.active svg { opacity: 1; color: #7093e8; }
+
   .sidebar-foot { margin-top: auto; }
   .logout-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.6rem; border-radius: 8px; font-size: 0.8rem; color: var(--on-sidebar-soft); text-decoration: none; background: none; border: none; cursor: pointer; font-family: var(--sans); width: 100%; text-align: left; }
   .logout-link:hover { background: var(--surface-sidebar-hover); color: var(--on-sidebar); }
+  .logout-link svg { width: 15px; height: 15px; flex-shrink: 0; }
 
   main { flex: 1; min-width: 0; }
   .wrap { max-width: 860px; padding: 1.8rem 2.2rem 4rem; }
@@ -91,8 +100,24 @@
         <div class="brand-sub">Könyvelői felület</div>
       </div>
     </a>
+
+    <div class="nav-group-label">Menü</div>
+    <nav class="nav">
+      <a class="nav-link active" href="konyvelo-dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Irányítópult
+      </a>
+      <a class="nav-link" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V19a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/></svg>
+        Főoldal
+      </a>
+    </nav>
+
     <div class="sidebar-foot">
-      <button class="logout-link" id="logoutBtn">Kijelentkezés</button>
+      <button class="logout-link" id="logoutBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Kijelentkezés
+      </button>
     </div>
   </aside>
 
