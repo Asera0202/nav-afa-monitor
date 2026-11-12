@@ -24,13 +24,19 @@
    az oldal hibát dob.
 2. ✅ E-nyugta felkészültség-jelző (2026.09.01-i kötelezettség) — kész (dashboard,
    a `cash_registers` tábla alapján személyre szabott zöld/sárga jelzés)
-3. ⛔ KOBAK-import — TISZTÁZVA (2026.09.04): a "KOBAK" valójában a NAV saját
-   portálja (kobakonline.nav.gov.hu), pénztárgép/e-nyugta adminisztrációra —
-   ebből nincs pótolható új adat, amit ne húznánk már automatikusan a NAV
-   API-n. A pénztárgépes (OPG) adatoknál a NAV csak kb. 14 napig tartja
-   elérhetőn a fájlokat lekérdezésre — ami ennél korábbi, az a NAV oldaláról
-   is véglegesen elveszett, semmivel nem pótolható vissza utólag. Ez a pont
-   emiatt törölhető/lezárva, a valódi igényt a #3b és #4 pontok fedik le.
+3. ✅ KOBAK-import — KÉSZ, ÉLESBEN MŰKÖDIK (2026.09.16, a korábbi
+   2026.09.04-i "lezárva" megjegyzés TÉVES volt, ÁTÍRVA 2026.11.12-n miután
+   a felhasználó jelezte, hogy nála ténylegesen működött). A KOBAK-portálról
+   (kobakonline.nav.gov.hu) letölthető napi zárás-összesítő Excel-exportot
+   az "Adatpótlás" oldalon fel lehet tölteni ("kobak_penztargep" típus) —
+   a `src/process-upload.ts` ebből NAPI bontásban, ÁFA-kulcsonként (A/B/C/D/E
+   betű) kiolvassa a bruttó forgalmat, és csak a hiányzó napokra tölti fel
+   az `opg_receipt_items` táblába (a rendes NAV-szinkronnal azonos táblába).
+   A felhasználónál ez ténylegesen lefutott: 5 hiányzó nap pótlása a
+   2026.01.02–2026.07.31 közötti időszakból, 558 166 Ft bruttó forgalommal
+   — tehát a NAV OPG-API 14 napos lekérdezési korlátja NEM jelent valódi
+   adatvesztést, amíg a felhasználó maga letölti a KOBAK-exportot a
+   korlát lejárta előtt, mert az onnan utólag is feltölthető.
 3b. ✅ Számla-pótló (backfill) szkript — kész, első futás lefutott (2026.09.04):
     a napi szinkron csak 34 napra visszamenőleg kérdezi le a NAV Online
     Számla adatait, ezért egy cég csatlakozásakor a korábbi hónapok
