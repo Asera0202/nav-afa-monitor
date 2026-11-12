@@ -368,8 +368,18 @@ document.getElementById("linkAccountantBtn").addEventListener("click", async () 
   const code = document.getElementById("referralCodeInput").value.trim();
   if (!code) return;
   btn.disabled = true;
-  btn.textContent = "Összekötés...";
+  btn.textContent = "Ellenőrzés...";
   try {
+    const { data: accountantName, error: lookupError } = await sb.rpc("lookup_accountant_name_by_code", { p_referral_code: code });
+    if (lookupError) throw lookupError;
+    if (!accountantName) {
+      showStatus("Nem találtunk ilyen ajánlói kódot — ellenőrizd, és próbáld újra.", "error");
+      return;
+    }
+    if (!confirm(`Biztosan a(z) "${accountantName}" könyvelőhöz szeretnél csatlakozni? A könyvelőd ezután látni fogja az ide feltöltött dokumentumaidat és az előfizetésed állapotát.`)) {
+      return;
+    }
+    btn.textContent = "Összekötés...";
     const { data: ok, error } = await sb.rpc("link_company_to_accountant", { p_company_id: company.id, p_referral_code: code });
     if (error) throw error;
     if (!ok) {
