@@ -1,3 +1,19 @@
+// Hibakövetés (Sentry): ha a böngészőben JS-hiba történik valamelyik oldalon,
+// ez automatikusan beküldi, hogy ne a felhasználó jelzéséből (vagy sehonnan)
+// szerezzünk tudomást róla. A DSN nyilvános azonosító, nem titkos kulcs.
+(function () {
+  var s = document.createElement("script");
+  s.src = "https://browser.sentry-cdn.com/8.42.0/bundle.min.js";
+  s.crossOrigin = "anonymous";
+  s.onload = function () {
+    Sentry.init({
+      dsn: "https://7427ad5e468b139683d5ecc4c4686001@o4512418497757184.ingest.de.sentry.io/4512418501689424",
+      environment: "production",
+    });
+  };
+  document.head.appendChild(s);
+})();
+
 // Ezek az értékek SZÁNDÉKOSAN nyilvánosak — az anon/publishable kulcs és az
 // RSA NYILVÁNOS kulcs biztonságosan kitehető böngésző-oldali kódba. A hozzájuk
 // tartozó service_role / RSA PRIVÁT kulcs viszont SOSEM kerülhet ide.
