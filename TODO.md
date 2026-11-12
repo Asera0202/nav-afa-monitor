@@ -96,7 +96,25 @@
      modult importálva elkerülhető
    - fájlnévben lévő zárójel/szóköz "Invalid key" Storage-hibát adott —
      a tárolási útvonalhoz most a fájlnevet biztonságos formára alakítjuk
-4b. Dokumentum-megosztó portál a könyvelővel — ÚJ ÖTLET (2026.09.04),
+4b. ✅ Dokumentum-megosztó portál a könyvelővel — KÉSZ (2026.11.12).
+    `public/dokumentumok.html`: a vállalkozó tetszőleges mélységű mappákat
+    hozhat létre (induláskor automatikusan kap "Számlák" és
+    "Bankszámlakivonat" mappát, év/hónap albontással), tölthet fel és
+    törölhet fájlokat (Supabase Storage, `company-documents` bucket). A
+    hozzá rendelt könyvelő (`companies.referred_by_accountant_id`)
+    ugyanezt a nézetet nyitja meg a saját dashboardjáról ("Dokumentumok
+    megnyitása" link), csak OLVASÁSRA — RLS mind a táblákon, mind a
+    storage.objects-en. Az oldal tetején automatikus összesítő is van a
+    NAV-szinkronból már meglévő bejövő számlákról (ÁFA-kulcsonkénti és
+    partnerenkénti bontás az aktuális hónapra).
+    Eredeti terv (lásd alább) ÖTVÖZVE a felhasználói visszajelzéssel: NEM
+    meghívásos/elfogadásos `company_accountant_links` tábla lett, hanem a
+    már meglévő `accountants`/`referred_by_accountant_id` kapcsolat
+    bővült — a Beállítások oldalon utólag is megadható/módosítható az
+    ajánlói kód (`link_company_to_accountant` SQL függvény, megerősítő
+    kérdéssel, a könyvelő nevét mutatva előtte).
+
+    *(Eredeti terv, archívumként megtartva:)*
     TERV PONTOSÍTVA (2026.09.16): a vállalkozás fel tudna tölteni mindent,
     amit a könyvelő kér (bankszámla-kivonat, számlák, egyéb bizonylat), a
     könyvelő pedig egy helyről le tudná tölteni — mindketten látnák, mi van
@@ -186,8 +204,13 @@
     (dashboard, adataim, beallitasok: teljes sidebar-váltás; login, register,
     reset-password: szín- és tipográfiai frissítés). Bankos irányba tolva:
     mélyebb intézményi kék, bankkártya-szerű cégazonosító, talpas számtipó.
-11. ⏳ Fizetési/előfizetési rendszer — RÉSZBEN KÉSZ (2026.09.16), Barion
-    integráció még nem élesített.
+11. ⏳ Fizetési/előfizetési rendszer — MAJDNEM KÉSZ (2026.11.12): a két
+    Edge Function deployolva van, valódi Barion sandbox POSKey-jel egy
+    teszttranzakció végig is futott (helyes összeggel/elfogadóhely-névvel
+    jelent meg a Barion fizetőoldalán) — a Payment/Start hívás tehát
+    bizonyítottan működik. **Már csak élesítéskor kell:** `BARION_ENV` átírása
+    `prod`-ra, és egy éles (nem teszt) POSKey + Payee email beállítása a
+    Supabase Edge Function Secrets-ben.
     **Döntések a felhasználóval:** Barion (magyar szolgáltató, olcsóbb mint
     a Stripe 2026.08-i magyar díjemelése után, van recurring API-ja);
     minden funkció mindenkinek elérhető, FORGALOM alapján árazunk, nem
@@ -271,6 +294,9 @@
     a dashboardon látszik a jutalék, nincs automatikus utalás a
     könyvelőnek); könyvelői partnerprogram homepage-es/marketinges
     bemutatása.
+    **Frissítés (2026.11.12):** a vállalkozó utólag is megadhatja/
+    módosíthatja az ajánlói kódot a Beállításoknál (nem csak regisztrációkor)
+    — lásd #4b.
 15. Homepage
 16. Jogi papírok (adatkezelési tájékoztató, ÁSZF) — szándékosan a legvégére, amikor minden
     kész és piacra lépnétek
