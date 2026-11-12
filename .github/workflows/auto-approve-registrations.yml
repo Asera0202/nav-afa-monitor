@@ -1,8 +1,14 @@
 name: Regisztrációk automatikus aktiválása
 
+# IDEIGLENESEN LEÁLLÍTVA (2026.11.12): a nyilvános regisztrációs oldalt
+# botok árasztották el hamis regisztrációkkal, amiket ez a workflow
+# automatikusan (emberi ellenőrzés nélkül) élesített "companies" sorokká.
+# Amíg nincs CAPTCHA-védelem a regisztrációs oldalakon, csak kézzel
+# (workflow_dispatch) fut — a 15 perces automatikus ütemezés ki van
+# kommentezve. Vissza kell kapcsolni, ha a CAPTCHA már megy.
 on:
-  schedule:
-    - cron: "*/15 * * * *"
+  # schedule:
+  #   - cron: "*/15 * * * *"
   workflow_dispatch: {}
 
 jobs:
