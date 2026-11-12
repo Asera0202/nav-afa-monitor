@@ -218,6 +218,72 @@ async function ensureDefaultFolders() {
   }
 }
 
+async function findChildFolderIdByName(parentId, name) {
+  let q = sb.from("document_folders").select("id").eq("company_id", company.id).eq("name", name);
+  q = parentId ? q.eq("parent_folder_id", parentId) : q.is("parent_folder_id", null);
+  const { data } = await q.maybeSingle();
+  return data?.id ?? null;
+}
+
+async function loadDocumentChecklist() {
+  const now = new Date();
+  const year = String(now.getFullYear());
+  const month = HU_MONTHS[now.getMonth()];
+  const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString().slice(0, 10);
+  const today = now.toISOString().slice(0, 10);
+
+  const items = [];
+
+  // Bejövő/kimenő számlák: csak akkor várjuk el a feltöltést, ha volt
+  // NAV-szinkronból ismert számla ebben a hónapban.
+  const { count: invoiceCount } = await sb.from("invoice_vat_lines").select("id", { count: "exact", head: true }).eq("company_id", company.id).gte("issue_date", monthStart).lte("issue_date", today);
+  if (invoiceCount && invoiceCount > 0) {
+    const szamlakTop = await findChildFolderIdByName(null, "Számlák");
+    const szamlakYear = szamlakTop ? await findChildFolderIdByName(szamlakTop, year) : null;
+    const szamlakMonth = szamlakYear ? await findChildFolderIdByName(szamlakYear, month) : null;
+    let fileCount = 0;
+    if (szamlakMonth) {
+      const { count } = await sb.from("company_documents").select("id", { count: "exact", head: true }).eq("folder_id", szamlakMonth);
+      fileCount = count ?? 0;
+    }
+    items.push({
+      ok: fileCount > 0,
+      text: fileCount > 0
+        ? `Számlák feltöltve ehhez a hónaphoz (${fileCount} db).`
+        : `Ebben a hónapban van NAV-szinkronból ismert számlád (${invoiceCount} db), de a "Számlák" mappában még nincs feltöltve semmi ehhez a hónaphoz.`,
+    });
+  }
+
+  // Bankszámlakivonat: nincs hozzá automatikus adat, ezért csak emlékeztető,
+  // nem "hiba" jellegű jelzés.
+  const bankTop = await findChildFolderIdByName(null, "Bankszámlakivonat");
+  const bankYear = bankTop ? await findChildFolderIdByName(bankTop, year) : null;
+  const bankMonth = bankYear ? await findChildFolderIdByName(bankYear, month) : null;
+  let bankFileCount = 0;
+  if (bankMonth) {
+    const { count } = await sb.from("company_documents").select("id", { count: "exact", head: true }).eq("folder_id", bankMonth);
+    bankFileCount = count ?? 0;
+  }
+  items.push({
+    ok: bankFileCount > 0,
+    text: bankFileCount > 0
+      ? `Bankszámlakivonat feltöltve ehhez a hónaphoz (${bankFileCount} db).`
+      : `Ebben a hónapban még nincs feltöltve bankszámlakivonat.`,
+  });
+
+  return { month, items };
+}
+
+function renderDocumentChecklistHtml({ month, items }) {
+  if (items.every((i) => i.ok)) {
+    return `<div class="card"><h2>Dokumentum-checklist — ${month}</h2><div class="analysis-empty">✅ Minden ide vártunk dokumentumot megtaláltunk ebben a hónapban.</div></div>`;
+  }
+  const rows = items
+    .map((i) => `<div class="item-row" style="padding-left:0;"><div class="icon">${i.ok ? "✅" : "⚠️"}</div><div style="font-size:0.85rem;">${i.text}</div></div>`)
+    .join("");
+  return `<div class="card"><h2>Dokumentum-checklist — ${month}</h2>${rows}</div>`;
+}
+
 async function loadAnalysis() {
   const now = new Date();
   const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString().slice(0, 10);
@@ -342,6 +408,7 @@ async function renderFolderView() {
     </div>`;
 
   document.getElementById("content").innerHTML = `
+    ${renderDocumentChecklistHtml(await loadDocumentChecklist())}
     <div class="card">
       <h2>Mappák és fájlok</h2>
       ${renderBreadcrumb()}
