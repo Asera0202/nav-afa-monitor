@@ -5,12 +5,11 @@
 // és az árat, majd elindít egy Barion fizetést (Payment/Start v2), és
 // visszaadja a GatewayUrl-t, ahova a böngészőt irányítani kell.
 //
-// FONTOS, MÉG NEM ÉLESÍTETT RÉSZ (2026.09.16): a Barion hivatalos
-// dokumentációja (docs.barion.com) a fejlesztői környezetből nem volt
-// elérhető, ezért a pontos JSON-mezőnevek kutatásból (nem az élő
-// referenciából) származnak — élesítés előtt egy valódi Barion
-// sandbox/teszt POSKey-jel egy teszttranzakcióval ellenőrizni és
-// szükség esetén finomhangolni kell ezt a hívást.
+// ELLENŐRIZVE (2026.11.12): valódi Barion sandbox POSKey-jel és egy
+// ténylegesen végigfutott teszt-tranzakcióval megerősítve, hogy a
+// Payment/Start hívás helyesen működik (helyes összeg, helyes elfogadóhely
+// jelent meg a Barion fizetőoldalán). Élesítéshez csak a BARION_ENV=prod
+// és egy éles (nem teszt) POSKey beállítása szükséges.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 

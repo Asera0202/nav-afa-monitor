@@ -4,9 +4,7 @@
 // Payment/GetPaymentState v2 lekérdezéssel kell megerősíteni, a Barion
 // dokumentációjának javasolt mintája szerint.
 //
-// UGYANAZ A FIGYELMEZTETÉS, mint a barion-start-payment függvénynél: a
-// pontos mezőneveket élő Barion teszt-tranzakcióval kell megerősíteni
-// élesítés előtt, mert a docs.barion.com nem volt elérhető ellenőrzésre.
+// ELLENŐRIZVE (2026.11.12), lásd barion-start-payment/index.ts megjegyzését.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
 
