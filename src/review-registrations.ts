@@ -51,6 +51,9 @@ async function main() {
     console.log(`Telegram:    ${reg.wants_telegram ? "igen, kéri" : "nem kéri"}`);
     console.log(`Marketing:   ${reg.marketing_consent ? "hozzájárult" : "nem járult hozzá"}`);
 
+    const { data: userResult } = await supabase.auth.admin.getUserById(reg.user_id);
+    console.log(`Email megerősítve: ${userResult?.user?.email_confirmed_at ? "igen" : "⚠️  NEM — gyanús, lehet bot"}`);
+
     try {
       const navLogin = decryptField(reg.nav_login_encrypted);
       const navPassword = decryptField(reg.nav_password_encrypted);

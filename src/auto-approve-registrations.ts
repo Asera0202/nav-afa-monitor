@@ -40,13 +40,26 @@ async function main() {
 
   if (!pending || pending.length === 0) {
     console.log("Nincs jóváhagyásra váró regisztráció.");
-    return;
-  }
+  } else {
+    console.log(`${pending.length} db regisztráció automatikus aktiválása indul.`);
 
-  console.log(`${pending.length} db regisztráció automatikus aktiválása indul.`);
-
-  for (const reg of pending) {
+    for (const reg of pending) {
     console.log(`- ${reg.company_name} (${reg.tax_number})`);
+
+    // BIZTONSÁGI KAPU (2026.11.12, bot-visszaélés után bevezetve): csak
+    // olyan regisztrációt aktiválunk, ahol a felhasználó TÉNYLEGESEN
+    // megerősítette az email-címét a kiküldött linkkel — korábban ez nem
+    // volt ellenőrizve, emiatt botok automatikusan generált, soha meg nem
+    // erősített email-címekkel 18 hamis céget tudtak létrehozni.
+    const { data: userResult, error: userErr } = await supabase.auth.admin.getUserById(reg.user_id);
+    if (userErr || !userResult?.user) {
+      console.log(`  ⚠️  Nem található felhasználó ehhez a regisztrációhoz — kihagyva.`);
+      continue;
+    }
+    if (!userResult.user.email_confirmed_at) {
+      console.log(`  ⏭️  Az email cím még nincs megerősítve — kihagyva, legközelebb újra megnézzük.`);
+      continue;
+    }
 
     let referredByAccountantId: string | null = null;
     if (reg.referral_code_used) {
@@ -105,9 +118,26 @@ async function main() {
       .eq("id", reg.id);
 
     console.log("  ✅ Aktiválva.");
+    }
   }
 
   console.log("Kész.");
+
+  // Takarítás: 30 napnál régebbi, sosem megerősített (tehát soha nem
+  // aktiválódó) regisztrációkat elutasítottá jelöljük, hogy ne gyűljenek
+  // örökre a táblában (pl. bot-próbálkozások, akik soha nem erősítik meg
+  // az email-címüket).
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const { error: cleanupErr, count } = await supabase
+    .from("pending_registrations")
+    .update({ status: "rejected", processed_at: new Date().toISOString() }, { count: "exact" })
+    .eq("status", "pending")
+    .lt("submitted_at", thirtyDaysAgo);
+  if (cleanupErr) {
+    console.log(`⚠️  Hiba a régi, meg nem erősített regisztrációk takarításakor: ${cleanupErr.message}`);
+  } else if (count) {
+    console.log(`${count} db 30 napnál régebbi, sosem megerősített regisztráció elutasítva.`);
+  }
 }
 
 main().catch((err) => {
