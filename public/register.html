@@ -198,12 +198,15 @@
         </div>
       </div>
 
+      <div class="h-captcha" data-sitekey="e966a2ca-ddc2-431c-a71e-c5184e828f38" style="margin:1rem 0;"></div>
+
       <button type="submit" class="submit-btn" id="submitBtn">Regisztráció</button>
     </form>
 
     <div class="login-link">Már van fiókod? <a href="login.html">Jelentkezz be</a></div>
   </div>
 
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
 <script>
@@ -291,6 +294,12 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     return;
   }
 
+  const captchaToken = typeof hcaptcha !== "undefined" ? hcaptcha.getResponse() : "";
+  if (!captchaToken) {
+    showStatus("Kérlek pipáld be a \"Nem vagyok robot\" ellenőrzést a küldés előtt.", "error");
+    return;
+  }
+
   submitBtn.disabled = true;
   submitBtn.textContent = "Feldolgozás...";
 
@@ -308,7 +317,11 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     const marketingConsent = document.getElementById("marketingConsent").checked;
     const referralCode = document.getElementById("referralCode").value.trim().toUpperCase() || null;
 
-    const { data: signUpData, error: signUpError } = await sb.auth.signUp({ email, password });
+    const { data: signUpData, error: signUpError } = await sb.auth.signUp({
+      email,
+      password,
+      options: { captchaToken },
+    });
     if (signUpError) throw signUpError;
     const userId = signUpData.user?.id;
     if (!userId) throw new Error("Nem sikerült a felhasználói fiók létrehozása.");
@@ -349,6 +362,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
     );
   } catch (err) {
     showStatus(translateError(err.message || String(err)), "error");
+    if (typeof hcaptcha !== "undefined") hcaptcha.reset();
     submitBtn.disabled = false;
     submitBtn.textContent = "Regisztráció";
   }
