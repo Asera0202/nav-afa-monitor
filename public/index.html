@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cégfókusz</title>
+<title>Cégfókusz — automatikus NAV-figyelés kisvállalkozásoknak</title>
+<meta name="description" content="A Cégfókusz automatikusan figyeli a NAV-adataidat: ÁFA-pozíció, pénztárgépes forgalom, anomália-jelzés, határidő-naptár — egy helyen, a könyvelőddel megosztva.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,153 +13,289 @@
   :root {
     --ground: #f5f5fa; --surface: #ffffff; --ink: #12172b; --ink-soft: #5a6178; --ink-faint: #9297ab;
     --line: #e6e8f0; --accent: #1f3a7a; --accent-soft: #e9edf7;
-    --danger: #b3261e; --danger-soft: #fbeceb; --ok: #1a7f4e; --ok-soft: #e8f5ee;
+    --surface-dark: #0f1a33; --surface-dark-2: #0a1226;
+    --ok: #1a7f4e; --ok-soft: #e8f5ee;
     --shadow: 0 1px 2px rgba(20,21,42,0.04), 0 8px 24px rgba(20,21,42,0.05);
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", Georgia, serif;
     --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-  .wrap { max-width: 400px; width: 100%; padding: 1.25rem; }
-  .masthead { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 1.5rem; justify-content: center; text-decoration: none; }
-  .masthead .logo-mark { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; }
-  .masthead .logo-mark img { width: 26px; height: 26px; }
-  .masthead .title { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 0.01em; color: var(--ink); }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 1.8rem 1.6rem; }
-  label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.9rem; }
-  label:first-of-type { margin-top: 0; }
-  input[type="email"], input[type="password"] {
-    width: 100%; font-family: var(--sans); font-size: 0.9rem; padding: 0.6rem 0.75rem;
-    border: 1px solid var(--line); border-radius: 8px; background: var(--ground); color: var(--ink);
+  /* ---------- Header ---------- */
+  header { position: sticky; top: 0; z-index: 10; background: rgba(245,245,250,0.9); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 0; }
+  .brand { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; }
+  .brand .logo-mark { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .brand .logo-mark img { width: 22px; height: 22px; }
+  .brand .title { font-family: var(--serif); font-size: 1.15rem; letter-spacing: 0.01em; color: var(--ink); }
+  .nav-actions { display: flex; align-items: center; gap: 0.8rem; }
+  .nav-actions a { font-size: 0.85rem; font-weight: 600; text-decoration: none; }
+  .btn-ghost { color: var(--ink-soft); padding: 0.5rem 0.4rem; }
+  .btn-primary { background: var(--accent); color: #fff; padding: 0.55rem 1.1rem; border-radius: 8px; }
+  .btn-primary:hover { background: #17305f; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 4.5rem 0 3.5rem; text-align: center; }
+  .hero .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .hero h1 { font-family: var(--serif); font-size: 2.6rem; font-weight: 500; line-height: 1.2; margin: 0 0 1.1rem; max-width: 780px; margin-left: auto; margin-right: auto; }
+  .hero .sub { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.6; max-width: 600px; margin: 0 auto 2rem; }
+  .hero-ctas { display: flex; align-items: center; justify-content: center; gap: 0.9rem; flex-wrap: wrap; }
+  .btn-lg { font-size: 0.95rem; padding: 0.85rem 1.6rem; border-radius: 10px; font-weight: 600; text-decoration: none; }
+  .btn-lg.primary { background: var(--accent); color: #fff; }
+  .btn-lg.primary:hover { background: #17305f; }
+  .btn-lg.secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+  .btn-lg.secondary:hover { background: var(--accent-soft); }
+  .hero-note { margin-top: 1rem; font-size: 0.78rem; color: var(--ink-faint); }
+
+  /* ---------- Trust bar ---------- */
+  .trust-bar { display: flex; align-items: center; justify-content: center; gap: 2.2rem; flex-wrap: wrap; padding: 1.8rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 4rem; }
+  .trust-item { display: flex; align-items: center; gap: 0.45rem; font-size: 0.82rem; color: var(--ink-soft); font-weight: 500; }
+  .trust-item svg { width: 15px; height: 15px; color: var(--accent); flex-shrink: 0; }
+
+  /* ---------- Section shared ---------- */
+  section { padding: 0 0 4.5rem; }
+  .section-head { text-align: center; max-width: 620px; margin: 0 auto 2.5rem; }
+  .section-head .eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+  .section-head h2 { font-family: var(--serif); font-size: 1.9rem; font-weight: 500; margin: 0 0 0.6rem; }
+  .section-head p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; }
+
+  /* ---------- Feature grid ---------- */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  .feature-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem 1.4rem; box-shadow: var(--shadow); }
+  .feature-card .icon { width: 38px; height: 38px; border-radius: 9px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+  .feature-card .icon svg { width: 20px; height: 20px; }
+  .feature-card h3 { font-size: 0.98rem; margin: 0 0 0.4rem; }
+  .feature-card p { font-size: 0.84rem; color: var(--ink-soft); line-height: 1.55; margin: 0; }
+
+  /* ---------- Accountant band ---------- */
+  .accountant-band { background: linear-gradient(150deg, var(--surface-dark), var(--surface-dark-2) 88%); border-radius: 20px; padding: 3rem 2.5rem; color: #fff; display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
+  .accountant-band .copy { flex: 1; min-width: 280px; }
+  .accountant-band .eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8fa3dd; margin-bottom: 0.7rem; }
+  .accountant-band h2 { font-family: var(--serif); font-size: 1.7rem; font-weight: 500; margin: 0 0 0.8rem; }
+  .accountant-band p { font-size: 0.92rem; color: #c3c7e0; line-height: 1.65; margin: 0 0 1.4rem; max-width: 460px; }
+  .accountant-band .btn-lg.secondary { background: #fff; border: none; }
+
+  /* ---------- Pricing ---------- */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  .price-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 1.8rem 1.6rem; box-shadow: var(--shadow); }
+  .price-card.featured { border-color: var(--accent); box-shadow: 0 2px 4px rgba(31,58,122,0.1), 0 12px 28px rgba(31,58,122,0.12); position: relative; }
+  .price-card .badge { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 999px; white-space: nowrap; }
+  .price-card .tier-label { font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .price-card .tier-range { font-size: 0.8rem; color: var(--ink-faint); margin-bottom: 1rem; }
+  .price-card .amount { font-family: var(--serif); font-size: 2rem; font-weight: 500; }
+  .price-card .amount span { font-size: 0.85rem; font-weight: 400; color: var(--ink-soft); }
+  .price-card ul { list-style: none; padding: 0; margin: 1.2rem 0 0; display: flex; flex-direction: column; gap: 0.55rem; }
+  .price-card li { font-size: 0.82rem; color: var(--ink-soft); display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.4; }
+  .price-card li svg { width: 14px; height: 14px; color: var(--ok); flex-shrink: 0; margin-top: 0.15rem; }
+  .pricing-note { text-align: center; font-size: 0.82rem; color: var(--ink-soft); margin-top: 1.5rem; }
+
+  /* ---------- Final CTA ---------- */
+  .final-cta { text-align: center; background: var(--accent-soft); border-radius: 20px; padding: 3.2rem 2rem; }
+  .final-cta h2 { font-family: var(--serif); font-size: 1.8rem; font-weight: 500; margin: 0 0 0.8rem; }
+  .final-cta p { font-size: 0.92rem; color: var(--ink-soft); margin: 0 0 1.6rem; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 2.2rem 0; }
+  .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-faint); }
+  .footer-links { display: flex; gap: 1.1rem; }
+  .footer-links a { text-decoration: none; color: var(--ink-faint); }
+  .footer-links a:hover { color: var(--ink-soft); }
+
+  @media (max-width: 820px) {
+    .hero h1 { font-size: 1.9rem; }
+    .feature-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .accountant-band { padding: 2.2rem 1.6rem; }
+    .trust-bar { gap: 1.2rem 1.6rem; }
   }
-  input:focus { outline: none; border-color: var(--accent); }
-
-  .submit-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 0.8rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-top: 1.2rem; }
-  .submit-btn:hover { background: #17305f; }
-  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .forgot-link { text-align: center; margin-top: 0.9rem; }
-  .forgot-link button { background: none; border: none; color: var(--accent); font-size: 0.82rem; font-weight: 600; cursor: pointer; text-decoration: underline; font-family: var(--sans); }
-
-  .status { display: none; border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.84rem; margin-bottom: 1.1rem; line-height: 1.5; }
-  .status.error { display: block; background: var(--danger-soft); color: #7a1c16; }
-  .status.success { display: block; background: var(--ok-soft); color: #135a37; }
-
-  .register-link { text-align: center; font-size: 0.85rem; color: var(--ink-soft); margin-top: 1.2rem; }
-  .register-link a { color: var(--accent); font-weight: 600; text-decoration: none; }
-
-  .trust-note { display: flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: 1rem; font-size: 0.72rem; color: var(--ink-faint); }
-  .trust-note svg { width: 12px; height: 12px; flex-shrink: 0; }
 </style>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
-  <div class="wrap">
-    <a class="masthead" href="index.html">
+
+<header>
+  <div class="container nav-row">
+    <a class="brand" href="index.html">
       <div class="logo-mark"><img src="favicon.svg" alt=""></div>
       <div class="title">Cégfókusz</div>
     </a>
-
-    <div class="card">
-      <div id="statusBox" class="status"></div>
-
-      <form id="loginForm">
-        <label>Email cím</label>
-        <input type="email" id="email" required>
-        <label>Jelszó</label>
-        <input type="password" id="password" required>
-        <button type="submit" class="submit-btn" id="submitBtn">Bejelentkezés</button>
-      </form>
-
-      <div class="forgot-link"><button id="forgotBtn">Elfelejtett jelszó</button></div>
+    <div class="nav-actions">
+      <a class="btn-ghost" href="konyvelo-login.html">Könyvelőknek</a>
+      <a class="btn-ghost" href="login.html">Bejelentkezés</a>
+      <a class="btn-primary" href="register.html">Ingyenes próba</a>
     </div>
-
-    <div class="trust-note">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-      Biztonságos, titkosított kapcsolat
-    </div>
-
-    <div class="register-link">Még nincs fiókod? <a href="register.html">Regisztrálj</a></div>
   </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <div class="eyebrow">NAV-adószámla-figyelés kisvállalkozásoknak</div>
+    <h1>A NAV-adataid mindig naprakészen, mielőtt a könyvelőd rákérdezne</h1>
+    <p class="sub">A Cégfókusz automatikusan lekérdezi a NAV Online Számla és Pénztárgép adataidat, és egy helyen mutatja az ÁFA-pozíciódat, a bevételi küszöböket, a határidőket — és megosztja mindezt a könyvelőddel is.</p>
+    <div class="hero-ctas">
+      <a class="btn-lg primary" href="register.html">Ingyenes próba indítása</a>
+      <a class="btn-lg secondary" href="login.html">Bejelentkezés</a>
+    </div>
+    <div class="hero-note">30 napos ingyenes próbaidőszak · nincs bankkártya-adat a regisztrációnál</div>
+  </section>
+
+  <div class="container">
+    <div class="trust-bar">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Biztonságos, titkosított NAV-kapcsolat
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Naponta automatikus szinkron
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+        KATA, átalányadó és normál adózáshoz is
+      </div>
+    </div>
+  </div>
+
+  <section class="container">
+    <div class="section-head">
+      <div class="eyebrow">Mit kapsz</div>
+      <h2>Minden, ami a NAV-adataid átlátásához kell</h2>
+      <p>Nem kell bejelentkezned az Ügyfélkapura, és nem kell várnod a könyvelőd válaszára — a fontos számok mindig elérhetők.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+        <h3>ÁFA-pozíció egy pillantásra</h3>
+        <p>Automatikusan kiszámolja, mennyit kell befizetned vagy mennyit igényelhetsz vissza — a kiválasztott időszakra, kimenő/bejövő számla és pénztárgépes forgalom alapján.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
+        <h3>Anomália- és hiba-jelzés</h3>
+        <p>Jelzi, ha kiugró eltérés van a beszerzés és az értékesítés között, ha hiányzik egy számla sorszáma, vagy ha duplikáltan került be egy bizonylat.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <h3>NAV-határidő-naptár</h3>
+        <p>Az adózási formádnak megfelelő ÁFA-, iparűzési adó- és járulékhatáridők — ünnepnapokra is figyelve, Telegram-emlékeztetővel.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg></div>
+        <h3>Dokumentumtár a könyvelővel megosztva</h3>
+        <p>Tölts fel számlát, bankkivonatot saját mappáidba — a könyvelőd azonnal látja, amint feltöltötted, nem kell külön elküldened.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M6 6V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg></div>
+        <h3>Házipénztár és bevételi küszöb</h3>
+        <p>Teljes pénztárkönyv a készpénzes forgalomhoz, és figyelmeztetés, mielőtt túllépnéd a KATA/átalányadó/alanyi-mentesség bevételi határát.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Könyvelői egyeztetés</h3>
+        <p>Töltsd fel a könyvelőd kimutatását — a rendszer megmondja, melyik NAV-tól ismert számla hiányzik még a könyveléséből.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="accountant-band">
+      <div class="copy">
+        <div class="eyebrow">Könyvelőknek</div>
+        <h2>Ajánld az ügyfeleidnek, és kapj jutalékot utána</h2>
+        <p>Saját könyvelői fiókkal regisztrálhatsz, egyedi ajánlói kóddal — az így csatlakozó cégek előfizetési díjának egy részét minden hónapban megkapod, amíg előfizetnek. Egy helyről látod az ügyfeleid NAV-adatait és feltöltéseit.</p>
+        <a class="btn-lg secondary" href="konyvelo-regisztracio.html">Könyvelői regisztráció</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="section-head">
+      <div class="eyebrow">Árazás</div>
+      <h2>Forgalom alapján, nem funkció-korlátozással</h2>
+      <p>Minden funkció mindenkinek elérhető — az előző havi bizonylatszámod (kimenő + bejövő számla, és a pénztárgépes napok) dönti el a sávodat.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="tier-label">Alap sáv</div>
+        <div class="tier-range">havi 100 bizonylatig</div>
+        <div class="amount">7 999 Ft<span> / hó</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Teljes NAV-szinkron</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>ÁFA-pozíció, anomália-jelzés</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Dokumentumtár a könyvelővel</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <div class="badge">Legnépszerűbb</div>
+        <div class="tier-label">Közepes sáv</div>
+        <div class="tier-range">havi 101–250 bizonylat</div>
+        <div class="amount">9 999 Ft<span> / hó</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Minden az Alap sávból</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Nagyobb forgalomhoz is</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Ugyanaz a funkciókör</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="tier-label">Nagy sáv</div>
+        <div class="tier-range">havi 250 bizonylat felett</div>
+        <div class="amount">11 999 Ft<span> / hó</span></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Minden a Közepes sávból</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Magas forgalmú vállalkozásoknak</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Ugyanaz a funkciókör</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pricing-note">A sávot mindig az előző havi tényleges forgalmad dönti el — nincs előzetes választás, nincs meglepetés.</div>
+  </section>
+
+  <section class="container">
+    <div class="final-cta">
+      <h2>Próbáld ki 30 napig, díjmentesen</h2>
+      <p>Nincs szükség bankkártya-adatra a regisztrációhoz — csak a NAV technikai felhasználód adataira.</p>
+      <a class="btn-lg primary" href="register.html">Ingyenes próba indítása</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-row">
+    <div>© 2026 Cégfókusz</div>
+    <div class="footer-links">
+      <a href="konyvelo-regisztracio.html">Könyvelőknek</a>
+      <a href="login.html">Bejelentkezés</a>
+      <a href="register.html">Regisztráció</a>
+    </div>
+  </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
 <script>
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-function translateError(message) {
-  const map = [
-    [/invalid login credentials/i, "Hibás email cím vagy jelszó."],
-    [/error sending recovery email/i, "Nem sikerült elküldeni a jelszó-visszaállító emailt — technikai hiba történt a küldő rendszerünkben. Próbáld újra pár perc múlva."],
-    [/error sending confirmation email/i, "Nem sikerült elküldeni a megerősítő emailt — technikai hiba történt a küldő rendszerünkben. Próbáld újra pár perc múlva."],
-    [/rate limit/i, "Túl sok próbálkozás történt rövid idő alatt — kérjük, várj egy percet, és próbáld újra."],
-    [/network|fetch/i, "Hálózati hiba történt — ellenőrizd az internetkapcsolatod, és próbáld újra."],
-    [/email not confirmed/i, "Az email címed még nincs megerősítve."],
-  ];
-  for (const [pattern, hu] of map) {
-    if (pattern.test(message)) return hu;
-  }
-  return "Hiba történt: " + message;
-}
-
-function showStatus(message, type) {
-  const box = document.getElementById("statusBox");
-  box.textContent = message;
-  box.className = "status " + type;
-}
-
-// Ha a NAV/Supabase email-megerősítő linkje ide (a domain gyökerére) irányít
-// vissza, azt az URL-ben lévő "type=signup" jelzi (query- vagy hash-részben,
-// Supabase verziótól függően) — ilyenkor egy rövid megerősítő üzenetet
-// mutatunk a bejelentkező form fölött, de maga a form mindig működik, sosem
-// zsákutca.
-(function showConfirmationBannerIfNeeded() {
+// Ha már be van jelentkezve valaki (akár vállalkozóként, akár könyvelőként),
+// a főoldal helyett egyből a saját irányítópultjára kerül.
+// Ha a Supabase email-megerősítő linkje ide (a domain gyökerére) irányít
+// vissza (type=signup/email_change), azt a login oldalra irányítjuk tovább,
+// ahol a megfelelő visszajelzést mutatjuk — a főoldal marad tiszta marketing-oldal.
+(function redirectConfirmationToLogin() {
   const params = new URLSearchParams(window.location.search);
   const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
   const type = params.get("type") || hashParams.get("type");
   if (type === "signup" || type === "email_change") {
-    showStatus("Email cím megerősítve! A fiókodat automatikusan aktiváljuk, néhány percen belül — addig is jelentkezz be nyugodtan.", "success");
+    window.location.href = "login.html?confirmed=1";
   }
 })();
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const submitBtn = document.getElementById("submitBtn");
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Bejelentkezés...";
-
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-
-  if (error) {
-    showStatus(translateError(error.message), "error");
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Bejelentkezés";
-    return;
-  }
-
-  showStatus("Sikeres bejelentkezés! Átirányítás...", "success");
-  window.location.href = "dashboard.html";
-});
-
-document.getElementById("forgotBtn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value.trim();
-  if (!email) {
-    showStatus("Először írd be az email címed a mezőbe, utána kattints ide.", "error");
-    return;
-  }
-  const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/reset-password.html",
-  });
-  if (error) {
-    showStatus(translateError(error.message), "error");
-  } else {
-    showStatus("Ha ez az email cím regisztrálva van nálunk, elküldtük a jelszó-visszaállító linket — nézd meg a postaládád.", "success");
-  }
-});
+(async function redirectIfAlreadyLoggedIn() {
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: companies } = await sb.from("companies").select("id").limit(1);
+  if (companies && companies.length > 0) { window.location.href = "dashboard.html"; return; }
+  const { data: accountants } = await sb.from("accountants").select("id").eq("user_id", session.user.id).limit(1);
+  if (accountants && accountants.length > 0) { window.location.href = "konyvelo-dashboard.html"; return; }
+})();
 </script>
 </body>
 </html>

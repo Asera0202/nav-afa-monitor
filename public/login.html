@@ -120,6 +120,10 @@ function showStatus(message, type) {
   box.className = "status " + type;
 }
 
+if (new URLSearchParams(window.location.search).get("confirmed") === "1") {
+  showStatus("Email cím megerősítve! A fiókodat automatikusan aktiváljuk, néhány percen belül — addig is jelentkezz be nyugodtan.", "success");
+}
+
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const submitBtn = document.getElementById("submitBtn");
