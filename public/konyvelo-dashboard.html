@@ -65,6 +65,13 @@
   .status-active { background: var(--ok-soft); color: var(--ok); }
   .status-past_due { background: var(--danger-soft); color: var(--danger); }
 
+  .overview-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .overview-table th { text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-faint); padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--line); }
+  .overview-table td { padding: 0.55rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .flag-chip { display: inline-block; font-size: 0.74rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 999px; white-space: nowrap; margin-right: 0.3rem; }
+  .flag-chip.flag-ok { background: var(--ok-soft); color: var(--ok); }
+  .flag-chip.flag-warn { background: var(--warn-soft); color: var(--warn); }
+
   .upload-list { margin-top: 0.6rem; font-size: 0.78rem; color: var(--ink-soft); }
   .upload-item { padding: 0.25rem 0; }
   .empty-state { text-align: center; padding: 2rem 1rem; color: var(--ink-soft); font-size: 0.85rem; }
@@ -148,6 +155,57 @@ async function main() {
   let subsByCompany = {};
   let uploadsByCompany = {};
   let payments = [];
+  const HU_MONTHS = ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"];
+
+  async function findChildFolderId(companyId, parentId, name) {
+    let q = sb.from("document_folders").select("id").eq("company_id", companyId).eq("name", name);
+    q = parentId ? q.eq("parent_folder_id", parentId) : q.is("parent_folder_id", null);
+    const { data } = await q.maybeSingle();
+    return data?.id ?? null;
+  }
+
+  // Gyors áttekintés: van-e ebben a hónapban NAV-számla, de nincs hozzá
+  // feltöltött dokumentum, illetve van-e kiugró eltérés beszerzés/
+  // értékesítés között — ugyanaz a logika, mint a vállalkozói dashboardon/
+  // Dokumentumok oldalon, csak röviden, igen/nem jelzéssel.
+  async function computeOverviewFlags(companyId) {
+    const now = new Date();
+    const year = String(now.getFullYear());
+    const month = HU_MONTHS[now.getMonth()];
+    const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString().slice(0, 10);
+    const today = now.toISOString().slice(0, 10);
+
+    const [{ count: invoiceCount }, { data: purchaseRows }, { data: salesRows }, { data: opgRows }] = await Promise.all([
+      sb.from("invoice_vat_lines").select("id", { count: "exact", head: true }).eq("company_id", companyId).gte("issue_date", monthStart).lte("issue_date", today),
+      sb.from("invoice_vat_lines").select("net_amount").eq("company_id", companyId).eq("direction", "INBOUND").gte("issue_date", monthStart).lte("issue_date", today),
+      sb.from("invoice_vat_lines").select("net_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", monthStart).lte("issue_date", today),
+      sb.from("opg_receipt_items").select("net_amount").eq("company_id", companyId).gte("transaction_at", monthStart).lte("transaction_at", today + "T23:59:59"),
+    ]);
+
+    let missingInvoiceDocs = false;
+    if (invoiceCount && invoiceCount > 0) {
+      const szamlakTop = await findChildFolderId(companyId, null, "Számlák");
+      const szamlakYear = szamlakTop ? await findChildFolderId(companyId, szamlakTop, year) : null;
+      const szamlakMonth = szamlakYear ? await findChildFolderId(companyId, szamlakYear, month) : null;
+      let fileCount = 0;
+      if (szamlakMonth) {
+        const { count } = await sb.from("company_documents").select("id", { count: "exact", head: true }).eq("folder_id", szamlakMonth);
+        fileCount = count ?? 0;
+      }
+      missingInvoiceDocs = fileCount === 0;
+    }
+
+    const sum = (rows) => (rows ?? []).reduce((s, r) => s + Number(r.net_amount ?? 0), 0);
+    const purchases = sum(purchaseRows);
+    const sales = sum(salesRows) + sum(opgRows);
+    const diff = Math.abs(sales - purchases);
+    const higher = Math.max(sales, purchases);
+    const lower = Math.min(sales, purchases);
+    const ratio = lower === 0 ? (higher > 0 ? Infinity : 0) : higher / lower;
+    const hasAnomaly = diff >= 50000 && ratio >= 2.5;
+
+    return { missingInvoiceDocs, hasAnomaly };
+  }
 
   if (companyIds.length > 0) {
     const [{ data: subs }, { data: uploads }, { data: pays }] = await Promise.all([
@@ -163,11 +221,35 @@ async function main() {
     payments = pays ?? [];
   }
 
+  let flagsByCompany = {};
+  if (companyIds.length > 0) {
+    const flagResults = await Promise.all(companyIds.map((id) => computeOverviewFlags(id)));
+    companyIds.forEach((id, i) => { flagsByCompany[id] = flagResults[i]; });
+  }
+
   const totalCommissionEver = payments.reduce((s, p) => s + Number(p.price) * Number(p.commission_rate ?? 0.25), 0);
   const thisMonthPrefix = new Date().toISOString().slice(0, 7);
   const thisMonthCommission = payments
     .filter((p) => (p.period_start || "").startsWith(thisMonthPrefix))
     .reduce((s, p) => s + Number(p.price) * Number(p.commission_rate ?? 0.25), 0);
+
+  const overviewRows = (companies ?? [])
+    .map((c) => {
+      const sub = subsByCompany[c.id];
+      const statusKey = sub?.status ?? "trial";
+      const flags = flagsByCompany[c.id] ?? {};
+      const problems = [];
+      if (flags.missingInvoiceDocs) problems.push(`<span class="flag-chip flag-warn">📄 Hiányzó dokumentum</span>`);
+      if (flags.hasAnomaly) problems.push(`<span class="flag-chip flag-warn">⚠️ Anomália</span>`);
+      const problemsHtml = problems.length > 0 ? problems.join(" ") : `<span class="flag-chip flag-ok">✅ Rendben</span>`;
+      return `
+      <tr>
+        <td><a href="dokumentumok.html?company=${c.id}" style="color:var(--ink); text-decoration:none; font-weight:600;">${c.name}</a></td>
+        <td><span class="status-badge status-${statusKey}" style="font-size:0.68rem;">${STATUS_LABELS[statusKey] || statusKey}</span></td>
+        <td>${problemsHtml}</td>
+      </tr>`;
+    })
+    .join("");
 
   const companyRows = (companies ?? [])
     .map((c) => {
@@ -216,6 +298,18 @@ async function main() {
         <div class="stat-box"><div class="stat-num">${companies?.length ?? 0}</div><div class="stat-label">Ajánlott cég</div></div>
       </div>
     </div>
+
+    ${
+      (companies?.length ?? 0) > 0
+        ? `<div class="card">
+      <h2>Gyors áttekintés — ${new Date().toLocaleDateString("hu-HU", { month: "long" })}</h2>
+      <table class="overview-table">
+        <thead><tr><th>Cég</th><th>Előfizetés</th><th>Ebben a hónapban</th></tr></thead>
+        <tbody>${overviewRows}</tbody>
+      </table>
+    </div>`
+        : ""
+    }
 
     <div class="card">
       <h2>Ajánlott cégek</h2>
