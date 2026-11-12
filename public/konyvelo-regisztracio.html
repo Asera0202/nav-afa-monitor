@@ -94,6 +94,15 @@
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+(async function redirectIfAlreadyLoggedIn() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: accountants } = await sb.from("accountants").select("id").eq("user_id", session.user.id).limit(1);
+  if (accountants && accountants.length > 0) { window.location.href = "konyvelo-dashboard.html"; return; }
+  const { data: companies } = await sb.from("companies").select("id").limit(1);
+  if (companies && companies.length > 0) { window.location.href = "dashboard.html"; return; }
+})();
+
 sb.from("platform_settings").select("value").eq("key", "accountant_commission_rate").maybeSingle().then(({ data }) => {
   const pct = Math.round((data ? parseFloat(data.value) : 0.25) * 100);
   document.getElementById("commissionRateText").textContent = pct + "%-át";

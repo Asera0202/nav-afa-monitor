@@ -89,6 +89,16 @@
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+(async function redirectIfAlreadyLoggedIn() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: companies } = await sb.from("companies").select("id").limit(1);
+  if (companies && companies.length > 0) { window.location.href = "dashboard.html"; return; }
+  const { data: accountants } = await sb.from("accountants").select("id").eq("user_id", session.user.id).limit(1);
+  if (accountants && accountants.length > 0) { window.location.href = "konyvelo-dashboard.html"; return; }
+  window.location.href = "dashboard.html";
+})();
+
 function translateError(message) {
   const map = [
     [/invalid login credentials/i, "Hibás email cím vagy jelszó."],
