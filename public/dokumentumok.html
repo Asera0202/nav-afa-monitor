@@ -336,8 +336,8 @@ async function renderFolderView() {
     <div class="toolbar">
       <button id="newFolderBtn">+ Új mappa</button>
       <label class="upload-label primary">
-        Fájl feltöltése
-        <input type="file" id="uploadInput">
+        Fájlok feltöltése
+        <input type="file" id="uploadInput" multiple>
       </label>
     </div>`;
 
@@ -384,23 +384,34 @@ function attachHandlers() {
   });
 
   document.getElementById("uploadInput")?.addEventListener("change", async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
     if (!currentFolderId) { showStatus("Előbb lépj be egy mappába, csak ott lehet feltölteni.", "error"); e.target.value = ""; return; }
-    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_ÁÉÍÓÖŐÚÜŰáéíóöőúüű ]/g, "_");
-    const storagePath = `${company.id}/${crypto.randomUUID()}-${safeName}`;
-    const { error: uploadError } = await sb.storage.from("company-documents").upload(storagePath, file);
-    if (uploadError) { showStatus("Nem sikerült feltölteni: " + uploadError.message, "error"); e.target.value = ""; return; }
-    const { error: insertError } = await sb.from("company_documents").insert({
-      company_id: company.id,
-      folder_id: currentFolderId,
-      file_name: file.name,
-      storage_path: storagePath,
-      size_bytes: file.size,
-    });
-    if (insertError) { showStatus("Hiba a dokumentum rögzítésekor: " + insertError.message, "error"); e.target.value = ""; return; }
+
+    let okCount = 0;
+    const errors = [];
+    for (const file of files) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9.\-_ÁÉÍÓÖŐÚÜŰáéíóöőúüű ]/g, "_");
+      const storagePath = `${company.id}/${crypto.randomUUID()}-${safeName}`;
+      const { error: uploadError } = await sb.storage.from("company-documents").upload(storagePath, file);
+      if (uploadError) { errors.push(`${file.name}: ${uploadError.message}`); continue; }
+      const { error: insertError } = await sb.from("company_documents").insert({
+        company_id: company.id,
+        folder_id: currentFolderId,
+        file_name: file.name,
+        storage_path: storagePath,
+        size_bytes: file.size,
+      });
+      if (insertError) { errors.push(`${file.name}: ${insertError.message}`); continue; }
+      okCount++;
+    }
+
     e.target.value = "";
-    showStatus("Fájl feltöltve.", "success");
+    if (errors.length > 0) {
+      showStatus(`${okCount} fájl feltöltve, ${errors.length} sikertelen (${errors.join("; ")}).`, errors.length === files.length ? "error" : "success");
+    } else {
+      showStatus(`${okCount} fájl feltöltve.`, "success");
+    }
     renderFolderView();
   });
 
