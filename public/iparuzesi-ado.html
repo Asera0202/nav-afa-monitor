@@ -240,31 +240,37 @@ function populateYearSelect() {
   select.value = String(currentYear);
 }
 
+function defaultKey(partnerName, description) {
+  return `${partnerName ?? ""}\u0000${(description ?? "").trim()}`;
+}
+
 /** Az adott évhez tartozó, még kategorizálatlan BEJÖVŐ tételekre automatikusan
- *  rááll a szállító-memória (partner_category_defaults), ha van hozzá mentett
- *  kategória — így a felhasználónak csak az ÚJ/ismeretlen partnerekkel kell
- *  foglalkoznia. Olyan sort sosem írunk át, aminek már van kategóriája. */
+ *  rááll a szállító-memória (partner_category_defaults), ha a PARTNER+TÉTEL-
+ *  SZÖVEG páros már korábban kategorizálva volt — tudatosan NEM elég a puszta
+ *  partnernév egyezés, mert ugyanattól a partnertől vegyes célú (pl. eladásra
+ *  vs. saját használatra vett) tételek is érkezhetnek azonos néven, de más
+ *  leírással. Olyan sort sosem írunk át, aminek már van kategóriája. */
 async function applyPartnerDefaults(yearFrom, yearTo) {
   const [{ data: uncategorized, error: e1 }, { data: defaults, error: e2 }] = await Promise.all([
     sb.from("invoice_line_items")
-      .select("id, partner_name")
+      .select("id, partner_name, description")
       .eq("company_id", companyId)
       .eq("direction", "INBOUND")
       .is("category", null)
       .gte("issue_date", yearFrom)
       .lte("issue_date", yearTo),
-    sb.from("partner_category_defaults").select("partner_name, category").eq("company_id", companyId),
+    sb.from("partner_category_defaults").select("partner_name, description, category").eq("company_id", companyId),
   ]);
   if (e1) throw e1;
   if (e2) throw e2;
 
-  const defaultMap = new Map((defaults ?? []).map((d) => [d.partner_name, d.category]));
-  const toUpdate = (uncategorized ?? []).filter((row) => row.partner_name && defaultMap.has(row.partner_name));
+  const defaultMap = new Map((defaults ?? []).map((d) => [defaultKey(d.partner_name, d.description), d.category]));
+  const toUpdate = (uncategorized ?? []).filter((row) => row.partner_name && defaultMap.has(defaultKey(row.partner_name, row.description)));
   if (toUpdate.length === 0) return;
 
   const idsByCategory = new Map();
   for (const row of toUpdate) {
-    const cat = defaultMap.get(row.partner_name);
+    const cat = defaultMap.get(defaultKey(row.partner_name, row.description));
     if (!idsByCategory.has(cat)) idsByCategory.set(cat, []);
     idsByCategory.get(cat).push(row.id);
   }
@@ -300,18 +306,40 @@ async function loadSummary(yearFrom, yearTo) {
 }
 
 async function loadUncategorized(yearFrom, yearTo) {
-  const { data, error } = await sb
-    .from("invoice_line_items")
-    .select("id, partner_name, description, issue_date, net_amount, invoice_number")
-    .eq("company_id", companyId)
-    .eq("direction", "INBOUND")
-    .is("category", null)
-    .gte("issue_date", yearFrom)
-    .lte("issue_date", yearTo)
-    .order("issue_date", { ascending: false })
-    .limit(200);
+  const [{ data, error }, { data: history, error: e2 }] = await Promise.all([
+    sb.from("invoice_line_items")
+      .select("id, partner_name, description, issue_date, net_amount, invoice_number")
+      .eq("company_id", companyId)
+      .eq("direction", "INBOUND")
+      .is("category", null)
+      .gte("issue_date", yearFrom)
+      .lte("issue_date", yearTo)
+      .order("issue_date", { ascending: false })
+      .limit(200),
+    // Minden partner korábbi (már kategorizált) tételeinek kategóriái —
+    // ha egy partnernél TÖBBFÉLE kategória is előfordult, az vegyes célú
+    // beszerzésre utal (pl. eladásra ÉS saját használatra is vesz tőle),
+    // ezt figyelmeztetésként mutatjuk a felületen.
+    sb.from("invoice_line_items")
+      .select("partner_name, category")
+      .eq("company_id", companyId)
+      .eq("direction", "INBOUND")
+      .not("category", "is", null),
+  ]);
   if (error) throw error;
-  return data ?? [];
+  if (e2) throw e2;
+
+  const categoriesByPartner = new Map();
+  for (const row of history ?? []) {
+    if (!row.partner_name) continue;
+    if (!categoriesByPartner.has(row.partner_name)) categoriesByPartner.set(row.partner_name, new Set());
+    categoriesByPartner.get(row.partner_name).add(row.category);
+  }
+  const mixedPartners = new Set(
+    [...categoriesByPartner.entries()].filter(([, cats]) => cats.size > 1).map(([partner]) => partner)
+  );
+
+  return (data ?? []).map((row) => ({ ...row, isMixedPartner: mixedPartners.has(row.partner_name) }));
 }
 
 function renderSummaryHtml(summary) {
@@ -351,7 +379,7 @@ function renderReviewRow(row) {
   return `
     <div class="review-row" data-row-id="${row.id}">
       <div class="review-main">
-        <div class="review-desc">${row.partner_name ?? "(ismeretlen partner)"}</div>
+        <div class="review-desc">${row.partner_name ?? "(ismeretlen partner)"}${row.isMixedPartner ? '<span class="pill" style="background:var(--warn-soft); color:var(--warn);" title="Ennél a partnernél korábban többféle kategóriát is választottál már — nézd át figyelmesen, mielőtt mented.">vegyes célú partner</span>' : ""}</div>
         <div class="review-meta">${row.description ? row.description + " · " : ""}${row.invoice_number} · ${row.issue_date ?? ""}</div>
       </div>
       <div class="review-amount">${formatFt(row.net_amount)}</div>
@@ -360,7 +388,7 @@ function renderReviewRow(row) {
           <option value="" disabled selected>Válassz kategóriát…</option>
           ${optionsHtml}
         </select>
-        <button class="review-save" data-save-for="${row.id}" data-partner="${(row.partner_name ?? "").replace(/"/g, "&quot;")}">Mentés</button>
+        <button class="review-save" data-save-for="${row.id}" data-partner="${(row.partner_name ?? "").replace(/"/g, "&quot;")}" data-description="${(row.description ?? "").replace(/"/g, "&quot;")}">Mentés</button>
       </div>
     </div>`;
 }
@@ -370,6 +398,7 @@ function wireReviewButtons() {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.saveFor;
       const partnerName = btn.dataset.partner;
+      const description = btn.dataset.description;
       const select = document.querySelector(`[data-select-for="${id}"]`);
       const category = select.value;
       if (!category) {
@@ -388,7 +417,10 @@ function wireReviewButtons() {
         if (partnerName) {
           const { error: upsertError } = await sb
             .from("partner_category_defaults")
-            .upsert({ company_id: companyId, partner_name: partnerName, category }, { onConflict: "company_id,partner_name" });
+            .upsert(
+              { company_id: companyId, partner_name: partnerName, description: description ?? "", category },
+              { onConflict: "company_id,partner_name,description" }
+            );
           if (upsertError) throw upsertError;
         }
 
@@ -435,6 +467,10 @@ async function renderAll() {
           <div class="category-note">
             A kategorizálás a tétel teljes nettó összegére vonatkozik. Ha egy tétel nem von le adóalapot
             (pl. nem anyagköltség/ELÁBÉ/közvetített szolgáltatás/alvállalkozói díj), válaszd az "Egyéb"-et.
+            A választás a partner NEVE és a tétel SZÖVEGE párosára jegyződik meg — ha ugyanattól a
+            partnertől eltérő célra (pl. egyszer eladásra, egyszer saját használatra) veszel valamit,
+            és ezt a számla szövege is tükrözi, azok külön tételként kérnek kategóriát legközelebb is.
+            Ha a leírás szóról szóra azonos marad, de a célja mégis változik, mindig nézd át kézzel.
           </div>
         </div>`;
 
