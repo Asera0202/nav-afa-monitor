@@ -1,9 +1,9 @@
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
-import { XMLParser } from "fast-xml-parser";
 import { queryInvoiceDigest, queryInvoiceData } from "./nav-client.js";
 import { decryptField } from "./crypto-utils.js";
 import { buildSoftwareId, describeError, type NavCredentials } from "./config.js";
+import { extractVatSummary, extractLineItems } from "./invoice-parsing.js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -18,7 +18,6 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !REGISTRATION_PRIVATE_KEY) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", removeNSPrefix: true });
 
 interface CompanyRow {
   id: string;
@@ -28,13 +27,6 @@ interface CompanyRow {
   nav_password_encrypted: string | null;
   nav_signing_key_encrypted: string | null;
   nav_exchange_key_encrypted: string | null;
-}
-
-interface VatRateSummary {
-  vatPercentage: number;
-  netAmount: number;
-  vatAmount: number;
-  grossAmount: number;
 }
 
 function buildCredentials(company: CompanyRow): NavCredentials {
@@ -52,19 +44,6 @@ function buildCredentials(company: CompanyRow): NavCredentials {
   };
 }
 
-function extractVatSummary(invoiceXml: string): VatRateSummary[] {
-  const parsed = parser.parse(invoiceXml);
-  const summary = parsed.InvoiceData?.invoiceMain?.invoice?.invoiceSummary?.summaryNormal;
-  const raw = summary?.summaryByVatRate;
-  const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
-  return list.map((item: any) => ({
-    vatPercentage: Number(item?.vatRate?.vatPercentage ?? 0),
-    netAmount: Number(item?.vatRateNetData?.vatRateNetAmount ?? 0),
-    vatAmount: Number(item?.vatRateVatData?.vatRateVatAmount ?? 0),
-    grossAmount: Number(item?.vatRateGrossData?.vatRateGrossAmount ?? 0),
-  }));
-}
-
 function dateNDaysAgo(n: number): string {
   const d = new Date();
   d.setUTCDate(d.getUTCDate() - n);
@@ -78,6 +57,7 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND", creds: NavCreden
   const { invoices } = await queryInvoiceDigest({ dateFrom: from, dateTo: to, direction }, creds);
 
   const rows: any[] = [];
+  const lineItemRows: any[] = [];
   let processed = 0;
   let failed = 0;
 
@@ -90,20 +70,44 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND", creds: NavCreden
         failed++;
         continue;
       }
+      const partnerName = inv.supplierName ?? inv.customerName ?? null;
+      const issueDate = inv.invoiceIssueDate ?? null;
+
       const rates = extractVatSummary(invoiceXml);
       for (const r of rates) {
         rows.push({
           company_id: companyId,
           direction,
           invoice_number: invoiceNumber,
-          partner_name: inv.supplierName ?? inv.customerName ?? null,
-          issue_date: inv.invoiceIssueDate ?? null,
+          partner_name: partnerName,
+          issue_date: issueDate,
           vat_percentage: r.vatPercentage,
           net_amount: r.netAmount,
           vat_amount: r.vatAmount,
           gross_amount: r.grossAmount,
         });
       }
+
+      const lines = extractLineItems(invoiceXml);
+      for (const line of lines) {
+        lineItemRows.push({
+          company_id: companyId,
+          direction,
+          invoice_number: invoiceNumber,
+          line_number: line.lineNumber,
+          partner_name: partnerName,
+          issue_date: issueDate,
+          description: line.description,
+          quantity: line.quantity,
+          unit: line.unit,
+          unit_price: line.unitPrice,
+          net_amount: line.netAmount,
+          vat_percentage: line.vatPercentage,
+          vat_amount: line.vatAmount,
+          gross_amount: line.grossAmount,
+        });
+      }
+
       processed++;
     } catch (err) {
       console.error(`    Hiba (${invoiceNumber}): ${describeError(err).split("\n")[0]}`);
@@ -112,7 +116,26 @@ async function syncDirection(direction: "INBOUND" | "OUTBOUND", creds: NavCreden
     await new Promise((r) => setTimeout(r, 150));
   }
 
-  return { from, to, digestCount: invoices.length, processed, failed, rows };
+  return { from, to, digestCount: invoices.length, processed, failed, rows, lineItemRows };
+}
+
+async function uploadLineItemRows(rows: any[]) {
+  const CHUNK_SIZE = 500;
+  let uploaded = 0;
+  let uploadFailed = 0;
+  for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
+    const chunk = rows.slice(i, i + CHUNK_SIZE);
+    const { error } = await supabase
+      .from("invoice_line_items")
+      .upsert(chunk, { onConflict: "company_id,direction,invoice_number,line_number" });
+    if (error) {
+      console.error(`    Supabase tételsor-feltöltési hiba: ${error.message}`);
+      uploadFailed += chunk.length;
+    } else {
+      uploaded += chunk.length;
+    }
+  }
+  return { uploaded, uploadFailed };
 }
 
 async function uploadRows(rows: any[]) {
@@ -167,9 +190,14 @@ async function syncCompany(company: CompanyRow) {
 
     const inboundUpload = await uploadRows(inbound.rows);
     const outboundUpload = await uploadRows(outbound.rows);
+    const inboundLineUpload = await uploadLineItemRows(inbound.lineItemRows);
+    const outboundLineUpload = await uploadLineItemRows(outbound.lineItemRows);
 
     console.log(
       `  Supabase: INBOUND ${inboundUpload.uploaded} sor, OUTBOUND ${outboundUpload.uploaded} sor feltöltve.`
+    );
+    console.log(
+      `  Supabase (tételsorok): INBOUND ${inboundLineUpload.uploaded} sor, OUTBOUND ${outboundLineUpload.uploaded} sor feltöltve.`
     );
 
     await supabase.from("sync_runs").insert([

@@ -9,10 +9,10 @@
 
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
-import { XMLParser } from "fast-xml-parser";
 import { queryInvoiceDigest, queryInvoiceData } from "./nav-client.js";
 import { decryptField } from "./crypto-utils.js";
 import { buildSoftwareId, describeError, type NavCredentials } from "./config.js";
+import { extractVatSummary, extractLineItems } from "./invoice-parsing.js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -34,7 +34,6 @@ if (!BACKFILL_FROM || !/^\d{4}-\d{2}-\d{2}$/.test(BACKFILL_FROM)) {
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", removeNSPrefix: true });
 
 interface CompanyRow {
   id: string;
@@ -44,13 +43,6 @@ interface CompanyRow {
   nav_password_encrypted: string | null;
   nav_signing_key_encrypted: string | null;
   nav_exchange_key_encrypted: string | null;
-}
-
-interface VatRateSummary {
-  vatPercentage: number;
-  netAmount: number;
-  vatAmount: number;
-  grossAmount: number;
 }
 
 function buildCredentials(company: CompanyRow): NavCredentials {
@@ -66,19 +58,6 @@ function buildCredentials(company: CompanyRow): NavCredentials {
     softwareDevName: SOFTWARE_DEV_NAME,
     softwareDevContact: SOFTWARE_DEV_CONTACT,
   };
-}
-
-function extractVatSummary(invoiceXml: string): VatRateSummary[] {
-  const parsed = parser.parse(invoiceXml);
-  const summary = parsed.InvoiceData?.invoiceMain?.invoice?.invoiceSummary?.summaryNormal;
-  const raw = summary?.summaryByVatRate;
-  const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
-  return list.map((item: any) => ({
-    vatPercentage: Number(item?.vatRate?.vatPercentage ?? 0),
-    netAmount: Number(item?.vatRateNetData?.vatRateNetAmount ?? 0),
-    vatAmount: Number(item?.vatRateVatData?.vatRateVatAmount ?? 0),
-    grossAmount: Number(item?.vatRateGrossData?.vatRateGrossAmount ?? 0),
-  }));
 }
 
 function addDays(dateStr: string, days: number): string {
@@ -133,6 +112,7 @@ async function backfillCompany(company: CompanyRow, from: string, to: string) {
       console.log(`     ${direction}: ${digests.length} számla a digest-ben`);
 
       const rows: any[] = [];
+      const lineItemRows: any[] = [];
       for (const inv of digests) {
         const invoiceNumber = inv.invoiceNumber;
         const batchIndex = inv.batchIndex ? Number(inv.batchIndex) : undefined;
@@ -142,20 +122,44 @@ async function backfillCompany(company: CompanyRow, from: string, to: string) {
             totalFailed++;
             continue;
           }
+          const partnerName = inv.supplierName ?? inv.customerName ?? null;
+          const issueDate = inv.invoiceIssueDate ?? null;
+
           const rates = extractVatSummary(invoiceXml);
           for (const r of rates) {
             rows.push({
               company_id: company.id,
               direction,
               invoice_number: invoiceNumber,
-              partner_name: inv.supplierName ?? inv.customerName ?? null,
-              issue_date: inv.invoiceIssueDate ?? null,
+              partner_name: partnerName,
+              issue_date: issueDate,
               vat_percentage: r.vatPercentage,
               net_amount: r.netAmount,
               vat_amount: r.vatAmount,
               gross_amount: r.grossAmount,
             });
           }
+
+          const lines = extractLineItems(invoiceXml);
+          for (const line of lines) {
+            lineItemRows.push({
+              company_id: company.id,
+              direction,
+              invoice_number: invoiceNumber,
+              line_number: line.lineNumber,
+              partner_name: partnerName,
+              issue_date: issueDate,
+              description: line.description,
+              quantity: line.quantity,
+              unit: line.unit,
+              unit_price: line.unitPrice,
+              net_amount: line.netAmount,
+              vat_percentage: line.vatPercentage,
+              vat_amount: line.vatAmount,
+              gross_amount: line.grossAmount,
+            });
+          }
+
           totalProcessed++;
         } catch (err) {
           console.error(`       Hiba (${invoiceNumber}): ${describeError(err).split("\n")[0]}`);
@@ -172,6 +176,15 @@ async function backfillCompany(company: CompanyRow, from: string, to: string) {
           console.error(`     Supabase feltöltési hiba: ${error.message}`);
         } else {
           totalUploaded += rows.length;
+        }
+      }
+
+      if (lineItemRows.length > 0) {
+        const { error } = await supabase
+          .from("invoice_line_items")
+          .upsert(lineItemRows, { onConflict: "company_id,direction,invoice_number,line_number" });
+        if (error) {
+          console.error(`     Supabase tételsor-feltöltési hiba: ${error.message}`);
         }
       }
     }
