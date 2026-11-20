@@ -284,14 +284,22 @@ async function applyPartnerDefaults(yearFrom, yearTo) {
 }
 
 async function loadSummary(yearFrom, yearTo) {
-  const [{ data: outbound, error: e1 }, { data: categorized, error: e2 }] = await Promise.all([
+  // A nettó árbevétel NEM csak a kiállított számlákból jön — egy boltnál/
+  // szolgáltatónál a forgalom nagy része (sőt, jellemzően a TÖBBSÉGE) a
+  // pénztárgépen keresztül, nyugtával megy, nem számlával. Mindkettőt össze
+  // kell adni, különben az adóalap drasztikusan alulbecsült.
+  const [{ data: outbound, error: e1 }, { data: categorized, error: e2 }, { data: cashSales, error: e3 }] = await Promise.all([
     sb.from("invoice_vat_lines").select("net_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", yearFrom).lte("issue_date", yearTo),
     sb.from("invoice_line_items").select("category, net_amount").eq("company_id", companyId).eq("direction", "INBOUND").not("category", "is", null).gte("issue_date", yearFrom).lte("issue_date", yearTo),
+    sb.from("opg_receipt_items").select("net_amount").eq("company_id", companyId).gte("transaction_at", yearFrom).lte("transaction_at", yearTo + "T23:59:59"),
   ]);
   if (e1) throw e1;
   if (e2) throw e2;
+  if (e3) throw e3;
 
-  const netRevenue = (outbound ?? []).reduce((s, r) => s + Number(r.net_amount), 0);
+  const invoicedRevenue = (outbound ?? []).reduce((s, r) => s + Number(r.net_amount), 0);
+  const cashRevenue = (cashSales ?? []).reduce((s, r) => s + Number(r.net_amount), 0);
+  const netRevenue = invoicedRevenue + cashRevenue;
 
   const byCategory = {};
   for (const cat of Object.keys(CATEGORY_LABELS)) byCategory[cat] = 0;
@@ -302,7 +310,7 @@ async function loadSummary(yearFrom, yearTo) {
   const taxBase = Math.max(0, netRevenue - deductibleSum);
   const estimatedTax = taxBase * localBusinessTaxRate;
 
-  return { netRevenue, byCategory, deductibleSum, taxBase, estimatedTax };
+  return { netRevenue, invoicedRevenue, cashRevenue, byCategory, deductibleSum, taxBase, estimatedTax };
 }
 
 async function loadUncategorized(yearFrom, yearTo) {
@@ -354,8 +362,9 @@ function renderSummaryHtml(summary) {
   return `
     <div class="summary-grid">
       <div class="summary-card">
-        <div class="summary-label">Nettó árbevétel (kimenő számlák)</div>
+        <div class="summary-label">Nettó árbevétel (számlázott + pénztárgépes)</div>
         <div class="summary-amount">${formatFt(summary.netRevenue)}</div>
+        <div class="review-meta" style="margin-top:0.3rem;">számla: ${formatFt(summary.invoicedRevenue)} · pénztárgép: ${formatFt(summary.cashRevenue)}</div>
       </div>
       <div class="summary-card">
         <div class="summary-label">Levonható tételek (kategorizált)</div>
