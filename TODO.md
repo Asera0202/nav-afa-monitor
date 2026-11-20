@@ -158,9 +158,16 @@
    `src/invoice-parsing.ts` közös modul (`extractLineItems`), a napi szinkron
    és a backfill-szkript is kinyeri és feltölti a NAV-számlák tételsor-szintű
    adatait (megnevezés, mennyiség, egységár).
-   **Még hátra:** dedikált "Iparűzési adó" sidebar-oldal (kategorizáló UI,
-   AI nélkül is működik), majd az AI-javaslat réteg (blokkolva: Anthropic
-   API-kulcs kell tőled, Supabase Secrets-be).
+   **✅ UI kész (2026.11.20):** `public/iparuzesi-ado.html` — évválasztó,
+   nettó árbevétel + kategóriánkénti levonható-összeg + becsült adó
+   kártyák, és a kategorizálásra váró (még kategória nélküli) bejövő
+   tételek listája választható kategóriával. Mentéskor a választás a
+   `partner_category_defaults`-ba is beírásra kerül, így a partner
+   következő tételei automatikusan felveszik a kategóriát (a már
+   kategorizált sorokat sosem írjuk át). Sidebar-menüpont minden
+   vállalkozói oldalon.
+   **Még hátra:** az AI-javaslat réteg új/ismeretlen partnerekhez
+   (blokkolva: Anthropic API-kulcs kell tőled, Supabase Secrets-be).
    **Kapcsolódó, közben talált és javított hiba:** a házipénztár pénztárgépes
    fizetési-tétel kinyerése (`opg-parser.ts`) csak az első azonos típusú
    fizetési taget vette figyelembe nyugtánként — megosztott/részletekben
