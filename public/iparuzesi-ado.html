@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iparűzési adó-becslő — Cégfókusz</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #f5f5fa; --surface: #ffffff;
+    --surface-sidebar: #0f1a33; --surface-sidebar-hover: #182746;
+    --ink: #12172b; --ink-soft: #5a6178; --ink-faint: #9297ab;
+    --line: #e6e8f0; --accent: #1f3a7a; --accent-soft: #e9edf7; --accent-ink: #ffffff;
+    --on-sidebar: #d8d9ec; --on-sidebar-soft: #7c7f9e;
+    --ok: #1a7f4e; --ok-soft: #e8f5ee;
+    --warn: #a4650a; --warn-soft: #faf1e3;
+    --critical: #b3261e; --critical-soft: #fbeceb;
+    --shadow: 0 1px 2px rgba(20,21,42,0.04), 0 8px 24px rgba(20,21,42,0.05);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; display: flex; min-height: 100vh; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar { width: 232px; flex-shrink: 0; background: var(--surface-sidebar); color: var(--on-sidebar); display: flex; flex-direction: column; padding: 1.5rem 1rem; position: sticky; top: 0; height: 100vh; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; padding: 0 0.5rem; margin-bottom: 2.2rem; }
+  .brand-mark { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(155deg, #3f5fac, var(--accent)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .brand-mark img { width: 20px; height: 20px; }
+  .brand-name { font-family: var(--serif); font-size: 1.05rem; letter-spacing: 0.01em; color: #fff; }
+
+  .nav-group-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--on-sidebar-soft); padding: 0 0.6rem; margin: 0 0 0.5rem; }
+  nav.nav { display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 1.6rem; }
+  .nav-link { display: flex; align-items: center; gap: 0.7rem; padding: 0.55rem 0.6rem; border-radius: 8px; color: var(--on-sidebar-soft); text-decoration: none; font-size: 0.87rem; font-weight: 500; }
+  .nav-link svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.85; }
+  .nav-link:hover { background: var(--surface-sidebar-hover); color: var(--on-sidebar); }
+  .nav-link.active { background: var(--surface-sidebar-hover); color: #fff; }
+  .nav-link.active svg { opacity: 1; color: #7093e8; }
+
+  .sidebar-foot { margin-top: auto; }
+  .id-card { position: relative; border-radius: 12px; padding: 0.95rem 1rem; background: linear-gradient(150deg, #1c2c52, #0a1226 88%); border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
+  .id-card::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120px 90px at 100% 0%, rgba(112,147,232,0.22), transparent 70%); pointer-events: none; }
+  .id-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.1rem; }
+  .id-chip { width: 22px; height: 16px; border-radius: 3px; background: linear-gradient(160deg, #c9d3ec, #8b96b8); }
+  .id-status { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #8fe3b0; display: flex; align-items: center; gap: 0.3rem; }
+  .id-status .dot { width: 5px; height: 5px; border-radius: 999px; background: #3fcb84; flex-shrink: 0; }
+  .id-card-number { font-family: var(--sans); font-variant-numeric: tabular-nums; letter-spacing: 0.09em; font-size: 0.86rem; color: #eef0fa; margin-bottom: 0.7rem; }
+  .id-card-name { font-size: 0.82rem; font-weight: 600; color: #fff; }
+  .id-card-sub { font-size: 0.68rem; color: #8992b8; margin-top: 0.1rem; }
+
+  .trust-note { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.9rem; padding: 0 0.3rem; font-size: 0.68rem; color: var(--on-sidebar-soft); }
+  .trust-note svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  .logout-link { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; padding: 0.5rem 0.6rem; border-radius: 8px; font-size: 0.8rem; color: var(--on-sidebar-soft); text-decoration: none; background: none; border: none; cursor: pointer; font-family: var(--sans); width: 100%; text-align: left; }
+  .logout-link:hover { background: var(--surface-sidebar-hover); color: var(--on-sidebar); }
+  .logout-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  /* ---------- Main ---------- */
+  main { flex: 1; min-width: 0; }
+  .wrap { max-width: 980px; padding: 1.8rem 2.2rem 4rem; }
+  h1 { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; margin: 0 0 0.3rem; }
+  .page-sub { font-size: 0.84rem; color: var(--ink-soft); margin-bottom: 1.4rem; line-height: 1.55; }
+
+  .year-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+  .year-row label { font-size: 0.82rem; font-weight: 600; color: var(--ink-soft); }
+  .year-row select { font-family: var(--sans); font-size: 0.88rem; padding: 0.45rem 0.7rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.9rem; margin-bottom: 1.4rem; }
+  .summary-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 1.2rem 1.3rem; }
+  .summary-label { font-size: 0.76rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .summary-amount { font-family: var(--serif); font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+  .summary-card.highlight { background: linear-gradient(150deg, #22336b, var(--surface-sidebar) 88%); border-color: transparent; }
+  .summary-card.highlight .summary-label { color: rgba(255,255,255,0.78); }
+  .summary-card.highlight .summary-amount { color: #fff; }
+
+  .breakdown-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 1.2rem 1.3rem; margin-bottom: 1.4rem; }
+  .breakdown-card h2 { font-size: 0.92rem; margin: 0 0 0.9rem; }
+  .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-top: 1px solid var(--line); font-size: 0.85rem; }
+  .breakdown-row:first-child { border-top: none; }
+  .breakdown-row .amount { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .review-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; margin-bottom: 1.2rem; }
+  .review-card h2 { font-size: 0.92rem; margin: 0; padding: 1.1rem 1.3rem 0.4rem; }
+  .review-sub { font-size: 0.78rem; color: var(--ink-soft); padding: 0 1.3rem 0.9rem; line-height: 1.5; }
+  .review-row { display: grid; grid-template-columns: 1fr auto auto; gap: 0.6rem 0.9rem; align-items: center; padding: 0.8rem 1.3rem; border-top: 1px solid var(--line); }
+  .review-row:first-of-type { border-top: 1px solid var(--line); }
+  .review-main { min-width: 0; }
+  .review-desc { font-size: 0.85rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .review-meta { font-size: 0.74rem; color: var(--ink-faint); margin-top: 0.1rem; }
+  .review-amount { font-size: 0.85rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .review-select { font-family: var(--sans); font-size: 0.82rem; padding: 0.4rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--ground); color: var(--ink); }
+  .review-save { font-family: var(--sans); font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 8px; border: none; background: var(--accent); color: #fff; cursor: pointer; white-space: nowrap; }
+  .review-save:disabled { opacity: 0.5; cursor: default; }
+  .review-row.saved { background: var(--ok-soft); }
+
+  .category-note { font-size: 0.72rem; color: var(--ink-faint); padding: 0.9rem 1.3rem; border-top: 1px solid var(--line); line-height: 1.5; }
+
+  .loading, .empty-state { text-align: center; padding: 2.4rem 1rem; color: var(--ink-soft); font-size: 0.9rem; }
+  .pill { display: inline-block; font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-left: 0.4rem; }
+
+  @media (max-width: 820px) {
+    .sidebar { display: none; }
+    .wrap { padding-left: 1.2rem; padding-right: 1.2rem; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .review-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="index.html" style="text-decoration:none; color:inherit;">
+      <div class="brand-mark"><img src="favicon.svg" alt=""></div>
+      <div class="brand-name">Cégfókusz</div>
+    </a>
+
+    <div class="nav-group-label">Menü</div>
+    <nav class="nav">
+      <a class="nav-link" href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Irányítópult
+      </a>
+      <a class="nav-link" href="adataim.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19V5a2 2 0 0 1 2-2h8l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v6h6"/></svg>
+        Adataim
+      </a>
+      <a class="nav-link" href="hazipenztar.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="3"/><path d="M6 6V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+        Házipénztár
+      </a>
+      <a class="nav-link" href="adatpotlas.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Adatpótlás
+      </a>
+      <a class="nav-link" href="konyveloi-egyeztetes.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Könyvelői egyeztetés
+      </a>
+      <a class="nav-link" href="hatarido-naptar.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Határidő-naptár
+      </a>
+      <a class="nav-link" href="dokumentumok.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+        Dokumentumok
+      </a>
+      <a class="nav-link active" href="iparuzesi-ado.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
+        Iparűzési adó
+      </a>
+      <a class="nav-link" href="elofizetes.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Előfizetés
+      </a>
+      <a class="nav-link" href="beallitasok.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.37a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.63 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.63a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.37 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
+        Beállítások
+      </a>
+      <a class="nav-link" href="https://ugyfelportal.nav.gov.hu/adoszamla/lekerdezes" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        NAV adószámla
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="id-card">
+        <div class="id-card-top">
+          <div class="id-chip"></div>
+          <div class="id-status"><span class="dot"></span>Aktív</div>
+        </div>
+        <div class="id-card-number" id="sidebarTaxNumber">····&nbsp;····&nbsp;·&nbsp;··</div>
+        <div class="id-card-name" id="sidebarCompanyName">Betöltés…</div>
+        <div class="id-card-sub">Adószám · regisztrált cég</div>
+      </div>
+      <div class="trust-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Biztonságos, titkosított kapcsolat
+      </div>
+      <button class="logout-link" id="logoutBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Kijelentkezés
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrap">
+      <h1>Iparűzési adó-becslő</h1>
+      <div class="page-sub">
+        A NAV-számlák tételsorai alapján becsüljük a helyi iparűzési adó alapját. A levonható tételeket
+        (anyagköltség, ELÁBÉ, közvetített szolgáltatás, alvállalkozói díj) neked kell egyszer kategorizálnod
+        minden új beszállítónál — ezután a rendszer megjegyzi, és legközelebb automatikusan felismeri.
+        Ez egy <strong>becslés</strong>, nem helyettesíti a könyvelőddel/NAV-val való végleges elszámolást.
+      </div>
+
+      <div class="year-row">
+        <label for="yearSelect">Időszak (év)</label>
+        <select id="yearSelect"></select>
+      </div>
+
+      <div id="content" class="loading">Betöltés...</div>
+    </div>
+  </main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let companyId = null;
+let localBusinessTaxRate = 0.02;
+
+const CATEGORY_LABELS = {
+  anyagkoltseg: "Anyagköltség",
+  elabe: "ELÁBÉ",
+  kozvetitett_szolgaltatas: "Közvetített szolgáltatás",
+  alvallalkozoi_dij: "Alvállalkozói díj",
+  egyeb: "Egyéb (nem levonható)",
+};
+const DEDUCTIBLE_CATEGORIES = ["anyagkoltseg", "elabe", "kozvetitett_szolgaltatas", "alvallalkozoi_dij"];
+
+function formatFt(n) {
+  return Math.round(n ?? 0).toLocaleString("hu-HU") + " Ft";
+}
+function formatPercent(rate) {
+  return (rate * 100).toLocaleString("hu-HU", { maximumFractionDigits: 2 }) + "%";
+}
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await sb.auth.signOut();
+  window.location.href = "login.html";
+});
+
+function populateYearSelect() {
+  const select = document.getElementById("yearSelect");
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear, currentYear - 1, currentYear - 2];
+  select.innerHTML = years.map((y) => `<option value="${y}">${y}</option>`).join("");
+  select.value = String(currentYear);
+}
+
+/** Az adott évhez tartozó, még kategorizálatlan BEJÖVŐ tételekre automatikusan
+ *  rááll a szállító-memória (partner_category_defaults), ha van hozzá mentett
+ *  kategória — így a felhasználónak csak az ÚJ/ismeretlen partnerekkel kell
+ *  foglalkoznia. Olyan sort sosem írunk át, aminek már van kategóriája. */
+async function applyPartnerDefaults(yearFrom, yearTo) {
+  const [{ data: uncategorized, error: e1 }, { data: defaults, error: e2 }] = await Promise.all([
+    sb.from("invoice_line_items")
+      .select("id, partner_name")
+      .eq("company_id", companyId)
+      .eq("direction", "INBOUND")
+      .is("category", null)
+      .gte("issue_date", yearFrom)
+      .lte("issue_date", yearTo),
+    sb.from("partner_category_defaults").select("partner_name, category").eq("company_id", companyId),
+  ]);
+  if (e1) throw e1;
+  if (e2) throw e2;
+
+  const defaultMap = new Map((defaults ?? []).map((d) => [d.partner_name, d.category]));
+  const toUpdate = (uncategorized ?? []).filter((row) => row.partner_name && defaultMap.has(row.partner_name));
+  if (toUpdate.length === 0) return;
+
+  const idsByCategory = new Map();
+  for (const row of toUpdate) {
+    const cat = defaultMap.get(row.partner_name);
+    if (!idsByCategory.has(cat)) idsByCategory.set(cat, []);
+    idsByCategory.get(cat).push(row.id);
+  }
+  for (const [category, ids] of idsByCategory) {
+    const { error } = await sb
+      .from("invoice_line_items")
+      .update({ category, category_source: "partner_default" })
+      .in("id", ids);
+    if (error) throw error;
+  }
+}
+
+async function loadSummary(yearFrom, yearTo) {
+  const [{ data: outbound, error: e1 }, { data: categorized, error: e2 }] = await Promise.all([
+    sb.from("invoice_vat_lines").select("net_amount").eq("company_id", companyId).eq("direction", "OUTBOUND").gte("issue_date", yearFrom).lte("issue_date", yearTo),
+    sb.from("invoice_line_items").select("category, net_amount").eq("company_id", companyId).eq("direction", "INBOUND").not("category", "is", null).gte("issue_date", yearFrom).lte("issue_date", yearTo),
+  ]);
+  if (e1) throw e1;
+  if (e2) throw e2;
+
+  const netRevenue = (outbound ?? []).reduce((s, r) => s + Number(r.net_amount), 0);
+
+  const byCategory = {};
+  for (const cat of Object.keys(CATEGORY_LABELS)) byCategory[cat] = 0;
+  for (const row of categorized ?? []) {
+    byCategory[row.category] = (byCategory[row.category] ?? 0) + Number(row.net_amount);
+  }
+  const deductibleSum = DEDUCTIBLE_CATEGORIES.reduce((s, cat) => s + (byCategory[cat] ?? 0), 0);
+  const taxBase = Math.max(0, netRevenue - deductibleSum);
+  const estimatedTax = taxBase * localBusinessTaxRate;
+
+  return { netRevenue, byCategory, deductibleSum, taxBase, estimatedTax };
+}
+
+async function loadUncategorized(yearFrom, yearTo) {
+  const { data, error } = await sb
+    .from("invoice_line_items")
+    .select("id, partner_name, description, issue_date, net_amount, invoice_number")
+    .eq("company_id", companyId)
+    .eq("direction", "INBOUND")
+    .is("category", null)
+    .gte("issue_date", yearFrom)
+    .lte("issue_date", yearTo)
+    .order("issue_date", { ascending: false })
+    .limit(200);
+  if (error) throw error;
+  return data ?? [];
+}
+
+function renderSummaryHtml(summary) {
+  const breakdownRows = DEDUCTIBLE_CATEGORIES.concat(["egyeb"])
+    .map((cat) => `
+      <div class="breakdown-row">
+        <span>${CATEGORY_LABELS[cat]}</span>
+        <span class="amount">${formatFt(summary.byCategory[cat] ?? 0)}</span>
+      </div>`)
+    .join("");
+
+  return `
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-label">Nettó árbevétel (kimenő számlák)</div>
+        <div class="summary-amount">${formatFt(summary.netRevenue)}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Levonható tételek (kategorizált)</div>
+        <div class="summary-amount">${formatFt(summary.deductibleSum)}</div>
+      </div>
+      <div class="summary-card highlight">
+        <div class="summary-label">Becsült iparűzési adó (${formatPercent(localBusinessTaxRate)})</div>
+        <div class="summary-amount">${formatFt(summary.estimatedTax)}</div>
+      </div>
+    </div>
+    <div class="breakdown-card">
+      <h2>Kategóriánkénti bontás (bejövő számlák, kategorizált tételek)</h2>
+      ${breakdownRows}
+    </div>`;
+}
+
+function renderReviewRow(row) {
+  const optionsHtml = Object.entries(CATEGORY_LABELS)
+    .map(([value, label]) => `<option value="${value}">${label}</option>`)
+    .join("");
+  return `
+    <div class="review-row" data-row-id="${row.id}">
+      <div class="review-main">
+        <div class="review-desc">${row.partner_name ?? "(ismeretlen partner)"}</div>
+        <div class="review-meta">${row.description ? row.description + " · " : ""}${row.invoice_number} · ${row.issue_date ?? ""}</div>
+      </div>
+      <div class="review-amount">${formatFt(row.net_amount)}</div>
+      <div style="display:flex; gap:0.5rem;">
+        <select class="review-select" data-select-for="${row.id}">
+          <option value="" disabled selected>Válassz kategóriát…</option>
+          ${optionsHtml}
+        </select>
+        <button class="review-save" data-save-for="${row.id}" data-partner="${(row.partner_name ?? "").replace(/"/g, "&quot;")}">Mentés</button>
+      </div>
+    </div>`;
+}
+
+function wireReviewButtons() {
+  document.querySelectorAll("[data-save-for]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.saveFor;
+      const partnerName = btn.dataset.partner;
+      const select = document.querySelector(`[data-select-for="${id}"]`);
+      const category = select.value;
+      if (!category) {
+        select.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = "Mentés...";
+      try {
+        const { error: updateError } = await sb
+          .from("invoice_line_items")
+          .update({ category, category_source: "user" })
+          .eq("id", id);
+        if (updateError) throw updateError;
+
+        if (partnerName) {
+          const { error: upsertError } = await sb
+            .from("partner_category_defaults")
+            .upsert({ company_id: companyId, partner_name: partnerName, category }, { onConflict: "company_id,partner_name" });
+          if (upsertError) throw upsertError;
+        }
+
+        const row = btn.closest(".review-row");
+        row.classList.add("saved");
+        btn.textContent = "Mentve ✓";
+        await refreshSummaryOnly();
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "Mentés";
+        alert("Hiba a mentéskor: " + err.message);
+      }
+    });
+  });
+}
+
+async function refreshSummaryOnly() {
+  const year = document.getElementById("yearSelect").value;
+  const summary = await loadSummary(`${year}-01-01`, `${year}-12-31`);
+  document.getElementById("summaryContainer").innerHTML = renderSummaryHtml(summary);
+}
+
+async function renderAll() {
+  const content = document.getElementById("content");
+  const year = document.getElementById("yearSelect").value;
+  const yearFrom = `${year}-01-01`;
+  const yearTo = `${year}-12-31`;
+
+  content.innerHTML = `<div class="loading">Betöltés...</div>`;
+  try {
+    await applyPartnerDefaults(yearFrom, yearTo);
+    const [summary, uncategorized] = await Promise.all([
+      loadSummary(yearFrom, yearTo),
+      loadUncategorized(yearFrom, yearTo),
+    ]);
+
+    const reviewHtml = uncategorized.length === 0
+      ? `<div class="empty-state">Nincs kategorizálásra váró tétel ebben az időszakban — minden fel van dolgozva.</div>`
+      : `
+        <div class="review-card">
+          <h2>Kategorizálásra vár<span class="pill">${uncategorized.length} tétel</span></h2>
+          <div class="review-sub">Új vagy korábban nem kategorizált beszállítói tételek. A választás ezután automatikusan megjegyződik az adott partnerre.</div>
+          ${uncategorized.map(renderReviewRow).join("")}
+          <div class="category-note">
+            A kategorizálás a tétel teljes nettó összegére vonatkozik. Ha egy tétel nem von le adóalapot
+            (pl. nem anyagköltség/ELÁBÉ/közvetített szolgáltatás/alvállalkozói díj), válaszd az "Egyéb"-et.
+          </div>
+        </div>`;
+
+    content.innerHTML = `
+      <div id="summaryContainer">${renderSummaryHtml(summary)}</div>
+      ${reviewHtml}
+    `;
+    wireReviewButtons();
+  } catch (err) {
+    content.innerHTML = `<div class="empty-state">Hiba történt az adatok betöltésekor: ${err.message}</div>`;
+  }
+}
+
+async function main() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data: companies, error } = await sb.from("companies").select("id, name, tax_number, local_business_tax_rate");
+  if (error || !companies || companies.length === 0) {
+    document.getElementById("content").innerHTML = `<div class="empty-state">A fiókodat automatikusan aktiváljuk (néhány percet vehet igénybe az email-megerősítés után) — addig itt még nincs mit mutatni.</div>`;
+    return;
+  }
+  companyId = companies[0].id;
+  localBusinessTaxRate = Number(companies[0].local_business_tax_rate ?? 0.02);
+  document.getElementById("sidebarCompanyName").textContent = companies[0].name;
+  document.getElementById("sidebarTaxNumber").textContent = companies[0].tax_number.replace(/-/g, "  ");
+
+  populateYearSelect();
+  document.getElementById("yearSelect").addEventListener("change", renderAll);
+
+  await renderAll();
+}
+
+main();
+</script>
+</body>
+</html>
