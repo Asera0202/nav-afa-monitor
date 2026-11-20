@@ -148,9 +148,24 @@
    (bejövő számla) és az értékesítést (kimenő számla + pénztárgép) a kiválasztott
    időszakra; 2,5x-nél nagyobb arányú, min. 50 000 Ft-os eltérésnél jelez,
    mindkét irányban (hiányzó bejövő számla / hiányzó értékesítési tétel gyanúja)
-6. Iparűzési adó-becslő — nettó árbevétel megvan automatikusan, de a levonható tételeket
-   (anyagköltség, ELÁBÉ, alvállalkozói díj) kézzel kell majd megadni/kategorizálni
-   (szállító-memória + kulcsszó-javaslat + AI-javaslat kombinációja tervezve)
+6. ⏳ Iparűzési adó-becslő — FOLYAMATBAN (2026.11.20). Nettó árbevétel megvan
+   automatikusan, a levonható tételeket (anyagköltség, ELÁBÉ, közvetített
+   szolgáltatás, alvállalkozói díj) kézzel kell majd megadni/kategorizálni
+   (szállító-memória + AI-javaslat kombinációja tervezve, AI csak új/
+   ismeretlen partnereknél, becsült havi AI-költség: pár cent-1 dollár
+   Claude Haiku 5.5-tel, token-alapú, nincs havidíj).
+   **Megépítve:** `invoice_line_items` + `partner_category_defaults` táblák,
+   `src/invoice-parsing.ts` közös modul (`extractLineItems`), a napi szinkron
+   és a backfill-szkript is kinyeri és feltölti a NAV-számlák tételsor-szintű
+   adatait (megnevezés, mennyiség, egységár).
+   **Még hátra:** dedikált "Iparűzési adó" sidebar-oldal (kategorizáló UI,
+   AI nélkül is működik), majd az AI-javaslat réteg (blokkolva: Anthropic
+   API-kulcs kell tőled, Supabase Secrets-be).
+   **Kapcsolódó, közben talált és javított hiba:** a házipénztár pénztárgépes
+   fizetési-tétel kinyerése (`opg-parser.ts`) csak az első azonos típusú
+   fizetési taget vette figyelembe nyugtánként — megosztott/részletekben
+   fizetett nyugtáknál csonkult a készpénz/bankkártya összeg. Javítva
+   (2026.11.20), a következő napi szinkronnal magától helyreáll.
 7. Beépített AI-chat asszisztens (cég-specifikus adatra korlátozva + friss adózási hírek)
 8. ✅ NAV-határidő-naptár — kész (2026.09.16). Önálló `public/hatarido-naptar.html`
    oldal + dashboard-kártya a legközelebbi 1-2 határidővel
@@ -320,6 +335,29 @@
       kivonaton látszik, nincs benne sem a pénztárgép-, sem a
       számla-adatokban, tehát ugyanaz a banki integráció kellene hozzá.
     Egyik sincs még kidolgozva/megbeszélve részletesen a felhasználóval.
+17b. ⏸️ NAV-kompatibilis számlázás beépítése (Billingo/Számlázz.hu API) —
+    JÉGRE TÉVE (2026.11.20), kutatás megvan, ha később előkerül.
+    **Kutatás eredménye:** saját NAV-kompatibilis számlázó motor építése
+    jogilag megoldható (nincs akkreditációs díj 2014 óta), de a tényleges
+    költség nem infrastruktúra, hanem a folyamatos karbantartás (NAV XSD-
+    séma frissítések követése, felhasználó-nyilvántartás) — becsülve havi
+    20-60 ezer Ft értékű fejlesztői idő, ha külső kapacitással tartanánk
+    fenn. Harmadik féltől (Billingo/Számlázz.hu) API-integráció pragmatikusabb,
+    DE az API-hozzáférés külön díjas kiegészítő mindkettőnél (Billingónál
+    konkrétan +1999 Ft+ÁFA/hótól) az alapcsomag tetejére — vállalkozásonként
+    kb. 4500-6000 Ft/hó, amit a saját 7999-11999 Ft/hó-s sávjainkba nem fér
+    bele, ha mi fizetnénk. **Egyetlen életképes modell, ha majd folytatjuk:**
+    "hozd a saját fiókod" — a vállalkozó maga nyit/fizet Billingo/Számlázz.hu
+    fiókot, mi csak az ő API-kulcsával kötjük össze a rendszerünket (nekünk
+    nulla többletköltség).
+    Kontextus: Számlázz.hu (KBOSS.hu Kft.) 2025: ~6,42 milliárd Ft árbevétel,
+    943 049 regisztrált vállalkozás; Billingo Technologies Zrt. 2025:
+    ~1,6 milliárd Ft árbevétel, ~200 000 felhasználó (2024-es adat) — óriási,
+    bejáratott piac, tiszta számlázásra specializálódva, ezért tudnak
+    1690-3999 Ft/hó körül maradni; a Cégfókusz ettől eltérő kategória
+    (NAV-monitoring+egyeztetés+anomália-észlelés), ezért a magasabb árazás
+    nem feltétlenül indokolatlan, de ezt a különbséget a marketingnek
+    világosan kell kommunikálnia.
 18. ⛔ NAV adószámla-lekérdezés egy gombbal — BLOKKOLVA, nincs rá céges technikai
     felhasználós NAV API (ellentétben az Online Számla/Pénztárgép API-kkal),
     csak személyes Ügyfélkapus bejelentkezéssel érhető el a NAV Ügyfélportálon.
