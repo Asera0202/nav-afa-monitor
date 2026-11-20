@@ -125,19 +125,30 @@ export function parseNynPayments(xml: string): NynPayment[] {
     const receiptNumber = nszMatch ? nszMatch[1] : null;
     const timestamp = dtsMatch ? dtsMatch[1] : null;
 
-    const fe1Match = drc.match(/<FE1>([-\d.,]+)<\/FE1>/);
-    if (fe1Match) {
-      payments.push({ receiptNumber, timestamp, paymentType: "Készpénz", amount: parseFloat(fe1Match[1].replace(",", ".")) });
+    // Egy nyugtán belül elvileg több <FE1>/<FE2> tétel is előfordulhat (pl.
+    // részletekben történő fizetés) — ilyenkor az adott nyugtán/típuson belül
+    // összeadjuk, mert a payments tábla egyedi kulcsa (cég, AP-szám,
+    // nyugtaszám, fizetési mód) soronként csak egy összeget tud tárolni.
+    const fe1Matches = [...drc.matchAll(/<FE1>([-\d.,]+)<\/FE1>/g)];
+    if (fe1Matches.length > 0) {
+      const sum = fe1Matches.reduce((s, m) => s + parseFloat(m[1].replace(",", ".")), 0);
+      payments.push({ receiptNumber, timestamp, paymentType: "Készpénz", amount: Math.round(sum * 100) / 100 });
     }
 
-    const fe2Match = drc.match(/<FE2>([-\d.,]+)<\/FE2>/);
-    if (fe2Match) {
-      payments.push({ receiptNumber, timestamp, paymentType: "Bankkártya", amount: parseFloat(fe2Match[1].replace(",", ".")) });
+    const fe2Matches = [...drc.matchAll(/<FE2>([-\d.,]+)<\/FE2>/g)];
+    if (fe2Matches.length > 0) {
+      const sum = fe2Matches.reduce((s, m) => s + parseFloat(m[1].replace(",", ".")), 0);
+      payments.push({ receiptNumber, timestamp, paymentType: "Bankkártya", amount: Math.round(sum * 100) / 100 });
     }
 
     const otherMatches = [...drc.matchAll(/<FE\d+>\s*<FEN>([^<]*)<\/FEN>\s*<FES>([-\d.,]+)<\/FES>\s*<\/FE\d+>/g)];
+    const otherSums = new Map<string, number>();
     for (const m of otherMatches) {
-      payments.push({ receiptNumber, timestamp, paymentType: m[1] || "Egyéb", amount: parseFloat(m[2].replace(",", ".")) });
+      const type = m[1] || "Egyéb";
+      otherSums.set(type, (otherSums.get(type) ?? 0) + parseFloat(m[2].replace(",", ".")));
+    }
+    for (const [type, sum] of otherSums) {
+      payments.push({ receiptNumber, timestamp, paymentType: type, amount: Math.round(sum * 100) / 100 });
     }
   }
 
